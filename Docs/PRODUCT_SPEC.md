@@ -186,6 +186,54 @@ A basic deterministic rule-based engine is acceptable for the MVP. Do not add ma
 
 After processing, analyse the result or relevant render statistics and confirm whether the intended corrections helped. If iterative optimisation is used, it must be bounded, deterministic where practical, and protected against oscillation. Do not implement an uncontrolled feedback loop driven by live meters.
 
+### 5.5 Mix Advisor (source-level guidance)
+
+Some Source-vs-Reference differences cannot be safely fixed in a master: already-squashed transients, mono or phase problems, static low-mid buildup, or missing arrangement content. The Mix Advisor reports such cases as small, actionable suggestions for the artist to fix at source before re-sending the track, instead of over-processing the master.
+
+It is a second consumer of the same profile comparison as the Matching Engine (section 5). The Matching Engine asks "can I fix this within bounds?"; the Mix Advisor asks "is this better fixed at source, and is it beyond safe master-stage correction?" It never modifies audio and never gates, delays or blocks the automatic master.
+
+**Honesty constraints.** A stereo master cannot identify instruments, and frequency alone does not identify a source. The Mix Advisor must:
+
+- never assert an instrument name as fact; emit a **ranked list of plausible sources** with a confidence and an explicit "verify by ear";
+- use frequency **times** temporal structure (percussive vs sustained) and persistence, not frequency alone, to rank sources;
+- keep magnitudes small and reversible (for example "+1-2 dB", "slow the attack");
+- stay silent when evidence is weak, exactly as the Matching Engine does;
+- level-normalise Source and Reference before comparing, so a louder Reference cannot bias it.
+
+**Inputs.** The Source and Reference `AnalysisProfile`s and the Stage 5 `ProfileDifference`. Per band it uses: `energy`, `rmsVariation` (spread of short-term RMS over time), `transientDensity` (onsets/s), `crest`, `width`, `correlation`, `resonanceScore` and `persistence` (fraction of time the band exceeds the reference by a threshold). Rules live in a versioned `AdvisorRuleset` data table, so thresholds can be tuned without code changes.
+
+**Output.**
+
+```text
+MixSuggestion {
+  id, category(tonal|dynamics|transient|stereo|resonance|peak),
+  bands[], feature, direction, magnitude, confidence(low|med|high),
+  plausibleSources[] (ranked), masterFixable(bool),
+  actionTemplateId, reasonCode, rulesetVersion
+}
+MixFeedback { rulesetVersion, suggestions[] }
+```
+
+**Initial rules** (thresholds configurable; all measured after level normalisation). Each rule reads `detection -> plausible sources (ranked) -> suggested action -> confidence driver`.
+
+- **R1 Low-end punch deficit.** Sub/Low 45-180 Hz with `rmsVariation` and `transientDensity` below the reference. -> kick (likely) / bass masking (possible). -> "+1-2 dB on the kick, slow the kick/track compressor attack, or carve the bass under the kick." Confidence medium-high if `transientDensity` (not just level) is low. `masterFixable`: partly.
+- **R2 Low-end too wide or out of phase.** Side energy below ~100 Hz high vs the reference; correlation below ~0.5. -> stereo kick/bass, wide sub patch. -> "Mono below ~90-100 Hz; check the bass patch." Confidence high. `masterFixable`: yes.
+- **R3 Over-compressed at source.** Global crest below the reference with flat short-term dynamics. -> mix-bus limiter or compressor working too hard. -> "Back off the mix-bus limiter, keep 1-2 dB more headroom, re-bounce; a master cannot recreate transients." Confidence high. `masterFixable`: no.
+- **R4 Low-mid buildup.** 180-360 Hz persistently above the reference with low variation. -> bass plus keys/guitars stacking, kick body, room. -> "Gentle source cut around 200-300 Hz, or carve the bass." Confidence medium. `masterFixable`: partly.
+- **R5 Dull or missing air.** 5.7 kHz and above below the reference for most of the track. -> dark source, low-pass, dark samples, closed hats. -> "Lift air/presence at source; first check monitoring and any low-pass." Confidence medium-high. `masterFixable`: yes.
+- **R6 Harsh presence.** 2.8-5.8 kHz energy and `transientDensity` above the reference. -> forward hats/cymbals/lead, ~3-4 kHz harshness. -> "Tame ~3-5 kHz on overheads/lead, soften attack." Confidence medium. `masterFixable`: yes.
+- **R7 Narrow stereo image.** Width low or correlation high across bands vs the reference. -> over-monoed mix, no stereo on pads/keys. -> "Widen pads/keys/reverb; check the stereo bus." Confidence medium-high. `masterFixable`: yes.
+- **R8 Dull transients in the highs.** HighMid/High `transientDensity` and `crest` below the reference despite energy. -> over-limited cymbals, over-compressed overheads. -> "Reduce limiting/compression on the highs, restore transient snap." Confidence medium. `masterFixable`: no.
+- **R9 Resonant bass or synth.** A narrow peak persistently above its neighbours and stable over time. -> resonant bass note or room mode. -> "Dynamic EQ or notch at source." Confidence medium. `masterFixable`: yes.
+- **R10 Kick/bass conflict.** High sub and high low-mid energy with low low-band `transientDensity`. -> kick and bass sharing 60-180 Hz. -> "Sidechain or carve 60-100 Hz; separate them." Confidence medium. `masterFixable`: partly.
+- **R11 Phase problem.** A negatively correlated band. -> polarity or phase issue. -> "Check phase polarity on that source." Confidence high when clearly negative. `masterFixable`: yes.
+
+**Guardrails and non-goals.** No instrument identification and no stem separation; no prescriptive claims. The Mix Advisor is not part of the render chain and cannot affect exported audio. Output is bounded (cap the number of suggestions and de-duplicate overlapping rules; one suggestion per issue). Every rule records its thresholds and rationale, and the output is stamped with `rulesetVersion` so advice is reproducible and traceable.
+
+**UI.** A read-only "Source notes" list in the dashboard with plain-text export. Each item shows the band/feature, a plain-language action, a confidence and "verify by ear". It never blocks or delays the automatic master. After the artist fixes the mix, re-analysis is just the normal analysis path.
+
+**Testing.** Identical Source/Reference yields no suggestions. One targeted fixture per rule (over-compressed source, anti-phase, low-passed, narrow, resonant bass, and so on) fires the expected rule and leaves the others silent. Marginal differences produce no suggestion (confidence gating). Phrasing is rendered from `reasonCode`. Output is deterministic and invalidated when `rulesetVersion` changes. A non-goal test asserts that no suggestion ever contains an unhedged instrument claim.
+
 ## 6. DSP module specifications
 
 Implement processors in isolation first, with documented units, parameter ranges, signal-flow assumptions, and tests.

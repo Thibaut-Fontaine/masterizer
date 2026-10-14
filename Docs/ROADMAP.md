@@ -150,6 +150,13 @@ The engine should also recognize when a difference is probably caused by the arr
 Do not apply any of the proposed corrections yet.
 Test the decisions against your reference dataset and inspect whether the engine is recommending sensible interventions.
 Deliverable: A functioning analysis-and-decision system, independent of the DSP chain.
+
+Step 10b. Implement the Mix Advisor (source-level guidance)
+Some differences cannot be safely fixed in a master (already-squashed transients, mono or phase problems, static low-mid buildup, missing arrangement content). The Mix Advisor reports such cases as small, actionable suggestions the artist can fix at source before re-sending the track, instead of over-processing the master.
+It is a second consumer of the Step 10 difference/confidence engine: the Matching Engine asks "can I fix this within bounds?", the Mix Advisor asks "is this better fixed at source?". It never modifies audio and never blocks the automatic master.
+Honesty constraints: a stereo master cannot identify instruments, so never assert an instrument name; emit a ranked list of plausible sources with a confidence and "verify by ear". Use frequency x temporal structure (percussive vs sustained) and persistence, not frequency alone, to rank sources. Keep magnitudes small and reversible ("+1-2 dB", "slow the attack"). Stay silent when evidence is weak, and level-normalise Source and Reference before comparing.
+Initial rules: R1 low-end punch deficit, R2 low-end too wide/phase, R3 over-compressed at source, R4 low-mid buildup, R5 dull/missing air, R6 harsh presence, R7 narrow image, R8 dull high transients, R9 resonant bass/synth, R10 kick/bass conflict, R11 phase problem. Details in Docs/PRODUCT_SPEC.md section 5.5.
+Deliverable: A deterministic, bounded, confidence-tagged advice module, separate from the render chain.
 Phase 4 — The first functional mastering plugin
 Step 11. Implement EQ matching
 Implement the first processing module that modifies the audio.

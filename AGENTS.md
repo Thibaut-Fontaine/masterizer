@@ -14,8 +14,8 @@ target cannot be reached safely.
 measurement layer, the reference-loading core and the analysis engine (octave-band energy,
 fine magnitude spectrum, envelope/percussive prominence, stereo M/S + correlation, gated
 LUFS + true peak, aggregate `AnalysisProfile` via `analyzeSource`) exist. Next: Stage 5
-(Matching Engine MVP). The JUCE adapters, plugin shell, matching layer and UI do not exist
-yet. Follow `Docs/ROADMAP.md` order.
+(Matching Engine MVP), then Stage 5b (Mix Advisor), then Stage 6. The JUCE adapters, plugin
+shell, matching layer and UI do not exist yet. Follow `Docs/ROADMAP.md` order.
 
 ## Source-of-truth docs
 
@@ -84,6 +84,23 @@ Windows: use `--preset windows-msvc`. Run one test by name substring:
   decides from profiles, then processors run with their own detectors.
 - Do not retain full decoded reference audio in memory. Cache versioned analysis profiles
   and invalidate the cache when analysis behaviour changes.
+
+## Mix Advisor (Stage 5b)
+
+Source-level guidance: reuse the Stage 5 difference/confidence engine to emit small,
+actionable suggestions the artist can fix at source. Full spec in `Docs/PRODUCT_SPEC.md`
+section 5.5; roadmap Step 10b.
+
+- Advice only, off-thread, **never in the render chain**; never gates or delays the auto master.
+- **Never name an instrument as fact.** Emit a ranked plausible-source list + confidence +
+  "verify by ear". Frequency alone is not enough: use frequency **x** temporal structure
+  (percussive vs sustained) and persistence.
+- Keep magnitudes small and reversible; stay silent when evidence is weak; level-normalise
+  Source and Reference before comparing.
+- Output is versioned by `AdvisorRuleset`; bump that version whenever rules or thresholds change.
+- Rules R1-R11 (low-end punch, low-end width/phase, source over-compression, low-mid buildup,
+  missing air, harsh presence, narrow image, dull high transients, resonant bass, kick/bass
+  conflict, phase) are a data table, not hard-coded branches.
 
 ## Working conventions
 
