@@ -28,6 +28,7 @@ add_executable(masterizer_tests
     unit/support/SignalsSpectralTest.cpp
     unit/support/SignalsTest.cpp
     unit/support/StereoTest.cpp
+    unit/state/ProfileCacheTest.cpp
     unit/state/ReferenceKeyOpsTest.cpp)
 
 target_link_libraries(masterizer_tests PRIVATE masterizer_core)

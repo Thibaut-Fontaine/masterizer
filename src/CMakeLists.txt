@@ -15,6 +15,7 @@ add_library(masterizer_core STATIC
     domain/dsp/Peak.cpp
     domain/dsp/Rms.cpp
     domain/dsp/TruePeak.cpp
+    domain/state/ProfileCache.cpp
     domain/state/ReferenceKeyOps.cpp)
 
 target_include_directories(masterizer_core PUBLIC
