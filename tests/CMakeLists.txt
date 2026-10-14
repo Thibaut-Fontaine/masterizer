@@ -25,6 +25,7 @@ add_executable(masterizer_tests
     unit/analysis/StereoProfileTest.cpp
     unit/analysis/StftTest.cpp
     unit/application/OutputValidatorTest.cpp
+    unit/application/ProcessingChainTest.cpp
     unit/audio/AudioBufferOpsTest.cpp
     unit/common/OctaveBandsTest.cpp
     unit/dsp/BiquadTest.cpp
@@ -44,6 +45,7 @@ add_executable(masterizer_tests
     unit/dsp/TruePeakTest.cpp
     unit/matching/EqDesignerTest.cpp
     unit/matching/MatchingEngineTest.cpp
+    unit/matching/MatchIntensityTest.cpp
     unit/matching/MixAdvisorTest.cpp
     unit/matching/ProfileDifferenceTest.cpp
     unit/support/SignalsProgramTest.cpp

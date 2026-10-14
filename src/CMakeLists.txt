@@ -1,5 +1,6 @@
 add_library(masterizer_core STATIC
     application/OutputValidator.cpp
+    application/ProcessingChain.cpp
     domain/analysis/BandMapping.cpp
     domain/analysis/BandFrames.cpp
     domain/analysis/BandDynamics.cpp
@@ -34,6 +35,7 @@ add_library(masterizer_core STATIC
     domain/dsp/TruePeak.cpp
     domain/matching/ProfileDifference.cpp
     domain/matching/MatchingEngine.cpp
+    domain/matching/MatchIntensity.cpp
     domain/matching/MixAdvisor.cpp
     domain/matching/RuleContext.cpp
     domain/matching/RulesDynamics.cpp
