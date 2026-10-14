@@ -32,6 +32,7 @@ add_executable(masterizer_tests
     unit/dsp/PeakTest.cpp
     unit/dsp/RmsTest.cpp
     unit/dsp/TruePeakTest.cpp
+    unit/matching/MatchingEngineTest.cpp
     unit/matching/ProfileDifferenceTest.cpp
     unit/support/SignalsProgramTest.cpp
     unit/support/SignalsSpectralTest.cpp

@@ -10,12 +10,12 @@ proposes/applies a coordinated mastering chain. The Reference is a **target prof
 not a command** — the product must be willing to leave things alone or report that a
 target cannot be reached safely.
 
-**Current state: Stage 4 core complete.** Build, test harness, size-rule checker, the DSP
-measurement layer, the reference-loading core and the analysis engine (octave-band energy,
-fine magnitude spectrum, envelope/percussive prominence, stereo M/S + correlation, gated
-LUFS + true peak, aggregate `AnalysisProfile` via `analyzeSource`) exist. Next: Stage 5
-(Matching Engine MVP), then Stage 5b (Mix Advisor), then Stage 6. The JUCE adapters, plugin
-shell, matching layer and UI do not exist yet. Follow `Docs/ROADMAP.md` order.
+**Current state: Stage 5 MVP (tonal matching) complete.** Build, test harness, size-rule
+checker, the DSP measurement layer, the reference-loading core, the analysis engine and the
+Matching Engine MVP exist: `compareProfiles` + `MatchingEngine` turn Source-vs-Reference
+profiles into bounded, confidence-gated tonal (EQ) `CorrectionProposal`s (no audio is
+modified yet). Next: Stage 5b (Mix Advisor), then Stage 6 (first usable master). The JUCE
+adapters, plugin shell and UI do not exist yet. Follow `Docs/ROADMAP.md` order.
 
 ## Source-of-truth docs
 
