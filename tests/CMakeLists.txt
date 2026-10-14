@@ -34,9 +34,11 @@ add_executable(masterizer_tests
     unit/dsp/GainTest.cpp
     unit/dsp/KWeightingTest.cpp
     unit/dsp/MidSideTest.cpp
+    unit/dsp/ParametricEqTest.cpp
     unit/dsp/PeakTest.cpp
     unit/dsp/RmsTest.cpp
     unit/dsp/TruePeakTest.cpp
+    unit/matching/EqDesignerTest.cpp
     unit/matching/MatchingEngineTest.cpp
     unit/matching/MixAdvisorTest.cpp
     unit/matching/ProfileDifferenceTest.cpp

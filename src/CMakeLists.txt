@@ -25,6 +25,7 @@ add_library(masterizer_core STATIC
     domain/dsp/KWeighting.cpp
     domain/dsp/MidSide.cpp
     domain/dsp/Peak.cpp
+    domain/dsp/ParametricEq.cpp
     domain/dsp/Rms.cpp
     domain/dsp/TruePeak.cpp
     domain/matching/ProfileDifference.cpp
@@ -35,6 +36,8 @@ add_library(masterizer_core STATIC
     domain/matching/RulesLowEnd.cpp
     domain/matching/RulesStereo.cpp
     domain/matching/RulesTone.cpp
+    domain/matching/ProfileDifference.cpp
+    domain/matching/EqDesigner.cpp
     domain/state/ProfileCache.cpp
     domain/state/ReferenceKeyOps.cpp
     domain/state/ReferenceManager.cpp)
