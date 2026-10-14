@@ -29,7 +29,8 @@ add_executable(masterizer_tests
     unit/support/SignalsTest.cpp
     unit/support/StereoTest.cpp
     unit/state/ProfileCacheTest.cpp
-    unit/state/ReferenceKeyOpsTest.cpp)
+    unit/state/ReferenceKeyOpsTest.cpp
+    unit/state/ReferenceManagerTest.cpp)
 
 target_link_libraries(masterizer_tests PRIVATE masterizer_core)
 target_include_directories(masterizer_tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
