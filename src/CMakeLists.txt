@@ -6,6 +6,7 @@ add_library(masterizer_core STATIC
     domain/analysis/PowerSpectrum.cpp
     domain/analysis/ProfileVersion.cpp
     domain/analysis/SpectralFraming.cpp
+    domain/analysis/SourceAnalyzer.cpp
     domain/analysis/StereoProfile.cpp
     domain/analysis/Stft.cpp
     domain/audio/AudioBufferOps.cpp

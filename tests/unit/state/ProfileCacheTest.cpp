@@ -19,11 +19,11 @@ const ReferenceKey kReference{"ref.wav", 2048u, 7};
 TEST_CASE(store_then_lookup_returns_the_profile) {
     ProfileCache cache;
     auto profile = std::make_shared<AnalysisProfile>();
-    profile->integratedLufs = -9.5;
+    profile->loudness.integratedLufs = -9.5;
     cache.store(kReference, profile);
     const auto found = cache.lookup(kReference);
     CHECK(found != nullptr);
-    CHECK_NEAR(found->integratedLufs, -9.5, 1e-12);
+    CHECK_NEAR(found->loudness.integratedLufs, -9.5, 1e-12);
     CHECK(cache.size() == 1);
 }
 
