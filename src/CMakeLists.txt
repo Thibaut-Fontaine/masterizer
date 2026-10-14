@@ -24,6 +24,7 @@ add_library(masterizer_core STATIC
     domain/dsp/Gain.cpp
     domain/dsp/KWeighting.cpp
     domain/dsp/MidSide.cpp
+    domain/dsp/MonoBass.cpp
     domain/dsp/Peak.cpp
     domain/dsp/ParametricEq.cpp
     domain/dsp/Rms.cpp
