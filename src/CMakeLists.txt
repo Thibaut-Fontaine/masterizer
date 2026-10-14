@@ -1,8 +1,9 @@
 add_library(masterizer_core STATIC
+    domain/analysis/EnvelopeProfile.cpp
     domain/analysis/Loudness.cpp
-    domain/analysis/ProfileVersion.cpp
     domain/analysis/OctaveProfile.cpp
     domain/analysis/PowerSpectrum.cpp
+    domain/analysis/ProfileVersion.cpp
     domain/analysis/SpectralFraming.cpp
     domain/analysis/StereoProfile.cpp
     domain/analysis/Stft.cpp
