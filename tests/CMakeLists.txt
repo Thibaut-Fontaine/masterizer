@@ -11,7 +11,9 @@ add_executable(masterizer_tests
     unit/dsp/BiquadTest.cpp
     unit/dsp/CorrelationTest.cpp
     unit/dsp/CrestFactorTest.cpp
+    unit/dsp/FftTest.cpp
     unit/dsp/FiniteTest.cpp
+    unit/dsp/GainTest.cpp
     unit/dsp/KWeightingTest.cpp
     unit/dsp/MidSideTest.cpp
     unit/dsp/PeakTest.cpp

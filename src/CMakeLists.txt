@@ -4,7 +4,9 @@ add_library(masterizer_core STATIC
     domain/dsp/Biquad.cpp
     domain/dsp/Correlation.cpp
     domain/dsp/CrestFactor.cpp
+    domain/dsp/Fft.cpp
     domain/dsp/Finite.cpp
+    domain/dsp/Gain.cpp
     domain/dsp/KWeighting.cpp
     domain/dsp/MidSide.cpp
     domain/dsp/Peak.cpp
