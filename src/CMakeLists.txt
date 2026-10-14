@@ -22,6 +22,7 @@ add_library(masterizer_core STATIC
     domain/dsp/Peak.cpp
     domain/dsp/Rms.cpp
     domain/dsp/TruePeak.cpp
+    domain/matching/ProfileDifference.cpp
     domain/state/ProfileCache.cpp
     domain/state/ReferenceKeyOps.cpp
     domain/state/ReferenceManager.cpp)

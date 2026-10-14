@@ -2,6 +2,7 @@ add_executable(masterizer_tests
     support/Buffers.cpp
     support/FakeDecoder.cpp
     support/Main.cpp
+    support/Profiles.cpp
     support/Signals.cpp
     support/SignalsProgram.cpp
     support/SignalsSpectral.cpp
@@ -31,6 +32,7 @@ add_executable(masterizer_tests
     unit/dsp/PeakTest.cpp
     unit/dsp/RmsTest.cpp
     unit/dsp/TruePeakTest.cpp
+    unit/matching/ProfileDifferenceTest.cpp
     unit/support/SignalsProgramTest.cpp
     unit/support/SignalsSpectralTest.cpp
     unit/support/SignalsTest.cpp
