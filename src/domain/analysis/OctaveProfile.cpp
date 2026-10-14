@@ -1,33 +1,16 @@
 #include "masterizer/domain/analysis/OctaveProfile.h"
 
+#include "masterizer/domain/analysis/BandMapping.h"
 #include "masterizer/domain/analysis/PowerSpectrum.h"
 #include "masterizer/domain/common/OctaveBands.h"
 
 #include <cstddef>
 
 namespace masterizer::domain::analysis {
-namespace {
-
-using domain::bandCount;
-using domain::lowerEdgeHz;
-using domain::OctaveBand;
-using domain::upperEdgeHz;
-
-int bandIndexForFrequency(double frequency) {
-    for (int index = 0; index < bandCount(); ++index) {
-        const auto band = static_cast<OctaveBand>(index);
-        if (frequency >= lowerEdgeHz(band) && frequency < upperEdgeHz(band)) {
-            return index;
-        }
-    }
-    return -1;
-}
-
-}  // namespace
 
 std::vector<double> octaveBandEnergies(const float* samples, int count,
                                        double sampleRate, int fftSize, int hop) {
-    std::vector<double> energies(static_cast<std::size_t>(bandCount()), 0.0);
+    std::vector<double> energies(static_cast<std::size_t>(domain::bandCount()), 0.0);
     if (sampleRate <= 0.0) {
         return energies;
     }

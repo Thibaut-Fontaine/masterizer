@@ -9,6 +9,8 @@ add_executable(masterizer_tests
     support/Stereo.cpp
     support/TestContext.cpp
     support/TestRegistry.cpp
+    unit/analysis/BandFramesTest.cpp
+    unit/analysis/BandMappingTest.cpp
     unit/analysis/EnvelopeProfileTest.cpp
     unit/analysis/LoudnessTest.cpp
     unit/analysis/LoudnessProfileTest.cpp
