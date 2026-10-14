@@ -1,5 +1,6 @@
 add_library(masterizer_core STATIC
     application/OutputValidator.cpp
+    application/MonitoringController.cpp
     application/ProcessingChain.cpp
     domain/analysis/BandMapping.cpp
     domain/analysis/BandFrames.cpp
