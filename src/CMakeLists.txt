@@ -1,8 +1,11 @@
 add_library(masterizer_core STATIC
+    domain/analysis/Loudness.cpp
     domain/common/OctaveBands.cpp
+    domain/dsp/Biquad.cpp
     domain/dsp/Correlation.cpp
     domain/dsp/CrestFactor.cpp
     domain/dsp/Finite.cpp
+    domain/dsp/KWeighting.cpp
     domain/dsp/MidSide.cpp
     domain/dsp/Peak.cpp
     domain/dsp/Rms.cpp

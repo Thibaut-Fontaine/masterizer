@@ -6,10 +6,13 @@ add_executable(masterizer_tests
     support/Stereo.cpp
     support/TestContext.cpp
     support/TestRegistry.cpp
+    unit/analysis/LoudnessTest.cpp
     unit/common/OctaveBandsTest.cpp
+    unit/dsp/BiquadTest.cpp
     unit/dsp/CorrelationTest.cpp
     unit/dsp/CrestFactorTest.cpp
     unit/dsp/FiniteTest.cpp
+    unit/dsp/KWeightingTest.cpp
     unit/dsp/MidSideTest.cpp
     unit/dsp/PeakTest.cpp
     unit/dsp/RmsTest.cpp
