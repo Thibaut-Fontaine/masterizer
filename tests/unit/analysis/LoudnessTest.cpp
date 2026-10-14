@@ -40,3 +40,10 @@ TEST_CASE(doubling_amplitude_adds_about_six_lu) {
     const double loudLufs = integratedLufs(loud.data(), kFiveSeconds, 48000.0);
     CHECK_NEAR(loudLufs - quietLufs, 6.0206, 0.05);
 }
+
+TEST_CASE(stereo_identical_channels_are_three_lu_louder) {
+    const auto data = sine(kFiveSeconds, 997.0, 48000.0, 0.5f);
+    const double single = integratedLufs(data.data(), kFiveSeconds, 48000.0);
+    const double stereo = integratedLufs(data.data(), data.data(), kFiveSeconds, 48000.0);
+    CHECK_NEAR(stereo - single, 3.0103, 0.05);
+}

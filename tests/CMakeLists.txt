@@ -10,6 +10,7 @@ add_executable(masterizer_tests
     support/TestRegistry.cpp
     unit/analysis/EnvelopeProfileTest.cpp
     unit/analysis/LoudnessTest.cpp
+    unit/analysis/LoudnessProfileTest.cpp
     unit/analysis/OctaveProfileTest.cpp
     unit/analysis/ProfileVersionTest.cpp
     unit/analysis/PowerSpectrumTest.cpp

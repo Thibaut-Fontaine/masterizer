@@ -8,4 +8,8 @@ namespace masterizer::domain::analysis {
 /// passes the absolute gate (for example digital silence).
 double integratedLufs(const float* samples, int count, double sampleRate);
 
+/// BS.1770-4 gated integrated loudness in LUFS for two channels. Per-block
+/// energy is summed across both channels before gating, as the standard requires.
+double integratedLufs(const float* left, const float* right, int count, double sampleRate);
+
 }  // namespace masterizer::domain::analysis
