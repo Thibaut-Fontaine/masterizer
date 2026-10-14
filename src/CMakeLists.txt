@@ -5,7 +5,8 @@ add_library(masterizer_core STATIC
     domain/dsp/Finite.cpp
     domain/dsp/MidSide.cpp
     domain/dsp/Peak.cpp
-    domain/dsp/Rms.cpp)
+    domain/dsp/Rms.cpp
+    domain/dsp/TruePeak.cpp)
 
 target_include_directories(masterizer_core PUBLIC
     ${PROJECT_SOURCE_DIR}/include)

@@ -13,6 +13,7 @@ add_executable(masterizer_tests
     unit/dsp/MidSideTest.cpp
     unit/dsp/PeakTest.cpp
     unit/dsp/RmsTest.cpp
+    unit/dsp/TruePeakTest.cpp
     unit/support/SignalsProgramTest.cpp
     unit/support/SignalsSpectralTest.cpp
     unit/support/SignalsTest.cpp

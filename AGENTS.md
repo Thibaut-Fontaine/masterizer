@@ -53,6 +53,13 @@ Windows: use `--preset windows-msvc`. Run one test by name substring:
   per line**. `scripts/check_rules.py` enforces this as the `style_rules` CTest test; a
   red style check blocks progress like a failing unit test. Function length assumes the
   opening brace sits on the signature line.
+- **Commit on green**: once a step's unit tests *and* `style_rules` pass, commit with a
+  clear message and `git push origin main`. Never commit a red build.
+
+## Git
+
+- Remote `origin` is `git@github.com:Thibaut-Fontaine/masterizer.git` (**SSH**; HTTPS has
+  no credentials in this environment). Branch: `main`.
 
 ## Hard rules (easy to violate)
 
