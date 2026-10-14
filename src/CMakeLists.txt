@@ -2,6 +2,7 @@ add_library(masterizer_core STATIC
     domain/analysis/BandMapping.cpp
     domain/analysis/BandFrames.cpp
     domain/analysis/BandDynamics.cpp
+    domain/analysis/BandTransient.cpp
     domain/analysis/EnvelopeProfile.cpp
     domain/analysis/Loudness.cpp
     domain/analysis/LoudnessProfile.cpp
