@@ -1,4 +1,5 @@
 add_library(masterizer_core STATIC
+    application/OutputValidator.cpp
     domain/analysis/BandMapping.cpp
     domain/analysis/BandFrames.cpp
     domain/analysis/BandDynamics.cpp
@@ -23,6 +24,8 @@ add_library(masterizer_core STATIC
     domain/dsp/Finite.cpp
     domain/dsp/Gain.cpp
     domain/dsp/KWeighting.cpp
+    domain/dsp/Limiter.cpp
+    domain/dsp/GainStage.cpp
     domain/dsp/MidSide.cpp
     domain/dsp/MonoBass.cpp
     domain/dsp/Peak.cpp
