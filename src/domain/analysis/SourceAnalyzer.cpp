@@ -1,5 +1,8 @@
 #include "masterizer/domain/analysis/SourceAnalyzer.h"
 
+#include "masterizer/domain/analysis/BandDynamics.h"
+#include "masterizer/domain/analysis/BandResonance.h"
+#include "masterizer/domain/analysis/BandTransient.h"
 #include "masterizer/domain/analysis/EnvelopeProfile.h"
 #include "masterizer/domain/analysis/LoudnessProfile.h"
 #include "masterizer/domain/analysis/OctaveProfile.h"
@@ -44,6 +47,12 @@ AnalysisProfile analyzeSource(const audio::AudioBuffer& buffer,
                                               settings.fftSize, settings.hop);
     profile.spectrum = averageMagnitudeSpectrum(mono.data(), frames, settings.fftSize,
                                                 settings.hop);
+    profile.bandVariation = bandVariation(mono.data(), frames, buffer.sampleRate,
+                                          settings.fftSize, settings.hop);
+    profile.transient = analyzeBandTransient(mono.data(), frames, buffer.sampleRate,
+                                             settings.fftSize, settings.hop);
+    profile.resonance = analyzeBandResonance(mono.data(), frames, buffer.sampleRate,
+                                             settings.fftSize, settings.hop);
     profile.envelope = analyzeEnvelope(mono.data(), frames, buffer.sampleRate);
     profile.stereo = analyzeStereo(buffer, settings.fftSize, settings.hop);
     profile.loudness = analyzeLoudness(buffer);

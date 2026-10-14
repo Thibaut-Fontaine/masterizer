@@ -9,7 +9,7 @@ struct ProfileVersion {
 };
 
 /// Version produced by the current analysis code.
-inline constexpr ProfileVersion kCurrentProfileVersion{1, 0};
+inline constexpr ProfileVersion kCurrentProfileVersion{2, 0};
 
 /// Compatible when the major versions match (minor differences are additive).
 bool isCompatible(const ProfileVersion& a, const ProfileVersion& b);

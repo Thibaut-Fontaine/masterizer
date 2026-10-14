@@ -6,6 +6,7 @@
 #include <memory>
 
 using masterizer::domain::analysis::AnalysisProfile;
+using masterizer::domain::analysis::kCurrentProfileVersion;
 using masterizer::domain::analysis::ProfileVersion;
 using masterizer::domain::state::ProfileCache;
 using masterizer::domain::state::ReferenceKey;
@@ -35,7 +36,7 @@ TEST_CASE(lookup_of_unknown_key_is_null) {
 TEST_CASE(incompatible_profile_version_is_not_returned) {
     ProfileCache cache;
     auto profile = std::make_shared<AnalysisProfile>();
-    profile->version = ProfileVersion{2, 0};
+    profile->version = ProfileVersion{kCurrentProfileVersion.major + 1, 0};
     cache.store(kReference, profile);
     CHECK(cache.lookup(kReference) == nullptr);
 }
