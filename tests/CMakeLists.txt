@@ -13,6 +13,7 @@ add_executable(masterizer_tests
     unit/analysis/ProfileVersionTest.cpp
     unit/analysis/PowerSpectrumTest.cpp
     unit/analysis/SpectralFramingTest.cpp
+    unit/analysis/StereoProfileTest.cpp
     unit/analysis/StftTest.cpp
     unit/audio/AudioBufferOpsTest.cpp
     unit/common/OctaveBandsTest.cpp
