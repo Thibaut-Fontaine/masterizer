@@ -5,9 +5,10 @@
   2. No function body may exceed 60 lines.
   3. No line may exceed 110 characters.
 
-A function definition is detected when its opening brace sits on the same line
-as the closing parenthesis of its signature. Declarations (no body) are not
-counted. Braces inside comments, strings and character literals are ignored.
+A function definition is detected when it starts at column 0 and its opening brace
+sits on the same line as the closing parenthesis of its signature. Declarations (no
+body) are not counted. Braces inside comments, strings and character literals are
+ignored.
 """
 
 import os
@@ -79,6 +80,8 @@ def analyze(path):
 
     starts = []
     for index, code in enumerate(stripped):
+        if not code or code[0].isspace():
+            continue  # only top-level definitions start at column 0
         match = FUNC_RE.match(code)
         if match and match.group("name") not in CONTROL:
             starts.append(index)

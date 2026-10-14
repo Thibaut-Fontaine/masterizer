@@ -29,6 +29,12 @@ add_library(masterizer_core STATIC
     domain/dsp/TruePeak.cpp
     domain/matching/ProfileDifference.cpp
     domain/matching/MatchingEngine.cpp
+    domain/matching/MixAdvisor.cpp
+    domain/matching/RuleContext.cpp
+    domain/matching/RulesDynamics.cpp
+    domain/matching/RulesLowEnd.cpp
+    domain/matching/RulesStereo.cpp
+    domain/matching/RulesTone.cpp
     domain/state/ProfileCache.cpp
     domain/state/ReferenceKeyOps.cpp
     domain/state/ReferenceManager.cpp)
