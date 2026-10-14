@@ -9,6 +9,7 @@ add_executable(masterizer_tests
     support/TestContext.cpp
     support/TestRegistry.cpp
     unit/analysis/LoudnessTest.cpp
+    unit/analysis/OctaveProfileTest.cpp
     unit/analysis/ProfileVersionTest.cpp
     unit/analysis/PowerSpectrumTest.cpp
     unit/analysis/SpectralFramingTest.cpp
