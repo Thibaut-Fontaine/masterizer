@@ -1,0 +1,46 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": { "major": 3, "minor": 24, "patch": 0 },
+  "configurePresets": [
+    {
+      "name": "linux-debug",
+      "displayName": "Linux Debug (GCC/Clang)",
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/build/linux-debug",
+      "cacheVariables": { "CMAKE_BUILD_TYPE": "Debug" }
+    },
+    {
+      "name": "linux-release",
+      "inherits": "linux-debug",
+      "displayName": "Linux Release (GCC/Clang)",
+      "binaryDir": "${sourceDir}/build/linux-release",
+      "cacheVariables": { "CMAKE_BUILD_TYPE": "Release" }
+    },
+    {
+      "name": "windows-msvc",
+      "displayName": "Windows MSVC x64 (Visual Studio 2022)",
+      "generator": "Visual Studio 17 2022",
+      "architecture": "x64",
+      "binaryDir": "${sourceDir}/build/windows-msvc"
+    }
+  ],
+  "buildPresets": [
+    { "name": "linux-debug", "configurePreset": "linux-debug" },
+    { "name": "linux-release", "configurePreset": "linux-release" },
+    { "name": "windows-msvc", "configurePreset": "windows-msvc",
+      "configuration": "Release" }
+  ],
+  "testPresets": [
+    {
+      "name": "linux-debug",
+      "configurePreset": "linux-debug",
+      "output": { "outputOnFailure": true }
+    },
+    {
+      "name": "windows-msvc",
+      "configurePreset": "windows-msvc",
+      "configuration": "Release",
+      "output": { "outputOnFailure": true }
+    }
+  ]
+}

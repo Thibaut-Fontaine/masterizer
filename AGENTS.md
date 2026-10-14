@@ -1,0 +1,81 @@
+# AGENTS.md
+
+Agent-facing guidance for this repo. Read this first, then the linked docs.
+
+## What this repo is
+
+A reference-driven automatic mastering VST for electronic music: the user loads a
+finished reference track, the plugin analyses the Reference and the DAW Source, and
+proposes/applies a coordinated mastering chain. The Reference is a **target profile,
+not a command** — the product must be willing to leave things alone or report that a
+target cannot be reached safely.
+
+**Current state: foundation only.** The CMake build, the in-repo test harness and the
+first DSP units exist; the plugin shell, analysis and matching layers do not yet.
+Follow `Docs/ROADMAP.md` order — do not jump ahead.
+
+## Source-of-truth docs
+
+- `Docs/PRODUCT_SPEC.md` — binding requirements: octave-first analysis, matching-engine
+  responsibilities, per-module DSP specs, architecture boundaries, validation matrix.
+  Do not dilute these requirements. If something is deferred, keep it in the roadmap
+  with a concrete implementation/test plan rather than dropping it.
+- `Docs/ROADMAP.md` — the required implementation order (22 steps / stages 0–10).
+  Build **one buildable step at a time**; each step must build and be verifiable
+  before the next. Do not implement the full chain in one pass.
+
+## Locked technical decisions
+
+- C++20, **JUCE 8.0.15** (pinned; do not auto-upgrade), CMake ≥ 3.24, **VST3**.
+- Primary target: **Windows 10 1607+ x64** (Visual Studio 2022). The core also builds on
+  Linux/macOS. VST2 is intentionally dropped (Steinberg removed the SDK); do not add it.
+- Architecture: layered MVC + Ports & Adapters. Model = `include|src/masterizer/domain/**`
+  (pure C++20, no JUCE, fully unit-tested); Controller = `application/**`; View/adapters =
+  `src/plugin/**`. Headers live in `include/masterizer/<layer>/` and mirror `src/<layer>/`.
+  Domain must never include JUCE; UI must never touch DSP internals directly.
+
+## Build and test (verified)
+
+```sh
+cmake --preset linux-debug
+cmake --build --preset linux-debug
+ctest --preset linux-debug
+```
+
+Windows: use `--preset windows-msvc`. Run one test by name substring:
+`./build/linux-debug/tests/masterizer_tests <substring>`.
+
+## Non-negotiable rules (enforced)
+
+- **TDD**: write the failing test first, run it red, implement the minimum, run it green.
+  Never advance to the next roadmap step with a red test.
+- Every C++ file: **≤ 5 functions**, **≤ 60 lines per function body**, **≤ 110 columns
+  per line**. `scripts/check_rules.py` enforces this as the `style_rules` CTest test; a
+  red style check blocks progress like a failing unit test. Function length assumes the
+  opening brace sits on the signature line.
+
+## Hard rules (easy to violate)
+
+- Audio callback: no disk I/O, decoding, locks, allocation, or logging. Prepare off-thread
+  and hand results over via immutable analysis profiles.
+- Never claim a build, test, DAW load, or listening test passed unless you actually ran it
+  and inspected the result. Never claim a later stage is implemented when only a stub exists.
+- Octave bands are the **UI/summary** model only; use finer log bins / STFT internally for EQ
+  and resonance work.
+- Never label per-band RMS as standardized LUFS. Full-signal LUFS and True Peak need
+  documented methods.
+- Match Intensity: `0%` = neutral passthrough; `100%` = proposed corrections; `>100%`
+  strengthens via module-specific curves — never multiply all DSP parameters blindly.
+- Meter readings must not drive processor parameters frame-by-frame; the Matching Engine
+  decides from profiles, then processors run with their own detectors.
+- Do not retain full decoded reference audio in memory. Cache versioned analysis profiles
+  and invalidate the cache when analysis behaviour changes.
+
+## Working conventions
+
+- Before a substantial change, state the intended behaviour. After it, actually build and
+  run the relevant tests, then report what passed, failed, or remains untested.
+- Keep `AGENTS.md`, docs, build scripts and code consistent — update this file when commands,
+  versions or layout change.
+- Prefer simple, explicit DSP and data flow over speculative abstractions or new dependencies.
+  Review third-party licences (JUCE licensing in particular) before distribution.
