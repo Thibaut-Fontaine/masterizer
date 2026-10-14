@@ -1,4 +1,6 @@
 add_executable(masterizer_tests
+    support/Buffers.cpp
+    support/FakeDecoder.cpp
     support/Main.cpp
     support/Signals.cpp
     support/SignalsProgram.cpp
@@ -8,6 +10,7 @@ add_executable(masterizer_tests
     support/TestRegistry.cpp
     unit/analysis/LoudnessTest.cpp
     unit/analysis/StftTest.cpp
+    unit/audio/AudioBufferOpsTest.cpp
     unit/common/OctaveBandsTest.cpp
     unit/dsp/BiquadTest.cpp
     unit/dsp/CorrelationTest.cpp

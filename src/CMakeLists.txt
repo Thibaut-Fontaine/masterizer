@@ -1,6 +1,7 @@
 add_library(masterizer_core STATIC
     domain/analysis/Loudness.cpp
     domain/analysis/Stft.cpp
+    domain/audio/AudioBufferOps.cpp
     domain/common/OctaveBands.cpp
     domain/dsp/Biquad.cpp
     domain/dsp/Correlation.cpp
