@@ -33,6 +33,10 @@ Follow `Docs/ROADMAP.md` order — do not jump ahead.
   (pure C++20, no JUCE, fully unit-tested); Controller = `application/**`; View/adapters =
   `src/plugin/**`. Headers live in `include/masterizer/<layer>/` and mirror `src/<layer>/`.
   Domain must never include JUCE; UI must never touch DSP internals directly.
+- The test harness is **in-repo and dependency-free** (`tests/support/**`). Do not vendor a
+  third-party test framework (doctest/Catch2/etc.): the ≤5-functions rule must apply to
+  every file with no exceptions.
+- macOS support is a bonus, not a requirement; Windows is the primary target.
 
 ## Build and test (verified)
 
@@ -80,6 +84,10 @@ Windows: use `--preset windows-msvc`. Run one test by name substring:
 
 ## Working conventions
 
+- **Show the proposed file/folder structure and plan before starting a new area, and wait
+  for approval** — do not begin a restructure unprompted.
+- **Install whatever you need yourself** (toolchain, CMake, packages) and document what was
+  installed, rather than asking the user to install it.
 - Before a substantial change, state the intended behaviour. After it, actually build and
   run the relevant tests, then report what passed, failed, or remains untested.
 - Keep `AGENTS.md`, docs, build scripts and code consistent — update this file when commands,
