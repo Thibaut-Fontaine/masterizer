@@ -11,6 +11,7 @@ add_executable(masterizer_tests
     support/TestRegistry.cpp
     unit/analysis/BandFramesTest.cpp
     unit/analysis/BandMappingTest.cpp
+    unit/analysis/BandDynamicsTest.cpp
     unit/analysis/EnvelopeProfileTest.cpp
     unit/analysis/LoudnessTest.cpp
     unit/analysis/LoudnessProfileTest.cpp
