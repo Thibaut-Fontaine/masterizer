@@ -7,6 +7,7 @@ add_executable(masterizer_tests
     support/TestContext.cpp
     support/TestRegistry.cpp
     unit/analysis/LoudnessTest.cpp
+    unit/analysis/StftTest.cpp
     unit/common/OctaveBandsTest.cpp
     unit/dsp/BiquadTest.cpp
     unit/dsp/CorrelationTest.cpp

@@ -10,9 +10,11 @@ proposes/applies a coordinated mastering chain. The Reference is a **target prof
 not a command** — the product must be willing to leave things alone or report that a
 target cannot be reached safely.
 
-**Current state: foundation only.** The CMake build, the in-repo test harness and the
-first DSP units exist; the plugin shell, analysis and matching layers do not yet.
-Follow `Docs/ROADMAP.md` order — do not jump ahead.
+**Current state: Stage 2 complete.** The CMake build, in-repo test harness, size-rule
+checker, the DSP measurement layer (RMS, peak, True Peak, K-weighted LUFS, M/S,
+correlation, crest factor, FFT/STFT) and synthetic fixtures are in place. Next: Stage 3
+(reference loading + profile cache), then Stage 4 (octave/spectral analysis). The plugin
+shell, matching layer and UI do not exist yet. Follow `Docs/ROADMAP.md` order.
 
 ## Source-of-truth docs
 
