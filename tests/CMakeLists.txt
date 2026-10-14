@@ -9,6 +9,7 @@ add_executable(masterizer_tests
     support/TestContext.cpp
     support/TestRegistry.cpp
     unit/analysis/LoudnessTest.cpp
+    unit/analysis/ProfileVersionTest.cpp
     unit/analysis/StftTest.cpp
     unit/audio/AudioBufferOpsTest.cpp
     unit/common/OctaveBandsTest.cpp
@@ -26,7 +27,8 @@ add_executable(masterizer_tests
     unit/support/SignalsProgramTest.cpp
     unit/support/SignalsSpectralTest.cpp
     unit/support/SignalsTest.cpp
-    unit/support/StereoTest.cpp)
+    unit/support/StereoTest.cpp
+    unit/state/ReferenceKeyOpsTest.cpp)
 
 target_link_libraries(masterizer_tests PRIVATE masterizer_core)
 target_include_directories(masterizer_tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
