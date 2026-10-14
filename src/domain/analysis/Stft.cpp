@@ -1,5 +1,6 @@
 #include "masterizer/domain/analysis/Stft.h"
 
+#include "masterizer/domain/analysis/SpectralFraming.h"
 #include "masterizer/domain/dsp/Fft.h"
 
 #include <cmath>
@@ -8,21 +9,6 @@
 
 namespace masterizer::domain::analysis {
 namespace {
-
-constexpr double kTwoPi = 2.0 * 3.14159265358979323846;
-
-bool isPowerOfTwo(int value) {
-    return value > 0 && (value & (value - 1)) == 0;
-}
-
-std::vector<double> hannWindow(int size) {
-    std::vector<double> window(static_cast<std::size_t>(size), 1.0);
-    for (int i = 0; i < size; ++i) {
-        window[static_cast<std::size_t>(i)] =
-            0.5 - 0.5 * std::cos(kTwoPi * i / static_cast<double>(size - 1));
-    }
-    return window;
-}
 
 void accumulateFrame(const float* samples, const std::vector<double>& window, int start,
                      std::vector<std::complex<double>>& buffer, std::vector<double>& sums) {

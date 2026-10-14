@@ -10,6 +10,8 @@ add_executable(masterizer_tests
     support/TestRegistry.cpp
     unit/analysis/LoudnessTest.cpp
     unit/analysis/ProfileVersionTest.cpp
+    unit/analysis/PowerSpectrumTest.cpp
+    unit/analysis/SpectralFramingTest.cpp
     unit/analysis/StftTest.cpp
     unit/audio/AudioBufferOpsTest.cpp
     unit/common/OctaveBandsTest.cpp
