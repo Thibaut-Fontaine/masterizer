@@ -20,6 +20,7 @@ add_library(masterizer_core STATIC
     domain/audio/AudioBufferOps.cpp
     domain/common/OctaveBands.cpp
     domain/dsp/Biquad.cpp
+    domain/dsp/BpmRelease.cpp
     domain/dsp/Compressor.cpp
     domain/dsp/Correlation.cpp
     domain/dsp/CrestFactor.cpp

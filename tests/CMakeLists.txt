@@ -30,6 +30,7 @@ add_executable(masterizer_tests
     unit/audio/AudioBufferOpsTest.cpp
     unit/common/OctaveBandsTest.cpp
     unit/dsp/BiquadTest.cpp
+    unit/dsp/BpmReleaseTest.cpp
     unit/dsp/CorrelationTest.cpp
     unit/dsp/CompressorTest.cpp
     unit/dsp/CrestFactorTest.cpp
