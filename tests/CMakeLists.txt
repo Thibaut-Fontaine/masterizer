@@ -37,6 +37,7 @@ add_executable(masterizer_tests
     unit/dsp/FiniteTest.cpp
     unit/dsp/GainTest.cpp
     unit/dsp/GainStageTest.cpp
+    unit/dsp/FilterDesignTest.cpp
     unit/dsp/KWeightingTest.cpp
     unit/dsp/LimiterTest.cpp
     unit/dsp/MidSideTest.cpp

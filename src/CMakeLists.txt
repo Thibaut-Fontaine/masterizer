@@ -25,6 +25,7 @@ add_library(masterizer_core STATIC
     domain/dsp/CrestFactor.cpp
     domain/dsp/Fft.cpp
     domain/dsp/Finite.cpp
+    domain/dsp/FilterDesign.cpp
     domain/dsp/Gain.cpp
     domain/dsp/KWeighting.cpp
     domain/dsp/Limiter.cpp
