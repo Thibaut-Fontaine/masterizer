@@ -70,6 +70,7 @@ add_executable(masterizer_tests
     unit/support/SignalsTest.cpp
     unit/support/StereoTest.cpp
     unit/state/ProfileCacheTest.cpp
+    unit/state/ParametersTest.cpp
     unit/state/ReferenceKeyOpsTest.cpp
     unit/state/ReferenceManagerTest.cpp)
 

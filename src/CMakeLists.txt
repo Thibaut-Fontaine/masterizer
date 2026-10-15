@@ -60,6 +60,7 @@ add_library(masterizer_core STATIC
     domain/matching/RulesStereo.cpp
     domain/matching/RulesTone.cpp
     domain/state/ProfileCache.cpp
+    domain/state/Parameters.cpp
     domain/state/ReferenceKeyOps.cpp
     domain/state/ReferenceManager.cpp
     io/WavFile.cpp)
