@@ -50,6 +50,7 @@ add_executable(masterizer_tests
     unit/dsp/TruePeakTest.cpp
     unit/dsp/TransientShaperTest.cpp
     unit/matching/EqDesignerTest.cpp
+    unit/matching/DynamicsPlannerTest.cpp
     unit/matching/MatchingEngineTest.cpp
     unit/matching/MatchIntensityTest.cpp
     unit/matching/MixAdvisorTest.cpp
