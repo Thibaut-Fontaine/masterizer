@@ -40,4 +40,10 @@ BiquadCoefficients highpassCoefficients(double sampleRate, double frequencyHz, d
             (1.0 - o.alpha) / a0};
 }
 
+BiquadCoefficients bandpassCoefficients(double sampleRate, double frequencyHz, double q) {
+    const Omega o = omega(sampleRate, frequencyHz, q);
+    const double a0 = 1.0 + o.alpha;
+    return {o.alpha / a0, 0.0, -o.alpha / a0, (-2.0 * o.cosW0) / a0, (1.0 - o.alpha) / a0};
+}
+
 }  // namespace masterizer::domain::dsp

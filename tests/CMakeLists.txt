@@ -34,6 +34,7 @@ add_executable(masterizer_tests
     unit/dsp/CorrelationTest.cpp
     unit/dsp/CompressorTest.cpp
     unit/dsp/CrestFactorTest.cpp
+    unit/dsp/DynamicEqTest.cpp
     unit/dsp/FftTest.cpp
     unit/dsp/FiniteTest.cpp
     unit/dsp/GainTest.cpp

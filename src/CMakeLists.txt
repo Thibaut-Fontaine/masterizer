@@ -24,6 +24,7 @@ add_library(masterizer_core STATIC
     domain/dsp/Compressor.cpp
     domain/dsp/Correlation.cpp
     domain/dsp/CrestFactor.cpp
+    domain/dsp/DynamicEq.cpp
     domain/dsp/Fft.cpp
     domain/dsp/FilterDesign.cpp
     domain/dsp/Finite.cpp
