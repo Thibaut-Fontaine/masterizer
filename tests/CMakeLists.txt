@@ -31,6 +31,7 @@ add_executable(masterizer_tests
     unit/common/OctaveBandsTest.cpp
     unit/dsp/BiquadTest.cpp
     unit/dsp/CorrelationTest.cpp
+    unit/dsp/CompressorTest.cpp
     unit/dsp/CrestFactorTest.cpp
     unit/dsp/FftTest.cpp
     unit/dsp/FiniteTest.cpp

@@ -21,6 +21,7 @@ add_library(masterizer_core STATIC
     domain/common/OctaveBands.cpp
     domain/dsp/Biquad.cpp
     domain/dsp/Correlation.cpp
+    domain/dsp/Compressor.cpp
     domain/dsp/CrestFactor.cpp
     domain/dsp/Fft.cpp
     domain/dsp/Finite.cpp
