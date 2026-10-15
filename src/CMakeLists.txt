@@ -2,6 +2,7 @@ add_library(masterizer_core STATIC
     application/MonitoringController.cpp
     application/ChainStages.cpp
     application/ChainReporter.cpp
+    application/CliOptions.cpp
     application/DashboardModel.cpp
     application/DynamicsStages.cpp
     application/OutputValidator.cpp
