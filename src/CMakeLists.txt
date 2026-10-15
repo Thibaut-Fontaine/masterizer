@@ -37,6 +37,7 @@ add_library(masterizer_core STATIC
     domain/dsp/ParametricEq.cpp
     domain/dsp/Peak.cpp
     domain/dsp/Rms.cpp
+    domain/dsp/Saturator.cpp
     domain/dsp/TransientShaper.cpp
     domain/dsp/TruePeak.cpp
     domain/matching/EqDesigner.cpp
