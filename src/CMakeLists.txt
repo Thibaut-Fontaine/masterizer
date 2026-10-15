@@ -1,5 +1,7 @@
 add_library(masterizer_core STATIC
     application/MonitoringController.cpp
+    application/ChainStages.cpp
+    application/DynamicsStages.cpp
     application/OutputValidator.cpp
     application/ProcessingChain.cpp
     domain/analysis/BandDynamics.cpp

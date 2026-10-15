@@ -26,6 +26,7 @@ add_executable(masterizer_tests
     unit/analysis/StftTest.cpp
     unit/application/OutputValidatorTest.cpp
     unit/application/ProcessingChainTest.cpp
+    unit/application/ProcessingChainStagesTest.cpp
     unit/application/MonitoringControllerTest.cpp
     unit/audio/AudioBufferOpsTest.cpp
     unit/common/OctaveBandsTest.cpp
