@@ -30,6 +30,7 @@ add_executable(masterizer_tests
     unit/application/ProcessingChainTest.cpp
     unit/application/ProcessingChainStagesTest.cpp
     unit/application/ChainReporterTest.cpp
+    unit/application/DashboardModelTest.cpp
     unit/application/TruePeakGuardTest.cpp
     unit/application/MonitoringControllerTest.cpp
     unit/audio/AudioBufferOpsTest.cpp
