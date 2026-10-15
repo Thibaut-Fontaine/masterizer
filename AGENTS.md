@@ -103,8 +103,19 @@ section 5.5; roadmap Step 10b.
   missing air, harsh presence, narrow image, dull high transients, resonant bass, kick/bass
   conflict, phase) are a data table, not hard-coded branches.
 
-## Working conventions
+## Ordering gates (do not skip)
 
+Work only the earliest unmet gate; never build a later gate while an earlier one is unmet.
+
+- **Gate 0 — engine built + unit/integration tested.** Done.
+- **Gate 1 — the engine makes sensible sound on real music** (offline CLI + ears). **Unmet; current focus.**
+- **Gate 2 — plugin/host integration** (JUCE VST3, decode adapter, dashboard). Only after Gate 1.
+- **Gate 3 — release quality** (validation matrix, packaging, licences).
+
+Do NOT start JUCE before Gate 1 passes: the CLI already makes the engine audible, so a plugin
+adds nothing to validation and is the one part that cannot be compiled in the agent sandbox.
+
+## Working conventions
 - **Show the proposed file/folder structure and plan before starting a new area, and wait
   for approval** — do not begin a restructure unprompted.
 - **Install whatever you need yourself** (toolchain, CMake, packages) and document what was

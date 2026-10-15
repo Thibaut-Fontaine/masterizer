@@ -57,14 +57,36 @@ It takes a **reference** WAV and a **source** WAV and writes a mastered **output
 Input may be 16-bit PCM or 32-bit float WAV (export that from your DAW).
 
 ```powershell
-./build/windows-msvc/app/Release/masterizer_cli.exe reference.wav source.wav output.wav 1.0
+./build/windows-msvc/app/Release/masterizer_cli.exe reference.wav source.wav output.wav
 ```
 
-The last argument is Match Intensity (0.0–2.0; default 1.0). Example output line:
+Options:
+
+```text
+--intensity N     Match Intensity 0..2 (default 1)
+--ceiling dB      True Peak ceiling (default -1)
+--gain dB         output gain (default 0)
+--ab              also write a level-matched <output>.ab.wav  (fair A/B comparison)
+--delta           also write <output>.delta.wav  (processed minus source)
+--<module> / --no-<module>
+    modules: eq mono limiter saturation resonance stereo transient glue multiband dynamic-eq
+```
+
+Example output line:
 
 ```
 wrote output.wav | proposals=3 | LUFS=-12.82 target=-11.60 shortfall=1.22 LU | truePeak=-6.38 dBTP
 ```
+
+### How to judge (important)
+
+- Compare `output.wav` against the level-matched `output.ab.wav` — **not** against the raw
+  source (louder always "sounds better").
+- Listen to `output.delta.wav` to hear *only* what changed.
+- Isolate modules one at a time: `--no-eq`, `--no-monobass`, `--no-limiter`, `--resonance`, etc.
+- Try `--intensity 0.5`, `1`, `1.5` to hear how strongly the match is applied.
+- A shortfall > 0 means the reference's loudness was **not** reached (by design, rather than
+  over-limiting); note whether that seems right for the track.
 
 What the line means:
 - `proposals` — how many corrections the matching engine proposed.
