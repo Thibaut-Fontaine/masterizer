@@ -42,6 +42,7 @@ add_executable(masterizer_tests
     unit/dsp/LimiterTest.cpp
     unit/dsp/MidSideTest.cpp
     unit/dsp/MonoBassTest.cpp
+    unit/dsp/MultibandCompressorTest.cpp
     unit/dsp/ParametricEqTest.cpp
     unit/dsp/PeakTest.cpp
     unit/dsp/RmsTest.cpp

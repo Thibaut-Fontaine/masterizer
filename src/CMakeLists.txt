@@ -32,6 +32,7 @@ add_library(masterizer_core STATIC
     domain/dsp/GainStage.cpp
     domain/dsp/MidSide.cpp
     domain/dsp/MonoBass.cpp
+    domain/dsp/MultibandCompressor.cpp
     domain/dsp/Peak.cpp
     domain/dsp/ParametricEq.cpp
     domain/dsp/Rms.cpp
