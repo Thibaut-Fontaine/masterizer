@@ -61,9 +61,13 @@ add_library(masterizer_core STATIC
     domain/matching/RulesTone.cpp
     domain/state/ProfileCache.cpp
     domain/state/ReferenceKeyOps.cpp
-    domain/state/ReferenceManager.cpp)
+    domain/state/ReferenceManager.cpp
+    io/WavFile.cpp)
 
 target_include_directories(masterizer_core PUBLIC
     ${PROJECT_SOURCE_DIR}/include)
+
+target_include_directories(masterizer_core PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_compile_features(masterizer_core PUBLIC cxx_std_20)

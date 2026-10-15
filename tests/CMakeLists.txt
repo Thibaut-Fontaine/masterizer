@@ -1,5 +1,6 @@
 add_executable(masterizer_tests
     integration/ProcessingIntegrationTest.cpp
+    unit/io/WavFileTest.cpp
     support/Buffers.cpp
     support/FakeDecoder.cpp
     support/Main.cpp
