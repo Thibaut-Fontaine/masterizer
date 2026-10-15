@@ -1,4 +1,5 @@
 add_executable(masterizer_tests
+    integration/ProcessingIntegrationTest.cpp
     support/Buffers.cpp
     support/FakeDecoder.cpp
     support/Main.cpp

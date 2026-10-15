@@ -10,13 +10,11 @@ proposes/applies a coordinated mastering chain. The Reference is a **target prof
 not a command** — the product must be willing to leave things alone or report that a
 target cannot be reached safely.
 
-**Current state: Stage 8 core complete.** Build, harness, size-rule checker, measurement
-layer, reference-loading core, analysis engine, Matching Engine, Mix Advisor, and the
-processing core (tonal EQ, low-end M/S, limiter/output validation, Match Intensity,
-`ProcessingChain`, A/B + Delta, compressor, multiband compressor, transient shaper, BPM
-release, dynamics planner, de-resonator, saturation, stereo width, dynamic EQ) exist.
-Next: Stage 9 (full-chain coordination). The JUCE adapters, plugin shell, dashboard and the
-end-to-end chain wiring do not exist yet. Follow `Docs/ROADMAP.md` order.
+**Current state: Stage 9 core complete.** All DSP/analysis/matching modules, the full
+ordered chain (each module bypassable), chain coordination (processing budget), post-render
+re-analysis, Match Intensity, A/B + Delta and OutputValidator exist, with unit *and*
+integration tests. Next: Stage 10 core (hardening, offline render tool, docs, validation).
+The JUCE adapters, plugin shell and dashboard do not exist yet. Follow `Docs/ROADMAP.md` order.
 
 ## Source-of-truth docs
 
