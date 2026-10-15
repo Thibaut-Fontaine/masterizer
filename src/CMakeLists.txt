@@ -45,6 +45,7 @@ add_library(masterizer_core STATIC
     domain/dsp/TransientShaper.cpp
     domain/dsp/TruePeak.cpp
     domain/matching/EqDesigner.cpp
+    domain/matching/ChainCoordinator.cpp
     domain/matching/DynamicsPlanner.cpp
     domain/matching/MatchIntensity.cpp
     domain/matching/MatchingEngine.cpp
