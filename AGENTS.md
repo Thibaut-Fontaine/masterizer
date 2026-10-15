@@ -10,11 +10,13 @@ proposes/applies a coordinated mastering chain. The Reference is a **target prof
 not a command** — the product must be willing to leave things alone or report that a
 target cannot be reached safely.
 
-**Current state: Stage 9 core complete.** All DSP/analysis/matching modules, the full
-ordered chain (each module bypassable), chain coordination (processing budget), post-render
-re-analysis, Match Intensity, A/B + Delta and OutputValidator exist, with unit *and*
-integration tests. Next: Stage 10 core (hardening, offline render tool, docs, validation).
-The JUCE adapters, plugin shell and dashboard do not exist yet. Follow `Docs/ROADMAP.md` order.
+**Current state: core complete (Stages 0-10 core).** The library (measurement, analysis,
+matching, Mix Advisor, full bypassable processing chain, coordination, output validation),
+an offline `masterizer_cli`, unit + integration tests and docs (`Docs/ARCHITECTURE.md`,
+`Docs/DSP_DEFINITIONS.md`, `Docs/TESTING.md`) exist. Remaining: the **JUCE VST3 shell**
+(pass-through plugin, parameters/state, UI), the decode adapter (file picker + background
+analysis) and the dashboard/"Source notes" UI, plus real-world validation (pluginval, a DAW,
+listening). Follow `Docs/ROADMAP.md` order.
 
 ## Source-of-truth docs
 

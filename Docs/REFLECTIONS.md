@@ -39,3 +39,22 @@ integration tests.
 - **Next:** Stage 10 hardening — enforce True Peak, add an offline render tool so the pipeline
   is usable without a DAW, document DSP definitions, and run the validation matrix at greater
   breadth. The JUCE shell remains the single biggest untested unknown.
+
+## Stage 10 — hardening, offline tool, docs
+
+Built: `TruePeakGuard` (static scale-down to a dBTP ceiling), `WavFile` (16-bit/float read,
+16-bit write), `masterizer_cli` (reference + source WAV -> analyse -> process -> write), and
+`Docs/ARCHITECTURE.md`, `Docs/DSP_DEFINITIONS.md`, `Docs/TESTING.md`.
+
+- **What worked:** the CLI is the first genuinely usable artifact — the pipeline now runs
+  end-to-end on real files (smoke test: 3 proposals, target shortfall reported, True Peak
+  verified). It also forced the integration points to be honest.
+- **What is weak / unresolved:** the limiter still controls **sample peak**; `TruePeakGuard`
+  mitigates True Peak with a single static gain (not a look-ahead limiter). Dynamics modules
+  remain **per-channel (no stereo link)**. Thresholds and heuristics are uncalibrated.
+- **Biggest risk, unchanged:** *nothing has been validated on real music or in a listening
+  test, and there is no plugin.* Every number rests on synthetic signals. The core is
+  coherent and well-tested; its musical value is entirely unproven.
+- **Recommended next:** the JUCE VST3 shell — make it audible, validate the real-time path,
+  and only then calibrate thresholds against actual tracks. Do not add more DSP before that.
+
