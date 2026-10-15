@@ -1,0 +1,2 @@
+add_executable(masterizer_cli main.cpp)
+target_link_libraries(masterizer_cli PRIVATE masterizer_core)
