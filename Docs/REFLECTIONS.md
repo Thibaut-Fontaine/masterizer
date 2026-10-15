@@ -58,3 +58,19 @@ Built: `TruePeakGuard` (static scale-down to a dBTP ceiling), `WavFile` (16-bit/
 - **Recommended next:** the JUCE VST3 shell — make it audible, validate the real-time path,
   and only then calibrate thresholds against actual tracks. Do not add more DSP before that.
 
+## Phase 1 (UI) — parameter model + dashboard presenter
+
+Built: `domain/state/Parameters` (stable ids, ranges, defaults, clamping) and
+`application/DashboardModel` (pure presenter: per-band source/reference/difference/correction,
+LUFS, True Peak, reference state, A/B and Delta flags, warning text).
+
+- **Why this first:** the risky part of a UI is the *logic behind it*, not the pixels. Moving
+  all of that into tested, JUCE-free code means the eventual editor is a thin render layer.
+- **Reliability check:** these are ordinary TDD functions; they are as reliable as any other
+  part of the core. The uncovered risk is now only "does the drawing and interaction feel
+  right to a human", which genuinely needs a person at a screen in a DAW.
+- **Still missing:** the JUCE adapter itself (no code exists that opens a window or runs an
+  audio callback), so there is nothing visual to test yet. `Docs/WINDOWS_TESTING.md` covers
+  building and testing the current core + CLI on Windows without an agent.
+
+

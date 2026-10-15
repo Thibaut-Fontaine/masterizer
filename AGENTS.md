@@ -10,13 +10,13 @@ proposes/applies a coordinated mastering chain. The Reference is a **target prof
 not a command** — the product must be willing to leave things alone or report that a
 target cannot be reached safely.
 
-**Current state: core complete (Stages 0-10 core).** The library (measurement, analysis,
-matching, Mix Advisor, full bypassable processing chain, coordination, output validation),
-an offline `masterizer_cli`, unit + integration tests and docs (`Docs/ARCHITECTURE.md`,
-`Docs/DSP_DEFINITIONS.md`, `Docs/TESTING.md`) exist. Remaining: the **JUCE VST3 shell**
-(pass-through plugin, parameters/state, UI), the decode adapter (file picker + background
-analysis) and the dashboard/"Source notes" UI, plus real-world validation (pluginval, a DAW,
-listening). Follow `Docs/ROADMAP.md` order.
+**Current state: core + UI-logic (Phase 1) complete.** The library (measurement, analysis,
+matching, Mix Advisor, full bypassable processing chain, coordination, output validation), the
+offline `masterizer_cli`, unit + integration tests, docs, and the JUCE-free **UI logic**
+(`DashboardModel` presenter + `Parameters` model) exist. Remaining: the **JUCE VST3 shell**
+(Phase 2 — pass-through plugin, parameters/state, editor bound to `DashboardModel`), the
+decode adapter and the dashboard/"Source notes" UI, plus real-world validation.
+See `Docs/WINDOWS_TESTING.md` to build/test on Windows without an agent.
 
 ## Source-of-truth docs
 
