@@ -4,6 +4,7 @@
 #include "support/Checks.h"
 #include "support/TestRegistry.h"
 
+#include <limits>
 #include <vector>
 
 using masterizer::application::differenceSignal;
@@ -14,7 +15,7 @@ using masterizer::test::monoBuffer;
 TEST_CASE(match_gain_is_the_loudness_difference) {
     CHECK_NEAR(loudnessMatchGainDb(-9.0, -6.0), -3.0, 1e-12);
     CHECK_NEAR(loudnessMatchGainDb(-6.0, -9.0), 3.0, 1e-12);
-    CHECK_NEAR(loudnessMatchGainDb(-1.0 / 0.0, -6.0), 0.0, 1e-12);
+    CHECK_NEAR(loudnessMatchGainDb(-std::numeric_limits<double>::infinity(), -6.0), 0.0, 1e-12);
 }
 
 TEST_CASE(delta_of_identical_signals_is_silence) {
