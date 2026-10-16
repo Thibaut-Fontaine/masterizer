@@ -20,7 +20,8 @@ namespace {
 
 void printUsage() {
     std::fprintf(stderr,
-                 "usage: masterizer_cli <reference.wav> <source.wav> <output.wav>\n"
+                 "usage: masterizer_cli <reference> <source> <output.wav>\n"
+                 "  inputs: WAV, FLAC or MP3 (any mix)\n"
                  "  --intensity N     Match Intensity 0..2 (default 1)\n"
                  "  --ceiling dB      True Peak ceiling (default -1)\n"
                  "  --gain dB         output gain (default 0)\n"
