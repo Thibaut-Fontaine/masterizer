@@ -2,6 +2,8 @@
 
 #include <cmath>
 #include <random>
+#include <cstddef>
+#include <vector>
 
 namespace masterizer::test {
 namespace {

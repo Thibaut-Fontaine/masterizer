@@ -1,6 +1,7 @@
 #include "masterizer/domain/matching/RuleContext.h"
 
 #include <cstddef>
+#include <vector>
 
 namespace masterizer::domain::matching {
 

@@ -6,6 +6,7 @@
 #include "masterizer/domain/matching/MatchIntensity.h"
 
 #include <cstddef>
+#include <vector>
 
 namespace masterizer::application {
 

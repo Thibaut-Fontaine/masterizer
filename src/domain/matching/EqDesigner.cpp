@@ -1,6 +1,7 @@
 #include "masterizer/domain/matching/EqDesigner.h"
 
 #include "masterizer/domain/common/OctaveBands.h"
+#include <vector>
 
 namespace masterizer::domain::matching {
 namespace {

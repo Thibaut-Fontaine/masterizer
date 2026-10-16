@@ -7,6 +7,7 @@
 #include "support/TestRegistry.h"
 
 #include <vector>
+#include <cstddef>
 
 using masterizer::domain::dsp::allFinite;
 using masterizer::domain::dsp::peakAbs;

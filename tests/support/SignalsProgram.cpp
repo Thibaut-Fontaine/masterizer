@@ -1,6 +1,8 @@
 #include "support/SignalsProgram.h"
 
 #include <cmath>
+#include <cstddef>
+#include <vector>
 
 namespace masterizer::test {
 namespace {

@@ -3,6 +3,7 @@
 #include "masterizer/domain/dsp/BpmRelease.h"
 
 #include <vector>
+#include <algorithm>
 
 namespace masterizer::domain::matching {
 namespace {

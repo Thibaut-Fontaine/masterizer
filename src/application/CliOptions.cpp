@@ -2,6 +2,8 @@
 
 #include <cstdlib>
 #include <string>
+#include <cstddef>
+#include <vector>
 
 namespace masterizer::application {
 namespace {

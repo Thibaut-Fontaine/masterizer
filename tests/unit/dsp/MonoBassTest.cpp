@@ -6,6 +6,7 @@
 #include "support/TestRegistry.h"
 
 #include <vector>
+#include <cstddef>
 
 using masterizer::domain::dsp::applyMonoBass;
 using masterizer::domain::dsp::MonoBassSettings;

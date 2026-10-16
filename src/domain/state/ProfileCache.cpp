@@ -4,6 +4,7 @@
 #include "masterizer/domain/state/ReferenceKeyOps.h"
 
 #include <utility>
+#include <memory>
 
 namespace masterizer::domain::state {
 

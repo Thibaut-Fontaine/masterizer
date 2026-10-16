@@ -7,6 +7,7 @@
 
 #include <cmath>
 #include <vector>
+#include <cstddef>
 
 using masterizer::domain::dsp::peakAbs;
 using masterizer::domain::dsp::truePeak;

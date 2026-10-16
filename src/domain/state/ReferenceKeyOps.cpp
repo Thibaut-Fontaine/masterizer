@@ -1,4 +1,5 @@
 #include "masterizer/domain/state/ReferenceKeyOps.h"
+#include <string>
 
 namespace masterizer::domain::state {
 

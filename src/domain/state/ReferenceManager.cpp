@@ -3,6 +3,7 @@
 #include "masterizer/domain/audio/AudioBufferOps.h"
 #include "masterizer/domain/audio/DecodedAudio.h"
 #include "masterizer/domain/state/ReferenceKeyOps.h"
+#include <string>
 
 namespace masterizer::domain::state {
 namespace {

@@ -5,6 +5,8 @@
 #include <cmath>
 #include <cstddef>
 #include <utility>
+#include <complex>
+#include <vector>
 
 namespace masterizer::domain::dsp {
 namespace {

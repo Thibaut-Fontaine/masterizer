@@ -8,6 +8,8 @@
 #include <cmath>
 #include <complex>
 #include <cstddef>
+#include <utility>
+#include <vector>
 
 namespace masterizer::domain::analysis {
 

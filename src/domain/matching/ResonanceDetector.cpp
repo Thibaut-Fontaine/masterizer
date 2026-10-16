@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cstddef>
 #include <vector>
+#include <utility>
 
 namespace masterizer::domain::matching {
 namespace {

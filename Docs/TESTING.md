@@ -28,6 +28,10 @@ size rules apply to every file.
 
 A function definition is detected at column 0 with its opening brace on the signature line.
 
+`includes` (also a CTest test) verifies every C++ file directly includes the standard headers
+it uses. MSVC does not pull in `<vector>`/`<string>`/etc. transitively the way GCC/Clang often
+do, so this catches Windows-only build failures before they happen.
+
 ## Fixtures
 
 `tests/support`: silence, impulse, sine, sweep, log pink noise, transient-rich, bass-heavy,

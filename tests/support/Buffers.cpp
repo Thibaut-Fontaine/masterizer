@@ -1,4 +1,5 @@
 #include "support/Buffers.h"
+#include <vector>
 
 namespace masterizer::test {
 

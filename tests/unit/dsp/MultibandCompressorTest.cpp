@@ -7,6 +7,7 @@
 #include "support/TestRegistry.h"
 
 #include <vector>
+#include <cstddef>
 
 using masterizer::domain::dsp::applyMultibandCompressor;
 using masterizer::domain::dsp::CompressorSettings;

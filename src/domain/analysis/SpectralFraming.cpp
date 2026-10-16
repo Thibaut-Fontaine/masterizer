@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <cstddef>
+#include <vector>
 
 namespace masterizer::domain::analysis {
 namespace {

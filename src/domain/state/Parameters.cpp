@@ -1,6 +1,7 @@
 #include "masterizer/domain/state/Parameters.h"
 
 #include <algorithm>
+#include <vector>
 
 namespace masterizer::domain::state {
 

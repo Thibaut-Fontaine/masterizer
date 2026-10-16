@@ -1,4 +1,5 @@
 #include "support/Profiles.h"
+#include <vector>
 
 namespace masterizer::test {
 

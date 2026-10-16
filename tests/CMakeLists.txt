@@ -86,4 +86,7 @@ if(Python3_Interpreter_FOUND)
     add_test(NAME style_rules
         COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/check_rules.py
                 ${CMAKE_SOURCE_DIR})
+    add_test(NAME includes
+        COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/check_includes.py
+                ${CMAKE_SOURCE_DIR})
 endif()

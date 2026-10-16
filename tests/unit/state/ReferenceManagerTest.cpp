@@ -7,6 +7,7 @@
 #include "support/TestRegistry.h"
 
 #include <vector>
+#include <string>
 
 using masterizer::domain::audio::DecodedAudio;
 using masterizer::domain::state::ReferenceKey;

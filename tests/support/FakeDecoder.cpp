@@ -1,6 +1,7 @@
 #include "support/FakeDecoder.h"
 
 #include <utility>
+#include <string>
 
 namespace masterizer::test {
 

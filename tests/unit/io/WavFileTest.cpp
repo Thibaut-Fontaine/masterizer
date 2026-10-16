@@ -6,6 +6,7 @@
 #include <filesystem>
 #include <string>
 #include <vector>
+#include <cstddef>
 
 using masterizer::domain::audio::AudioBuffer;
 using masterizer::io::readWav;

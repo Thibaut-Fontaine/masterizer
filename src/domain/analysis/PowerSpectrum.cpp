@@ -6,6 +6,7 @@
 #include <cmath>
 #include <complex>
 #include <cstddef>
+#include <vector>
 
 namespace masterizer::domain::analysis {
 namespace {

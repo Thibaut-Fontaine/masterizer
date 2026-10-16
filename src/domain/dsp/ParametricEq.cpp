@@ -1,6 +1,7 @@
 #include "masterizer/domain/dsp/ParametricEq.h"
 
 #include <cmath>
+#include <vector>
 
 namespace masterizer::domain::dsp {
 namespace {

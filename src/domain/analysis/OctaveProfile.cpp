@@ -5,6 +5,7 @@
 #include "masterizer/domain/common/OctaveBands.h"
 
 #include <cstddef>
+#include <vector>
 
 namespace masterizer::domain::analysis {
 

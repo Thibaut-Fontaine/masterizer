@@ -9,6 +9,8 @@
 #include <fstream>
 #include <iterator>
 #include <vector>
+#include <cstddef>
+#include <string>
 
 namespace masterizer::io {
 namespace {

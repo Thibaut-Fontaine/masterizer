@@ -9,6 +9,7 @@
 
 #include <algorithm>
 #include <cstddef>
+#include <vector>
 
 using masterizer::domain::analysis::octaveBandEnergies;
 using masterizer::domain::bandCount;

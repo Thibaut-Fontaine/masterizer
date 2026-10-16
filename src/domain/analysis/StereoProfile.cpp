@@ -5,6 +5,7 @@
 #include "masterizer/domain/dsp/Correlation.h"
 
 #include <cstddef>
+#include <vector>
 
 namespace masterizer::domain::analysis {
 namespace {
