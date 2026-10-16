@@ -53,8 +53,9 @@ if Python 3 is installed, a second named `style_rules`. Individual test binary:
 
 ## 5. Run the offline mastering tool
 
-It takes a **reference** WAV and a **source** WAV and writes a mastered **output** WAV.
-Input may be 16-bit PCM or 32-bit float WAV (export that from your DAW).
+It takes a **reference** file and a **source** file and writes a mastered **output** WAV.
+Inputs may be **WAV** (16-bit PCM / 32-bit float), **FLAC** or **MP3** (any mix, e.g. MP3
+reference + FLAC source).
 
 ```powershell
 ./build/windows-msvc/app/Release/masterizer_cli.exe reference.wav source.wav output.wav
