@@ -54,6 +54,19 @@ std::string auxPath(const std::string& output, const char* tag) {
     return output.substr(0, dot) + tag + output.substr(dot);
 }
 
+bool readOrReport(const std::string& path, const char* label,
+                  masterizer::domain::audio::AudioBuffer& out) {
+    if (masterizer::io::readWav(path, out)) {
+        return true;
+    }
+    std::fprintf(stderr, "error: could not read %s '%s'\n", label, path.c_str());
+    std::fprintf(stderr, "  This tool reads WAV only (16-bit PCM or 32-bit float).\n");
+    std::fprintf(stderr,
+                 "  Convert first, e.g.:  ffmpeg -i \"%s\" -c:a pcm_s16le out.wav\n",
+                 path.c_str());
+    return false;
+}
+
 }  // namespace
 
 int main(int argc, char** argv) {
@@ -75,13 +88,8 @@ int main(int argc, char** argv) {
 
     masterizer::domain::audio::AudioBuffer reference;
     masterizer::domain::audio::AudioBuffer source;
-    if (!masterizer::io::readWav(options.referencePath, reference)) {
-        std::fprintf(stderr, "error: could not read reference '%s'\n",
-                     options.referencePath.c_str());
-        return 1;
-    }
-    if (!masterizer::io::readWav(options.sourcePath, source)) {
-        std::fprintf(stderr, "error: could not read source '%s'\n", options.sourcePath.c_str());
+    if (!readOrReport(options.referencePath, "reference", reference) ||
+        !readOrReport(options.sourcePath, "source", source)) {
         return 1;
     }
 
