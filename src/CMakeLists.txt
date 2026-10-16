@@ -65,12 +65,18 @@ add_library(masterizer_core STATIC
     domain/state/Parameters.cpp
     domain/state/ReferenceKeyOps.cpp
     domain/state/ReferenceManager.cpp
-    io/WavFile.cpp)
+    io/AudioFile.cpp
+    io/WavFile.cpp
+    io/dr_flac_impl.cpp
+    io/dr_mp3_impl.cpp)
 
 target_include_directories(masterizer_core PUBLIC
     ${PROJECT_SOURCE_DIR}/include)
 
 target_include_directories(masterizer_core PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR})
+
+target_include_directories(masterizer_core SYSTEM PRIVATE
+    ${CMAKE_SOURCE_DIR}/third_party)
 
 target_compile_features(masterizer_core PUBLIC cxx_std_20)

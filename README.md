@@ -60,9 +60,9 @@ Run a single test by name substring (harness):
 ./build/linux-debug/app/masterizer_cli <reference.wav> <source.wav> <output.wav> [intensity 0..2]
 ```
 
-Reads a reference and a source WAV, analyses both, proposes and applies corrections, enforces
-the True Peak ceiling, and writes the result. Prints proposals, LUFS vs target, shortfall and
-true peak. (The VST3 plugin is still to come.)
+Reads a reference and a source file (WAV, FLAC or MP3), analyses both, proposes and applies
+corrections, enforces the True Peak ceiling, and writes the result (WAV). Prints proposals,
+LUFS vs target, shortfall and true peak. (The VST3 plugin is still to come.)
 
 ## Non-negotiable size rules
 

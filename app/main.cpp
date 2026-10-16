@@ -8,6 +8,7 @@
 #include "masterizer/domain/audio/AudioBuffer.h"
 #include "masterizer/domain/dsp/GainStage.h"
 #include "masterizer/domain/matching/DynamicsPlanner.h"
+#include "masterizer/io/AudioFile.h"
 #include "masterizer/io/WavFile.h"
 
 #include <cstdio>
@@ -56,14 +57,11 @@ std::string auxPath(const std::string& output, const char* tag) {
 
 bool readOrReport(const std::string& path, const char* label,
                   masterizer::domain::audio::AudioBuffer& out) {
-    if (masterizer::io::readWav(path, out)) {
+    if (masterizer::io::readAudioFile(path, out)) {
         return true;
     }
     std::fprintf(stderr, "error: could not read %s '%s'\n", label, path.c_str());
-    std::fprintf(stderr, "  This tool reads WAV only (16-bit PCM or 32-bit float).\n");
-    std::fprintf(stderr,
-                 "  Convert first, e.g.:  ffmpeg -i \"%s\" -c:a pcm_s16le out.wav\n",
-                 path.c_str());
+    std::fprintf(stderr, "  Supported inputs: WAV, FLAC, MP3.\n");
     return false;
 }
 

@@ -1,6 +1,7 @@
 add_executable(masterizer_tests
     integration/ProcessingIntegrationTest.cpp
     unit/io/WavFileTest.cpp
+    unit/io/AudioFileTest.cpp
     support/Buffers.cpp
     support/FakeDecoder.cpp
     support/Main.cpp
@@ -78,6 +79,8 @@ add_executable(masterizer_tests
 
 target_link_libraries(masterizer_tests PRIVATE masterizer_core)
 target_include_directories(masterizer_tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+target_compile_definitions(masterizer_tests PRIVATE
+    MASTERIZER_FIXTURES_DIR="${CMAKE_SOURCE_DIR}/tests/fixtures")
 
 add_test(NAME unit COMMAND masterizer_tests)
 

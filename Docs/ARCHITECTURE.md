@@ -22,7 +22,9 @@ domain/                      pure logic, no JUCE
    |                          ChainCoordinator, DynamicsPlanner, ResonanceDetector, MixAdvisor
    |-- state/                 ReferenceKey, ProfileCache, ReferenceManager
    |
-io/                          WavFile (offline WAV read/write)
+io/                          WavFile (WAV read/write), AudioFile (WAV/FLAC/MP3 read)
+   |
+third_party/dr_libs/         vendored single-file MP3/FLAC decoders (public domain / MIT-0)
    |
 plugin/ (future)             JUCE VST3 adapter: PluginProcessor, PluginEditor
 ```

@@ -47,7 +47,7 @@ RULES = {
     "std::fmod": "cmath",
 }
 ROOTS = ("include", "src", "tests", "app")
-SKIP_DIRS = {"build", ".git", ".cache"}
+SKIP_DIRS = {"build", ".git", ".cache", "third_party", "vendor"}
 
 
 def strip_comments(text):
