@@ -32,6 +32,7 @@ void printUsage() {
                  "  --ab              also write a level-matched <output>.ab.wav\n"
                  "  --delta           also write <output>.delta.wav (processed - source)\n"
                  "  --timing          print per-phase timings\n"
+                 "  --crest-guard / --no-crest-guard  keep dynamics near the reference (default on)\n"
                  "  Loudness is targeted toward the reference (up to +12 dB), then limited.\n"
                  "  --<module> / --no-<module>\n"
                  "      module: eq fine-eq mono limiter saturation tape resonance stereo\n"
@@ -152,7 +153,7 @@ int main(int argc, char** argv) {
 
     const app::LoudnessTargetResult targeted = app::targetLoudness(
         result.buffer, referenceProfile.loudness.integratedLufs, chain.limiter.ceilingDb,
-        12.0, options.outputGainDb, limiterEnabled, true,
+        12.0, options.outputGainDb, limiterEnabled, options.crestGuard,
         referenceProfile.envelope.crestDb, 0.5);
     const Clock::time_point tTarget = Clock::now();
 

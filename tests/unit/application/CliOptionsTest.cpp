@@ -31,11 +31,13 @@ TEST_CASE(module_flags_set_overrides) {
 
 TEST_CASE(ab_and_delta_flags_are_recognised) {
     CliOptions options;
-    parseCliOptions({"cli", "r.wav", "s.wav", "o.wav", "--ab", "--delta", "--timing"},
+    parseCliOptions({"cli", "r.wav", "s.wav", "o.wav", "--ab", "--delta", "--timing",
+                     "--no-crest-guard"},
                     options);
     CHECK(options.writeAb);
     CHECK(options.writeDelta);
     CHECK(options.timing);
+    CHECK(!options.crestGuard);
 }
 
 TEST_CASE(help_is_reported) {

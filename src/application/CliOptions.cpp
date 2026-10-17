@@ -64,6 +64,10 @@ ParseStatus parseCliOptions(const std::vector<std::string>& args, CliOptions& ou
             out.writeDelta = true;
         } else if (arg == "--timing") {
             out.timing = true;
+        } else if (arg == "--crest-guard") {
+            out.crestGuard = true;
+        } else if (arg == "--no-crest-guard") {
+            out.crestGuard = false;
         } else if (arg == "--intensity" || arg == "--ceiling" || arg == "--gain") {
             if (i + 1 >= args.size() || !parseNumber(args[i + 1], out.outputGainDb)) {
                 return ParseStatus::Error;

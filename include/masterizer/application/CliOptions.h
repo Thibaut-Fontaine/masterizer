@@ -17,6 +17,7 @@ struct CliOptions {
     bool writeAb = false;
     bool writeDelta = false;
     bool timing = false;
+    bool crestGuard = true;
     // Module overrides keyed by name ("eq", "mono", "glue", ...); anything absent
     // keeps the default/planner decision.
     std::map<std::string, bool> moduleOverrides;
