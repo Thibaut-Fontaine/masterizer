@@ -87,6 +87,29 @@ Built: `TruePeakGuard` (static scale-down to a dBTP ceiling), `WavFile` (16-bit/
   between analysis (13 s) and the loudness search (10.7 s). Further gains would need single-pass
   analysis or a cheaper LUFS search, but the 30 s stop rule is met, so we stop here.
 
+## Backlog steps 0–8 — diagnostic to limiter
+
+- **0. Diagnostic.** Mids/highs carry the human change; the master compresses HMid/Presence more
+  and lows less; we were ~1.2 dB globally flatter; saturation evidence weak. Report:
+  `Docs/DIAGNOSTIC_DAXJ.md`.
+- **1. Crest guard.** Stops before global crest falls 0.5 dB below the reference; reports the
+  shortfall. `--no-crest-guard` restores exact-LUFS behaviour.
+- **2. Edge shelves.** Sub and VHigh now use a low/high shelf, so the air gap can be addressed.
+- **3. Tape HF.** Reduced to −0.1 dB at 14 kHz, mix 0.5.
+- **4. Fine EQ.** Third-octave design from the fine spectra, bounded and capped, opt-in via
+  `--fine-eq` until listening validates it.
+- **5. Upper-mid dynamic EQ.** `planDynamics` enables a gentle 3 kHz band when our HMid/Presence
+  variation exceeds the reference.
+- **6. Per-band correlation.** Real L/R cross-spectrum correlation replaces the misleading
+  `(M−S)/(M+S)` estimate.
+- **7. Near-mono guard.** Width matching is disabled when the reference width < 0.05.
+- **8. Look-ahead limiter.** Anticipatory sliding-max gain, wired into loudness targeting.
+- **Effect on the test track (OURS7):** LUFS −11.34 (shortfall 0.84 vs −10.50), TP −1.00,
+  crest 10.75 vs master 10.81 (**−0.06 dB**, was −1.17), prominence −0.01. The trade-off is now
+  explicit: dynamics match, loudness is 0.84 LU short; `--no-crest-guard` recovers the LUFS but
+  flattens the track.
+
+
 
 
 ## Phase 1 (UI) — parameter model + dashboard presenter

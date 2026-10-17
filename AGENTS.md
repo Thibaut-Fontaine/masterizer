@@ -10,13 +10,12 @@ proposes/applies a coordinated mastering chain. The Reference is a **target prof
 not a command** — the product must be willing to leave things alone or report that a
 target cannot be reached safely.
 
-**Current state: core + UI-logic (Phase 1) complete.** The library (measurement, analysis,
-matching, Mix Advisor, full bypassable processing chain, coordination, output validation), the
-offline `masterizer_cli`, unit + integration tests, docs, and the JUCE-free **UI logic**
-(`DashboardModel` presenter + `Parameters` model) exist. Remaining: the **JUCE VST3 shell**
-(Phase 2 — pass-through plugin, parameters/state, editor bound to `DashboardModel`), the
-decode adapter and the dashboard/"Source notes" UI, plus real-world validation.
-See `Docs/WINDOWS_TESTING.md` to build/test on Windows without an agent.
+**Current state: core + UI-logic + backlog steps 0-8 complete.** The library (measurement,
+analysis, matching, Mix Advisor, full chain, coordination, output validation), the offline
+`masterizer_cli`, the dashboard presenter/parameters, the diagnostic report, the crest guard,
+edge-band shelves, fine EQ (opt-in), upper-mid dynamic EQ, true per-band correlation, the
+near-mono guard and a look-ahead limiter exist. Remaining: the **JUCE VST3 shell**, the decode
+adapter and the dashboard UI, plus listening validation. Performance: ~27-32 s per track.
 
 ## Source-of-truth docs
 

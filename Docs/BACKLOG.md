@@ -5,6 +5,14 @@ lands. Context: the engine currently matches a human master within ~0.4 dB on mo
 matches crest/prominence, but it is **too flat** (over-limited to hit exact LUFS at −1 dBTP)
 and **lacks air** above ~11.5 kHz.
 
+## Status (2026-10-17)
+
+Done: **0** diagnostic (`Docs/DIAGNOSTIC_DAXJ.md`), **1** crest guard + `--no-crest-guard`,
+**2** edge-band shelves, **3** tape HF reduced, **4** third-octave fine EQ (opt-in `--fine-eq`),
+**5** conditional upper-mid dynamic EQ, **6** true per-band correlation, **7** near-mono guard,
+**8** look-ahead limiter. Performance S0–S6 done (~27–32 s per track).
+Remaining: **10** VST shell, plus listening validation of the new defaults.
+
 ## Metric roles (do not drift from this)
 
 - True Peak: **hard constraint** (≤ −1.0 dBTP). Never match a hotter reference.

@@ -60,5 +60,14 @@ settings. All thresholds in the code are initial values, not calibrated constant
   (level-compensated) -> high shelf (~14 kHz roll-off), with a wet/dry mix. The defaults are
   deliberately tiny. It is not a physical tape model: no wow/flutter, crosstalk, hiss, bias or
   tape formulation.
+- **EQ shapes**: peaking, plus RBJ low/high shelves. The open-ended Sub and VHigh bands use a
+  low shelf at 40 Hz and a high shelf at 12 kHz. Optional third-octave fine EQ (`designFineEq`)
+  from the level-normalised magnitude spectra, capped and bounded (`--fine-eq`).
+- **Crest guard**: loudness targeting stops before global crest falls more than 0.5 dB below the
+  reference, reporting a shortfall instead of flattening the track (`--no-crest-guard` opts out).
+- **Upper-mid dynamic EQ**: enabled by `planDynamics` (3 kHz, max 2 dB cut) when our HMid/Presence
+  variation exceeds the reference.
+- **Look-ahead limiter**: anticipatory gain from a 5 ms sliding-max window (no overshoot), smooth
+  release; used by the loudness targeter. The older zero-look-ahead `Limiter` remains for tests.
 - **Dynamics planner**: compares per-band variation; enables gentle glue (ratio 1.5-2) and,
   at larger gaps, multiband compression. Release can follow BPM (default 0.25 beat), clamped.
