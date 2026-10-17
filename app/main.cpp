@@ -9,6 +9,7 @@
 #include "masterizer/domain/audio/AudioBufferOps.h"
 #include "masterizer/domain/dsp/GainStage.h"
 #include "masterizer/domain/matching/DynamicsPlanner.h"
+#include "masterizer/domain/matching/StereoGuard.h"
 #include "masterizer/io/AudioFile.h"
 #include "masterizer/io/WavFile.h"
 
@@ -136,6 +137,9 @@ int main(int argc, char** argv) {
     chain.tapeEnabled = true;  // very subtle tape at the end, toggle with --no-tape
     chain.tape = {1.0, 0.4, -0.1, 0.5};
     applyOverrides(chain, options);
+    if (!mat::stereoMatchAllowed(referenceProfile.stereo.width)) {
+        chain.stereoEnabled = false;  // near-mono reference: do not chase width
+    }
 
     const bool limiterEnabled = chain.limiterEnabled;
     chain.limiterEnabled = false;  // the loudness targeter applies the limiter at the end

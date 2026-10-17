@@ -70,6 +70,7 @@ add_executable(masterizer_tests
     unit/matching/MixAdvisorTest.cpp
     unit/matching/ProfileDifferenceTest.cpp
     unit/matching/ResonanceDetectorTest.cpp
+    unit/matching/StereoGuardTest.cpp
     unit/support/SignalsProgramTest.cpp
     unit/support/SignalsSpectralTest.cpp
     unit/support/SignalsTest.cpp

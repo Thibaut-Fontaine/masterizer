@@ -60,6 +60,7 @@ add_library(masterizer_core STATIC
     domain/matching/MixAdvisor.cpp
     domain/matching/ProfileDifference.cpp
     domain/matching/ResonanceDetector.cpp
+    domain/matching/StereoGuard.cpp
     domain/matching/RuleContext.cpp
     domain/matching/RulesDynamics.cpp
     domain/matching/RulesLowEnd.cpp
