@@ -145,7 +145,8 @@ int main(int argc, char** argv) {
 
     const app::LoudnessTargetResult targeted = app::targetLoudness(
         result.buffer, referenceProfile.loudness.integratedLufs, chain.limiter.ceilingDb,
-        12.0, options.outputGainDb, limiterEnabled);
+        12.0, options.outputGainDb, limiterEnabled, true,
+        referenceProfile.envelope.crestDb, 0.5);
     const Clock::time_point tTarget = Clock::now();
 
     // Reuse the targeting result instead of re-measuring loudness and peak.

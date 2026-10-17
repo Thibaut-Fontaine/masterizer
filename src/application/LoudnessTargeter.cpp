@@ -10,6 +10,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cstddef>
 #include <limits>
 #include <vector>
 
@@ -41,6 +42,25 @@ double maxTruePeakDb(const domain::audio::AudioBuffer& buffer) {
     return peak > 0.0 ? domain::dsp::linearToDb(peak) : -144.0;
 }
 
+double globalCrestDb(const domain::audio::AudioBuffer& buffer) {
+    double peak = 0.0;
+    double sumSquares = 0.0;
+    std::size_t count = 0;
+    for (const std::vector<float>& channel : buffer.channels) {
+        for (float sample : channel) {
+            const double value = static_cast<double>(sample);
+            peak = std::max(peak, std::fabs(value));
+            sumSquares += value * value;
+            ++count;
+        }
+    }
+    if (sumSquares <= 0.0 || count == 0) {
+        return 0.0;
+    }
+    const double rms = std::sqrt(sumSquares / static_cast<double>(count));
+    return 20.0 * std::log10(peak / rms);
+}
+
 void applyGainAndLimit(domain::audio::AudioBuffer& buffer, double gainDb,
                        const domain::dsp::LimiterSettings& limiter, bool limit) {
     for (std::vector<float>& channel : buffer.channels) {
@@ -62,7 +82,8 @@ constexpr double kRelaxation = 0.9;
 
 LoudnessTargetResult targetLoudness(domain::audio::AudioBuffer& buffer, double targetLufs,
                                     double ceilingDb, double maxGainDb, double extraGainDb,
-                                    bool limit) {
+                                    bool limit, bool guardCrest, double referenceCrestDb,
+                                    double maxCrestDropDb) {
     LoudnessTargetResult result;
     const domain::audio::AudioBuffer original = buffer;
     const double achievedBefore = measureLufs(original);
@@ -80,22 +101,34 @@ LoudnessTargetResult targetLoudness(domain::audio::AudioBuffer& buffer, double t
     double bestGain = gainDb;
     double bestLufs = achievedBefore;
     double bestError = std::numeric_limits<double>::infinity();
+    bool foundValid = false;
+    const double minimumCrest = referenceCrestDb - maxCrestDropDb;
     for (int iteration = 0; iteration < kIterations; ++iteration) {
         domain::audio::AudioBuffer candidate = original;
         applyGainAndLimit(candidate, gainDb, limiter, limit);
         enforceTruePeak(candidate, ceilingDb);
         const double lufs = measureLufs(candidate);
+        const double crest = globalCrestDb(candidate);
+        const bool valid = !guardCrest || crest >= minimumCrest;
         const double error =
             hasTarget && std::isfinite(lufs) ? std::fabs(lufs - targetLufs) : 0.0;
-        if (error < bestError) {
+        if (valid && error < bestError) {
             bestError = error;
             bestGain = gainDb;
             bestLufs = lufs;
+            foundValid = true;
+        }
+        if (!valid) {
+            break;  // more gain only compresses further
         }
         if (!hasTarget || error <= kToleranceLu || !std::isfinite(lufs)) {
             break;
         }
         gainDb = std::clamp(gainDb + (targetLufs - lufs) * kRelaxation, 0.0, maxGain);
+    }
+    if (!foundValid) {
+        bestGain = extraGainDb;  // the guard rejects any automatic gain
+        bestLufs = achievedBefore;
     }
 
     buffer = original;
