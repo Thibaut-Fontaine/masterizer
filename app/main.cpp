@@ -34,14 +34,15 @@ void printUsage() {
                  "  --timing          print per-phase timings\n"
                  "  Loudness is targeted toward the reference (up to +12 dB), then limited.\n"
                  "  --<module> / --no-<module>\n"
-                 "      module: eq mono limiter saturation tape resonance stereo transient\n"
-                 "              glue multiband dynamic-eq\n");
+                 "      module: eq fine-eq mono limiter saturation tape resonance stereo\n"
+                 "              transient glue multiband dynamic-eq\n");
 }
 
 void applyOverrides(masterizer::application::ChainSettings& chain,
                     const masterizer::application::CliOptions& options) {
     for (const auto& [name, value] : options.moduleOverrides) {
         if (name == "eq") chain.eqEnabled = value;
+        else if (name == "fine-eq") chain.fineEqEnabled = value;
         else if (name == "mono") chain.monoBassEnabled = value;
         else if (name == "limiter") chain.limiterEnabled = value;
         else if (name == "saturation") chain.saturationEnabled = value;

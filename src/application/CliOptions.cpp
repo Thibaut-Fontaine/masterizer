@@ -16,6 +16,7 @@ struct ModuleFlag {
 
 const ModuleFlag kModuleFlags[] = {
     {"--eq", "eq", true},               {"--no-eq", "eq", false},
+    {"--fine-eq", "fine-eq", true},     {"--no-fine-eq", "fine-eq", false},
     {"--mono", "mono", true},           {"--no-mono", "mono", false},
     {"--limiter", "limiter", true},     {"--no-limiter", "limiter", false},
     {"--saturation", "saturation", true}, {"--no-saturation", "saturation", false},

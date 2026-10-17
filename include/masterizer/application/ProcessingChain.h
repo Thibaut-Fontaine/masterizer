@@ -34,6 +34,7 @@ struct ChainSettings {
     double outputGainDb = 0.0;
     double stereoWidthScale = 1.0;
     bool eqEnabled = true;
+    bool fineEqEnabled = false;
     bool monoBassEnabled = true;
     bool saturationEnabled = false;
     bool tapeEnabled = false;

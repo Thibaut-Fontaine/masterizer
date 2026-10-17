@@ -2,6 +2,7 @@
 
 #include "masterizer/application/ChainStages.h"
 #include "masterizer/application/DynamicsStages.h"
+#include "masterizer/application/FineEqStage.h"
 #include "masterizer/application/TapeStages.h"
 #include "masterizer/domain/matching/MatchingEngine.h"
 #include "masterizer/domain/matching/ProfileDifference.h"
@@ -31,6 +32,9 @@ ChainResult process(const domain::audio::AudioBuffer& input,
     }
     if (settings.eqEnabled) {
         applyEqStage(result.buffer, result.proposals, settings.matchIntensity, settings.bounds);
+    }
+    if (settings.fineEqEnabled) {
+        applyFineEqStage(result.buffer, source, reference, settings.bounds);
     }
     if (settings.stereoEnabled) {
         applyStereoStage(result.buffer, settings.stereoWidthScale);

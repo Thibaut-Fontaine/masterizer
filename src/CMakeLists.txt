@@ -2,6 +2,7 @@ add_library(masterizer_core STATIC
     application/LoudnessTargeter.cpp
     application/MonitoringController.cpp
     application/ChainStages.cpp
+    application/FineEqStage.cpp
     application/ChainReporter.cpp
     application/CliOptions.cpp
     application/DashboardModel.cpp
@@ -60,6 +61,7 @@ add_library(masterizer_core STATIC
     domain/matching/MatchingEngine.cpp
     domain/matching/MixAdvisor.cpp
     domain/matching/ProfileDifference.cpp
+    domain/matching/FineEqDesigner.cpp
     domain/matching/ResonanceDetector.cpp
     domain/matching/StereoGuard.cpp
     domain/matching/RuleContext.cpp
