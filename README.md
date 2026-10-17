@@ -7,7 +7,9 @@ not a command** — the plugin must be willing to do nothing, correct less, or r
 that a target cannot be reached safely.
 
 See `AGENTS.md` for working rules and `Docs/PRODUCT_SPEC.md` / `Docs/ROADMAP.md`
-for the binding requirements and implementation order.
+for the binding requirements and implementation order. `Docs/PROJECT_BRIEF.md` is the
+consolidated handoff: current state, the full mastering pipeline, CLI reference, Mix
+Advisor status and the VST plan.
 
 ## Architecture (layered MVC + Ports & Adapters)
 

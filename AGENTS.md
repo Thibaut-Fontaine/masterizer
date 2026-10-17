@@ -10,12 +10,16 @@ proposes/applies a coordinated mastering chain. The Reference is a **target prof
 not a command** — the product must be willing to leave things alone or report that a
 target cannot be reached safely.
 
-**Current state: core + UI-logic + backlog steps 0-8 complete.** The library (measurement,
-analysis, matching, Mix Advisor, full chain, coordination, output validation), the offline
-`masterizer_cli`, the dashboard presenter/parameters, the diagnostic report, the crest guard,
-edge-band shelves, fine EQ (opt-in), upper-mid dynamic EQ, true per-band correlation, the
-near-mono guard and a look-ahead limiter exist. Remaining: the **JUCE VST3 shell**, the decode
-adapter and the dashboard UI, plus listening validation. Performance: ~27-32 s per track.
+**Current state (2026-10-17): core + UI logic + backlog steps 0-8 + dual delivery profiles
+complete.** The library (measurement, analysis, matching, full chain, coordination, output
+validation), the offline `masterizer_cli`, the dashboard presenter/parameters, the diagnostic
+report, the crest guard, edge-band shelves, fine EQ (opt-in), upper-mid dynamic EQ, true per-band
+correlation, the near-mono guard, a look-ahead limiter and `--profile soft|loud|both` exist.
+**244 cases pass** across 4 CTest suites. The Mix Advisor (R1-R11) is implemented and
+unit-tested but **not yet wired** into the CLI/dashboard. No plugin code exists yet: the
+**JUCE VST3 shell** (Gate 2) is the next major work. Performance: ~27-35 s per track (both
+profiles ~45 s). See `Docs/PROJECT_BRIEF.md` for the pipeline, CLI, Mix Advisor status and VST
+plan.
 
 ## Source-of-truth docs
 
@@ -101,27 +105,37 @@ section 5.5; roadmap Step 10b.
 - Rules R1-R11 (low-end punch, low-end width/phase, source over-compression, low-mid buildup,
   missing air, harsh presence, narrow image, dull high transients, resonant bass, kick/bass
   conflict, phase) are a data table, not hard-coded branches.
+- **Status:** implemented and unit-tested, but `advise()` is not yet wired into the CLI or
+  dashboard. Surfacing it as read-only "Source notes" is the first Gate 2 wiring job.
 
 ## Ordering gates (do not skip)
 
 Work only the earliest unmet gate; never build a later gate while an earlier one is unmet.
 
 - **Gate 0 — engine built + unit/integration tested.** Done.
-- **Gate 1 — the engine makes sensible sound on real music** (offline CLI + ears). **Unmet; current focus.**
-- **Gate 2 — plugin/host integration** (JUCE VST3, decode adapter, dashboard). Only after Gate 1.
-- **Gate 3 — release quality** (validation matrix, packaging, licences).
+- **Gate 1 — the engine makes sensible sound on real music** (offline CLI + ears). **Signed off
+  by the user's listening verdict on the real pair (2026-10-17): "does good masters".** The
+  breadth matrix (subgenres, mono/anti-phase/silence, unreachable targets) is deferred to Gate 3.
+- **Gate 2 — plugin/host integration** (JUCE VST3, decode adapter, background analysis,
+  real-time chain, dashboard, Source Notes). **In progress / next.**
+- **Gate 3 — release quality** (validation matrix, pluginval, real DAW, packaging, licences).
 
-Do NOT start JUCE before Gate 1 passes: the CLI already makes the engine audible, so a plugin
-adds nothing to validation and is the one part that cannot be compiled in the agent sandbox.
+Do not reopen DSP tuning on the Dax J track (overfitting risk). New DSP work should be driven by
+the breadth validation or a concrete plugin requirement.
 
 ## Current backlog
 
-`Docs/BACKLOG.md` is the live todo list. **First: step 0 — characterise the residual difference**
-(section-wise bands, inter-harmonic/THD analysis on sustained lead notes, attack-envelope and
-level-matched delta) before changing any DSP. Then the immediate items: **1)** dynamics guard in
-loudness targeting, **2)** edge-band shelves (VHigh air, Sub), **3)** reduce the tape's HF
-roll-off. Then EQ resolution, the real per-band stereo metric, a near-mono guard, a look-ahead
-limiter, and performance. The VST shell comes last.
+`Docs/BACKLOG.md` is the live todo list; `Docs/PROJECT_BRIEF.md` is the consolidated handoff.
+Steps 0-8 and dual delivery profiles are done. Next, in order:
+
+1. Wire `advise()` (Mix Advisor) into the CLI/dashboard as read-only Source Notes.
+2. Wire `ChainCoordinator::coordinate` into `process()` (max 6 proposals / 12 dB).
+3. Fix the CLI numeric-flag leak (`--intensity`/`--ceiling` overwrite `outputGainDb`) and make
+   output gain a true final trim.
+4. Extend Match Intensity scaling to the other modules (currently EQ only).
+5. Gate 2: JUCE VST3 shell in small buildable steps (shell, decoder/reference, background
+   analysis, stateful real-time chain, dashboard, Source Notes).
+6. Gate 3: breadth validation, pluginval, real DAW, packaging, licences.
 
 The speed plan is **S0–S7**, and every step has a mandatory checkpoint: green tests, a 3-run
 median benchmark, one commit, and a short reflection in `Docs/REFLECTIONS.md`. No mixed

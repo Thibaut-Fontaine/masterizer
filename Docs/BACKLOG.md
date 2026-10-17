@@ -1,17 +1,42 @@
 # Backlog
 
 Prioritized work list. Each item has a definition of done. Update this file when an item
-lands. Context: the engine currently matches a human master within ~0.4 dB on most bands and
-matches crest/prominence, but it is **too flat** (over-limited to hit exact LUFS at −1 dBTP)
-and **lacks air** above ~11.5 kHz.
+lands. Context at the start of this backlog: the engine matched a human master within ~0.4 dB on
+most bands and matched crest/prominence, but was **too flat** (over-limited to hit exact LUFS at
+−1 dBTP) and **lacked air** above ~11.5 kHz.
 
 ## Status (2026-10-17)
 
 Done: **0** diagnostic (`Docs/DIAGNOSTIC_DAXJ.md`), **1** crest guard + `--no-crest-guard`,
 **2** edge-band shelves, **3** tape HF reduced, **4** third-octave fine EQ (opt-in `--fine-eq`),
 **5** conditional upper-mid dynamic EQ, **6** true per-band correlation, **7** near-mono guard,
-**8** look-ahead limiter. Performance S0–S6 done (~27–32 s per track).
-Remaining: **10** VST shell, plus listening validation of the new defaults.
+**8** look-ahead limiter. Performance S0–S6 done (~27–32 s per track). Also done: dual delivery
+profiles (`--profile soft|loud|both`), **244 green tests**.
+Remaining: wire the Mix Advisor and the chain coordinator, fix the CLI numeric parsing, extend
+Match Intensity coverage, then the **VST shell (Gate 2)** and the validation matrix (Gate 3).
+See `Docs/PROJECT_BRIEF.md` for the consolidated handoff.
+
+## Next (after steps 0-8)
+
+1. **Wire the Mix Advisor into the product.** Call `advise()` from the CLI and the dashboard
+   presenter; show a read-only "Source notes" list (band/feature, action, confidence,
+   "verify by ear"). It must never enter the render chain or gate the master.
+   *Done when:* a real track prints/renders suggestions, identical Source/Reference stays silent,
+   and one fixture per rule (R1-R11) fires only its own rule.
+2. **Wire `ChainCoordinator::coordinate` into `process()`.** It is currently dead code; apply the
+   max-6-proposals / max-12-dB budget before EQ design.
+   *Done when:* the rendered EQ never exceeds the budget and the unit/integration tests hold.
+3. **Fix CLI numeric parsing.** `--intensity` and `--ceiling` currently leave their parsed value
+   in `outputGainDb`; add a regression test. Make `--gain` a true final output trim, separate
+   from loudness targeting (spec section 2.8).
+   *Done when:* `--intensity 0.5` alone leaves the output trim at 0 dB.
+4. **Extend Match Intensity** beyond EQ to the other automatic modules, with module-specific
+   curves (0% neutral, 100% proposal, >100% stronger within bounds).
+5. **Gate 2 — JUCE VST3 shell**, in small buildable steps: minimal pass-through plugin ->
+   decoder/reference workflow -> background analysis -> stateful real-time chain -> dashboard ->
+   Source Notes. Expose `MasterProfile` (soft/loud), fine EQ, tape and crest guard as controls.
+6. **Gate 3 — validation and release:** breadth matrix, pluginval, a real DAW, packaging,
+   licences, release notes.
 
 ## Metric roles (do not drift from this)
 
@@ -25,7 +50,11 @@ Remaining: **10** VST shell, plus listening validation of the new defaults.
   use the same chain and crest guard; only the ceiling differs. Exposed to the VST as one
   `MasterProfile` parameter.
 
-## Immediate (next code session)
+## Delivered backlog steps 0-8, and standing rules
+
+> Steps 0-8 and performance S0-S6 are delivered. Item 10 (VST) is tracked in "Next"; items
+> 11-13 are standing rules. This section is kept so the original definitions of done remain
+> auditable.
 
 0. **Characterise the residual difference first (diagnostic; no DSP changes).**
    The listening notes ("lead slightly louder in mids/highs", "master sounds a bit
