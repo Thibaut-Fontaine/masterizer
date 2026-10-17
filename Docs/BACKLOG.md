@@ -54,27 +54,100 @@ and **lacks air** above ~11.5 kHz.
 
 ## Rendering speed (current: ~18 min for a 4.5-min track)
 
-Target: **≤ 30 s** per track offline (stretch: ≤ 10 s), with identical numerical results
-(within tolerance). Optimize in this order; measure first.
+Target: **≤ 30 s** cold per track (stretch ≤ 10 s warm), with numerical results unchanged
+within tolerance. Hardware-dependent; record the actual machine in the speed log.
 
-- **S0. Profile before optimizing.** Instrument `analyzeSource`, `truePeak`/`enforceTruePeak`,
-  the loudness loop, and file I/O with timers (or `perf`). Add an optional `--timing` flag.
-  *Done when:* we know the top two hotspots in wall-clock terms.
-- **S1. True Peak kernel.** `truePeak()` calls `sin`/`cos` per tap, per phase, per sample
-  (~48 trig calls/sample). Precompute a polyphase kernel table once and use dot products.
-  Likely the dominant cost. *Done when:* same result within 0.01 dB and a large speedup.
-- **S2. Single-pass analysis.** `analyzeSource` currently makes ~8 STFT passes (octave energy,
-  magnitude spectrum, band variation, band transient, resonance, mid/side stereo, …). Compute
-  one FFT per frame and derive all band features from it. *Done when:* one FFT pass and metrics
-  match within tolerance.
-- **S3. Closed-loop tightness.** Cap iterations at 2–3, reuse the final measurement for the
-  report, and avoid the duplicate `analyzeLoudness` in `validateOutput`. *Done when:* the loop
-  costs ≤ 2 full loudness measurements.
-- **S4. Parallelize** independent work (source vs reference analysis, per-channel processing,
-  per-band series) with `std::thread`; keep results deterministic.
-- **S5. Cache reference profiles** (`ProfileCache` / on disk) so repeated renders skip reference
-  analysis. *Done when:* a second run with the same reference is substantially faster.
-- **S6. Resolution policy.** Default analysis hop 1024 (half the frames) after a quality check;
-  document the trade-off.
-- **S7. Release by default.** Ensure the CLI/engine are used in Release; document the
-  Debug-vs-Release factor (the first Debug run was ~15 min vs ~6–7 min Release).
+### Operating rules
+
+- **Measure before optimizing.** No change without a baseline and a measured delta.
+- **One optimization per commit.** Never mix S-steps in a single commit.
+- **Benchmark protocol:** Release build, same input track, same machine/load, **3 runs, take the
+  median** wall-clock. Report the phase breakdown from `--timing`, not just total time.
+- **Regression contract.** Golden metrics from the test track must match after every step:
+  integrated LUFS ±0.05, True Peak ±0.05 dB, crest ±0.1 dB, per-band relative level ±0.1 dB,
+  width ±0.005, per-band correlation ±0.01. Outside that = a behaviour change, not an
+  optimization → stop and investigate before continuing.
+- **Stop rule.** Once ≤ 30 s cold is reached, stop; do not micro-optimize further.
+- **Checkpoint after every step:**
+  1. `ctest --preset linux-release` (all suites green),
+  2. run the benchmark 3× and record the median,
+  3. update the speed log below,
+  4. `git commit` (one step, one commit) + push,
+  5. append a short **self-reflection** to `Docs/REFLECTIONS.md` (template below).
+
+### Reflection template (per step)
+
+> What changed · measured speedup (before → after) · did the regression contract hold? ·
+> what surprised us / what is still a hotspot · next step.
+
+### S0 — Baseline + measurement harness (no optimization)
+
+- Add `--timing` to the CLI: per-phase ms for read, analyze source, analyze reference, process,
+  loudness targeting, validate, write.
+- Save golden outputs for the reference track (`OURS2.wav`) and a metrics snapshot.
+- Record the baseline (3 runs, median) and identify the **top two hotspots**.
+- **Ordering is provisional:** if analysis dominates over `truePeak`, do S2 before S1.
+- → checkpoint.
+
+### S1 — True Peak kernel (expected biggest single win)
+
+`truePeak()` calls `sin`/`cos` per tap, per phase, per sample (~48 trig calls/sample). Precompute
+a polyphase kernel table once and use dot products; consider a shorter kernel.
+**Acceptance:** True Peak identical within 0.01 dB; `truePeak` ≥ 5× faster; total time drops.
+→ checkpoint.
+
+### S2 — Single-pass analysis
+
+`analyzeSource` makes ~8 STFT passes (octave energy, magnitude spectrum, band variation, band
+transient, resonance, mid/side stereo, …). Compute **one FFT per frame** and derive all band
+features from it.
+**Acceptance:** one FFT pass; analysis metrics within tolerance; `analyzeSource` ≥ 3× faster.
+→ checkpoint.
+
+### S3 — Tighten the loudness loop
+
+Cap iterations at 2–3, reuse the final measurement for the report, remove the duplicate
+`analyzeLoudness` in `validateOutput`, and reuse a scratch buffer instead of copying the full
+track per iteration (~95 MB per copy).
+**Acceptance:** LUFS within 0.05; loop costs ≤ 2 full loudness measurements.
+→ checkpoint.
+
+### S4 — Parallelize independent work
+
+Source vs reference analysis, per-channel stage processing, and per-band series via `std::thread`.
+Keep results deterministic (no shared mutable state; fixed reduction order).
+**Acceptance:** regression contract holds; wall-clock scales with cores.
+→ checkpoint.
+
+### S5 — Cache reference profiles
+
+Use `ProfileCache` (and optionally an on-disk cache keyed by `ReferenceKey`) so repeated renders
+skip reference analysis.
+**Acceptance:** warm run with the same reference substantially faster; cache invalidates on
+profile-version change.
+→ checkpoint.
+
+### S6 — Resolution policy (conditional)
+
+Default analysis hop 1024 (half the frames) **only if** the regression contract holds; document
+the accuracy/time trade-off. Skip if not needed.
+→ checkpoint.
+
+### S7 — Release + final validation
+
+Ensure Release is the default for rendering; document the Debug-vs-Release factor (observed
+~15 min vs ~6–7 min). Re-run the full 3-way comparison and the listening checklist.
+→ checkpoint + final reflection.
+
+### Speed log
+
+| Step | Date | Median total | Top phase | Regression | Notes |
+|---|---|---:|---|---|---|
+| baseline | — | ~18 min | — | — | Debug vs Release matters; `OURS2.wav` |
+| S1 | | | | | |
+| S2 | | | | | |
+| S3 | | | | | |
+| S4 | | | | | |
+| S5 | | | | | |
+| S6 | | | | | |
+| S7 | | | | | | |

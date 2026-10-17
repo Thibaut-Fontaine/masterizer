@@ -122,6 +122,10 @@ adds nothing to validation and is the one part that cannot be compiled in the ag
 resolution, the real per-band stereo metric, a near-mono guard, a look-ahead limiter, and
 performance (target ≤ 30 s per track; currently ~18 min). The VST shell comes last.
 
+The speed plan is **S0–S7**, and every step has a mandatory checkpoint: green tests, a 3-run
+median benchmark, one commit, and a short reflection in `Docs/REFLECTIONS.md`. No mixed
+optimizations in one commit; the regression contract in the backlog must hold.
+
 Metric roles are fixed there: **True Peak = hard constraint, LUFS = soft target, crest/LRA =
 guards, width = optional/diagnostic**. Do not drift back to "match every metric".
 
