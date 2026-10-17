@@ -8,18 +8,23 @@ namespace masterizer::domain::state {
 /// Stable parameter identities (strings are reused as the host parameter ids).
 enum class ParameterId {
     MasterEnabled,
+    MasterProfile,
     MatchIntensity,
     TruePeakCeilingDb,
     OutputGainDb,
+    LimiterEnabled,
     EqEnabled,
+    FineEqEnabled,
     MonoBassEnabled,
     SaturationEnabled,
+    TapeEnabled,
     StereoEnabled,
     TransientEnabled,
     GlueEnabled,
     MultibandEnabled,
     DynamicEqEnabled,
     ResonanceEnabled,
+    CrestGuardEnabled,
 };
 
 /// Range and default for one parameter.

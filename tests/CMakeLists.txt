@@ -85,6 +85,7 @@ add_executable(masterizer_tests
     unit/support/StereoTest.cpp
     unit/state/ProfileCacheTest.cpp
     unit/state/ParametersTest.cpp
+    unit/state/ParametersVstTest.cpp
     unit/state/ReferenceKeyOpsTest.cpp
     unit/state/ReferenceManagerTest.cpp)
 
