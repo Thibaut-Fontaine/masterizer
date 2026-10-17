@@ -30,7 +30,7 @@ void printUsage() {
                  "  --delta           also write <output>.delta.wav (processed - source)\n"
                  "  Loudness is targeted toward the reference (up to +12 dB), then limited.\n"
                  "  --<module> / --no-<module>\n"
-                 "      module: eq mono limiter saturation resonance stereo transient\n"
+                 "      module: eq mono limiter saturation tape resonance stereo transient\n"
                  "              glue multiband dynamic-eq\n");
 }
 
@@ -41,6 +41,7 @@ void applyOverrides(masterizer::application::ChainSettings& chain,
         else if (name == "mono") chain.monoBassEnabled = value;
         else if (name == "limiter") chain.limiterEnabled = value;
         else if (name == "saturation") chain.saturationEnabled = value;
+        else if (name == "tape") chain.tapeEnabled = value;
         else if (name == "resonance") chain.resonanceEnabled = value;
         else if (name == "stereo") chain.stereoEnabled = value;
         else if (name == "transient") chain.transientEnabled = value;

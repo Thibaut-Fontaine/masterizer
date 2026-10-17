@@ -8,6 +8,7 @@
 #include "masterizer/domain/dsp/MonoBass.h"
 #include "masterizer/domain/dsp/MultibandCompressor.h"
 #include "masterizer/domain/dsp/Saturator.h"
+#include "masterizer/domain/dsp/TapeStage.h"
 #include "masterizer/domain/dsp/TransientShaper.h"
 #include "masterizer/domain/matching/CorrectionBounds.h"
 #include "masterizer/domain/matching/CorrectionProposal.h"
@@ -23,6 +24,7 @@ struct ChainSettings {
     domain::matching::ResonanceSettings resonance;
     domain::dsp::MonoBassSettings monoBass;
     domain::dsp::SaturationSettings saturation;
+    domain::dsp::TapeSettings tape;
     domain::dsp::TransientShaperSettings transient;
     domain::dsp::CompressorSettings glue;
     domain::dsp::MultibandCompressorSettings multiband;
@@ -34,6 +36,7 @@ struct ChainSettings {
     bool eqEnabled = true;
     bool monoBassEnabled = true;
     bool saturationEnabled = false;
+    bool tapeEnabled = false;
     bool resonanceEnabled = false;
     bool stereoEnabled = false;
     bool transientEnabled = false;

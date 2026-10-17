@@ -8,6 +8,7 @@ add_library(masterizer_core STATIC
     application/DynamicsStages.cpp
     application/OutputValidator.cpp
     application/ProcessingChain.cpp
+    application/TapeStages.cpp
     application/TruePeakGuard.cpp
     domain/analysis/BandDynamics.cpp
     domain/analysis/BandFrames.cpp
@@ -46,6 +47,7 @@ add_library(masterizer_core STATIC
     domain/dsp/Peak.cpp
     domain/dsp/Rms.cpp
     domain/dsp/Saturator.cpp
+    domain/dsp/TapeStage.cpp
     domain/dsp/StereoWidth.cpp
     domain/dsp/TransientShaper.cpp
     domain/dsp/TruePeak.cpp

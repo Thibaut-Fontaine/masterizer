@@ -2,6 +2,7 @@
 
 #include "masterizer/application/ChainStages.h"
 #include "masterizer/application/DynamicsStages.h"
+#include "masterizer/application/TapeStages.h"
 #include "masterizer/domain/matching/MatchingEngine.h"
 #include "masterizer/domain/matching/ProfileDifference.h"
 
@@ -24,6 +25,9 @@ ChainResult process(const domain::audio::AudioBuffer& input,
     }
     if (settings.saturationEnabled) {
         applySaturationStage(result.buffer, settings.saturation);
+    }
+    if (settings.tapeEnabled) {
+        applyTapeToBuffer(result.buffer, settings.tape);
     }
     if (settings.resonanceEnabled) {
         applyResonanceStage(result.buffer, source, settings.resonance);

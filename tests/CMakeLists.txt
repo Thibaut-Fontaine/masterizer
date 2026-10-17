@@ -58,6 +58,7 @@ add_executable(masterizer_tests
     unit/dsp/PeakTest.cpp
     unit/dsp/RmsTest.cpp
     unit/dsp/SaturatorTest.cpp
+    unit/dsp/TapeStageTest.cpp
     unit/dsp/StereoWidthTest.cpp
     unit/dsp/TruePeakTest.cpp
     unit/dsp/TransientShaperTest.cpp

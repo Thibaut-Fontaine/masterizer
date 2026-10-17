@@ -19,6 +19,7 @@ const ModuleFlag kModuleFlags[] = {
     {"--mono", "mono", true},           {"--no-mono", "mono", false},
     {"--limiter", "limiter", true},     {"--no-limiter", "limiter", false},
     {"--saturation", "saturation", true}, {"--no-saturation", "saturation", false},
+    {"--tape", "tape", true},           {"--no-tape", "tape", false},
     {"--resonance", "resonance", true}, {"--no-resonance", "resonance", false},
     {"--stereo", "stereo", true},       {"--no-stereo", "stereo", false},
     {"--transient", "transient", true}, {"--no-transient", "transient", false},

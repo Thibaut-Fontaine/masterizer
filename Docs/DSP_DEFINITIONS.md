@@ -56,5 +56,9 @@ settings. All thresholds in the code are initial values, not calibrated constant
 - **Loudness targeting**: after processing, gain is raised toward the reference integrated LUFS
   (capped at +12 dB by default), then the limiter and True Peak guard apply; any remaining
   difference is reported as a shortfall rather than over-limiting.
+- **Tape stage (opt-in)**: subtle low shelf (~70 Hz head bump) -> soft saturation
+  (level-compensated) -> high shelf (~14 kHz roll-off), with a wet/dry mix. The defaults are
+  deliberately tiny. It is not a physical tape model: no wow/flutter, crosstalk, hiss, bias or
+  tape formulation.
 - **Dynamics planner**: compares per-band variation; enables gentle glue (ratio 1.5-2) and,
   at larger gaps, multiband compression. Release can follow BPM (default 0.25 beat), clamped.

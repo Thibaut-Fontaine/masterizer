@@ -70,7 +70,7 @@ Options:
 --ab              also write a level-matched <output>.ab.wav  (fair A/B comparison)
 --delta           also write <output>.delta.wav  (processed minus source)
 --<module> / --no-<module>
-    modules: eq mono limiter saturation resonance stereo transient glue multiband dynamic-eq
+    modules: eq mono limiter saturation tape resonance stereo transient glue multiband dynamic-eq
 ```
 
 Example output line:
