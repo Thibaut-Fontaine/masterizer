@@ -11,3 +11,7 @@ compile_commands.json
 *.lib
 *.vst3
 .vs/
+
+# User-supplied listening material (large, not tracked)
+/PREMASTER.wav
+/MASTER.wav

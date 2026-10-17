@@ -1,5 +1,6 @@
 #include "masterizer/io/WavFile.h"
 
+#include "masterizer/domain/dsp/Rms.h"
 #include "support/Checks.h"
 #include "support/TestRegistry.h"
 
@@ -50,4 +51,13 @@ TEST_CASE(stereo_wav_round_trips_channel_count) {
 TEST_CASE(reading_a_missing_file_fails_cleanly) {
     AudioBuffer loaded;
     CHECK(!readWav("/nonexistent/does-not-exist.wav", loaded));
+}
+
+TEST_CASE(reads_a_24_bit_pcm_wav) {
+    AudioBuffer buffer;
+    REQUIRE(readWav(std::string(MASTERIZER_FIXTURES_DIR) + "/sine_1k_24.wav", buffer));
+    REQUIRE(buffer.channels.size() == 1u);
+    CHECK_NEAR(buffer.sampleRate, 48000.0, 1e-9);
+    CHECK(buffer.channels[0].size() == 12000u);
+    CHECK_NEAR(masterizer::domain::dsp::rms(buffer.channels[0].data(), 12000), 0.3536, 0.01);
 }

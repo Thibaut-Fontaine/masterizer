@@ -43,6 +43,15 @@ bool locate(const std::vector<unsigned char>& bytes, WavFormat& format, const un
             format.channels = readU16(bytes.data() + pos + 2);
             format.sampleRate = readU32(bytes.data() + pos + 4);
             format.bits = readU16(bytes.data() + pos + 14);
+            if (format.audioFormat == 0xFFFEu && size >= 40u) {
+                // WAVE_FORMAT_EXTENSIBLE: the real format tag is the first field
+                // of the SubFormat GUID; validBits overrides the container size.
+                format.audioFormat = readU16(bytes.data() + pos + 24);
+                const std::uint16_t validBits = readU16(bytes.data() + pos + 18);
+                if (validBits != 0u) {
+                    format.bits = validBits;
+                }
+            }
         } else if (std::memcmp(id, "data", 4) == 0) {
             data = bytes.data() + pos;
             dataSize = size;
@@ -53,8 +62,7 @@ bool locate(const std::vector<unsigned char>& bytes, WavFormat& format, const un
 }
 
 void fillChannels(const unsigned char* data, std::uint32_t dataSize, const WavFormat& format,
-                  bool isFloat, domain::audio::AudioBuffer& out) {
-    const int bytesPerSample = isFloat ? 4 : 2;
+                  int bytesPerSample, bool isFloat, domain::audio::AudioBuffer& out) {
     const std::uint32_t frames =
         dataSize / (static_cast<std::uint32_t>(bytesPerSample) * format.channels);
     out.channels.assign(format.channels, std::vector<float>(frames, 0.0f));
@@ -67,6 +75,8 @@ void fillChannels(const unsigned char* data, std::uint32_t dataSize, const WavFo
             float value = 0.0f;
             if (isFloat) {
                 std::memcpy(&value, data + offset, sizeof(float));
+            } else if (bytesPerSample == 3) {
+                value = static_cast<float>(readS24(data + offset)) / 8388608.0f;
             } else {
                 value = static_cast<float>(static_cast<std::int16_t>(readU16(data + offset))) /
                         32768.0f;
@@ -93,10 +103,12 @@ bool readWav(const std::string& path, domain::audio::AudioBuffer& out) {
     }
     const bool isFloat = format.audioFormat == 3u && format.bits == 32u;
     const bool isPcm16 = format.audioFormat == 1u && format.bits == 16u;
-    if (!isFloat && !isPcm16) {
+    const bool isPcm24 = format.audioFormat == 1u && format.bits == 24u;
+    if (!isFloat && !isPcm16 && !isPcm24) {
         return false;
     }
-    fillChannels(data, dataSize, format, isFloat, out);
+    const int bytesPerSample = isFloat ? 4 : (isPcm24 ? 3 : 2);
+    fillChannels(data, dataSize, format, bytesPerSample, isFloat, out);
     return true;
 }
 
