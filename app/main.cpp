@@ -2,9 +2,11 @@
 #include "masterizer/application/MasterProfile.h"
 #include "masterizer/application/ProcessingChain.h"
 #include "masterizer/application/Render.h"
+#include "masterizer/application/SourceNotes.h"
 #include "masterizer/domain/analysis/SourceAnalyzer.h"
 #include "masterizer/domain/audio/AudioBuffer.h"
 #include "masterizer/domain/matching/DynamicsPlanner.h"
+#include "masterizer/domain/matching/MixAdvisor.h"
 #include "masterizer/domain/matching/StereoGuard.h"
 #include "masterizer/io/AudioFile.h"
 
@@ -102,6 +104,13 @@ int main(int argc, char** argv) {
     const ana::AnalysisProfile referenceProfile = referenceFuture.get();
     const ana::AnalysisProfile sourceProfile = sourceFuture.get();
     const Clock::time_point tAnalyze = Clock::now();
+
+    const mat::MixFeedback feedback =
+        mat::adviseFeedback(sourceProfile, referenceProfile, mat::AdvisorRuleset{});
+    const std::string sourceNotes = app::sourceNotesBlock(feedback.suggestions);
+    if (!sourceNotes.empty()) {
+        std::printf("%s", sourceNotes.c_str());
+    }
 
     app::ChainSettings chain;
     chain.matchIntensity = options.matchIntensity;

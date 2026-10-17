@@ -94,6 +94,7 @@ DashboardModel buildDashboard(const DashboardInput& input) {
     model.matchIntensity = input.matchIntensity;
     model.abMonitoring = input.abMonitoring;
     model.deltaMonitoring = input.deltaMonitoring;
+    model.suggestions = input.suggestions;
     model.warnings = buildWarnings(input);
     return model;
 }

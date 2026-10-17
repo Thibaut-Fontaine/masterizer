@@ -9,11 +9,23 @@
 
 namespace masterizer::domain::matching {
 
+/// One advisor run: the ruleset version plus the suggestions it produced.
+struct MixFeedback {
+    int rulesetVersion = 0;
+    std::vector<MixSuggestion> suggestions;
+};
+
 /// Produces source-level suggestions from a Source/Reference profile pair.
 /// Deterministic, bounded, off-thread, and never part of the render chain.
 std::vector<MixSuggestion> advise(const analysis::AnalysisProfile& source,
                                   const analysis::AnalysisProfile& reference,
                                   const AdvisorRuleset& rules);
+
+/// Same as `advise`, but also stamps the ruleset version on the result and on
+/// every suggestion. Use this at the product boundary.
+MixFeedback adviseFeedback(const analysis::AnalysisProfile& source,
+                           const analysis::AnalysisProfile& reference,
+                           const AdvisorRuleset& rules);
 
 // Rules R1..R11. Each returns true and fills `out` when it fires.
 bool ruleLowEndPunch(const RuleContext& context, MixSuggestion& out);

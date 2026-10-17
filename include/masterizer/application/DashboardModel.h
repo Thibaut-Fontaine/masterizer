@@ -3,6 +3,7 @@
 #include "masterizer/application/OutputValidator.h"
 #include "masterizer/domain/analysis/AnalysisProfile.h"
 #include "masterizer/domain/matching/CorrectionProposal.h"
+#include "masterizer/domain/matching/MixSuggestion.h"
 #include "masterizer/domain/state/ReferenceStatus.h"
 
 #include <string>
@@ -30,6 +31,7 @@ struct DashboardModel {
     double matchIntensity = 1.0;
     bool abMonitoring = false;
     bool deltaMonitoring = false;
+    std::vector<domain::matching::MixSuggestion> suggestions;
     std::vector<std::string> warnings;
 };
 
@@ -44,6 +46,7 @@ struct DashboardInput {
     double matchIntensity = 1.0;
     bool abMonitoring = false;
     bool deltaMonitoring = false;
+    std::vector<domain::matching::MixSuggestion> suggestions;
 };
 
 /// Builds the view model. Pure and deterministic.

@@ -28,6 +28,7 @@ struct MixSuggestion {
     std::string confidence;  // "low" | "medium" | "high"
     bool masterFixable = true;
     std::string reasonCode;
+    int rulesetVersion = 0;  // stamped by advise() so advice is traceable
 };
 
 }  // namespace masterizer::domain::matching

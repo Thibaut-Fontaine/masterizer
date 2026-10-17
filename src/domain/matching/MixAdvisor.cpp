@@ -19,16 +19,24 @@ std::vector<RuleFunction> defaultRules() {
 std::vector<MixSuggestion> advise(const analysis::AnalysisProfile& source,
                                   const analysis::AnalysisProfile& reference,
                                   const AdvisorRuleset& rules) {
+    return adviseFeedback(source, reference, rules).suggestions;
+}
+
+MixFeedback adviseFeedback(const analysis::AnalysisProfile& source,
+                           const analysis::AnalysisProfile& reference,
+                           const AdvisorRuleset& rules) {
     const ProfileDifference difference = compareProfiles(source, reference);
     const RuleContext context{source, reference, difference, rules};
-    std::vector<MixSuggestion> suggestions;
+    MixFeedback feedback;
+    feedback.rulesetVersion = rules.version;
     for (RuleFunction rule : defaultRules()) {
         MixSuggestion suggestion;
         if (rule(context, suggestion)) {
-            suggestions.push_back(suggestion);
+            suggestion.rulesetVersion = rules.version;
+            feedback.suggestions.push_back(suggestion);
         }
     }
-    return suggestions;
+    return feedback;
 }
 
 }  // namespace masterizer::domain::matching

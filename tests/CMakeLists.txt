@@ -38,6 +38,8 @@ add_executable(masterizer_tests
     unit/application/MasterProfileTest.cpp
     unit/application/CliProfileTest.cpp
     unit/application/MonitoringControllerTest.cpp
+    unit/application/SourceNotesTest.cpp
+    unit/application/DashboardSuggestionsTest.cpp
     unit/audio/AudioBufferOpsTest.cpp
     unit/common/OctaveBandsTest.cpp
     unit/dsp/BiquadTest.cpp
@@ -72,6 +74,7 @@ add_executable(masterizer_tests
     unit/matching/MatchingEngineTest.cpp
     unit/matching/MatchIntensityTest.cpp
     unit/matching/MixAdvisorTest.cpp
+    unit/matching/MixFeedbackTest.cpp
     unit/matching/ProfileDifferenceTest.cpp
     unit/matching/ResonanceDetectorTest.cpp
     unit/matching/StereoGuardTest.cpp

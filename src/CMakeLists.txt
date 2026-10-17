@@ -11,6 +11,7 @@ add_library(masterizer_core STATIC
     application/OutputValidator.cpp
     application/ProcessingChain.cpp
     application/Render.cpp
+    application/SourceNotes.cpp
     application/TapeStages.cpp
     application/TruePeakGuard.cpp
     domain/analysis/BandDynamics.cpp
