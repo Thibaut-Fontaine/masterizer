@@ -15,6 +15,27 @@ and **lacks air** above ~11.5 kHz.
 
 ## Immediate (next code session)
 
+0. **Characterise the residual difference first (diagnostic; no DSP changes).**
+   The listening notes ("lead slightly louder in mids/highs", "master sounds a bit
+   saturated/harsher", "not very clear") could be saturation/exciter, static EQ air, dynamic
+   upper-mid control, or limiter attack behaviour. Measure before choosing.
+   - **Section-wise analysis:** split the track into ~8–16 s windows (or detected sections) and
+     compute per-band relative level, width, variation and transient density for PRE, MASTER and
+     OURS. Find the sections where the lead is exposed; check whether the band difference flips
+     by section (→ dynamic EQ/multiband) or is constant (→ static EQ).
+   - **Harmonic analysis:** pick 2–3 sustained lead notes; compare the spectrum *between* the
+     fundamental's partials in PRE vs MASTER at matched gain; estimate inter-harmonic energy/THD.
+     Extra inter-harmonic energy → saturation/exciter; a smooth tilt → EQ.
+   - **Attack-envelope comparison:** detect lead/kick onsets and compare attack slope/envelope.
+     Sharper master attacks → limiter behaviour, not harmonics.
+   - **Level-matched delta:** render MASTER − PREMASTER at equal loudness; classify the residual
+     as fizz/edge (harmonics), smooth tilt (EQ), transient reshaping (limiter), or movement
+     (dynamics).
+   - **Output:** a short written diagnosis (numbers + ranked likely causes + confidence) and a
+     decision on which of items 1–8 to prioritise. Save it under `Docs/`.
+   *Done when:* the diagnostic report exists and the next item is chosen from evidence, not
+   impression.
+
 1. **Dynamics guard in loudness targeting.**
    Stop the closed loop when crest is more than ~0.5 dB below the reference (or approx LRA
    ~0.5 LU tighter); accept a small shortfall. Addresses "ours sounds flatter than the master".

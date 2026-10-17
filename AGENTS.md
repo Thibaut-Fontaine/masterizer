@@ -117,10 +117,12 @@ adds nothing to validation and is the one part that cannot be compiled in the ag
 
 ## Current backlog
 
-`Docs/BACKLOG.md` is the live todo list. Immediate: **1)** dynamics guard in loudness targeting,
-**2)** edge-band shelves (VHigh air, Sub), **3)** reduce the tape's HF roll-off. Then EQ
-resolution, the real per-band stereo metric, a near-mono guard, a look-ahead limiter, and
-performance (target ≤ 30 s per track; currently ~18 min). The VST shell comes last.
+`Docs/BACKLOG.md` is the live todo list. **First: step 0 — characterise the residual difference**
+(section-wise bands, inter-harmonic/THD analysis on sustained lead notes, attack-envelope and
+level-matched delta) before changing any DSP. Then the immediate items: **1)** dynamics guard in
+loudness targeting, **2)** edge-band shelves (VHigh air, Sub), **3)** reduce the tape's HF
+roll-off. Then EQ resolution, the real per-band stereo metric, a near-mono guard, a look-ahead
+limiter, and performance. The VST shell comes last.
 
 The speed plan is **S0–S7**, and every step has a mandatory checkpoint: green tests, a 3-run
 median benchmark, one commit, and a short reflection in `Docs/REFLECTIONS.md`. No mixed
