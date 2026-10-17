@@ -31,8 +31,10 @@ The pre-VST foundation is delivered:
 Remaining, in order:
 
 1. **Gate 2 — JUCE VST3 shell**, in small buildable steps: minimal pass-through plugin ->
-   decoder/reference workflow -> background analysis -> plan handoff -> dashboard ->
-   Source Notes. Expose `MasterProfile` (soft/loud), fine EQ, tape and crest guard as controls.
+   decoder/reference workflow -> background analysis -> plan handoff -> simple dashboard ->
+   Source Notes. The ordered checklist, UI sketch and acceptance criteria live in
+   `Docs/VST_TODO.md`. Expose `MasterProfile` (soft/loud), fine EQ, tape and crest guard as
+   controls.
 2. **Extend Match Intensity** beyond EQ to the other automatic modules, with module-specific
    curves. This changes the sound, so it needs a listening decision.
 3. **Gate 3 — validation and release:** breadth matrix, pluginval, a real DAW, packaging,

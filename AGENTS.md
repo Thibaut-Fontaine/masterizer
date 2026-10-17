@@ -31,6 +31,10 @@ Mix Advisor status and VST plan.
 - `Docs/ROADMAP.md` — the required implementation order (22 steps / stages 0–10).
   Build **one buildable step at a time**; each step must build and be verifiable
   before the next. Do not implement the full chain in one pass.
+- `Docs/VST_TODO.md` — Gate 2 checklist: JUCE build plumbing, pass-through shell, reference
+  workflow, capture, plan handoff, simple UI, A/B/Delta, True Peak, validation, packaging.
+- `Docs/REALTIME_PLAN.md` — threading, source capture, immutable plan handoff, latency and
+  True Peak design for the plugin.
 
 ## Locked technical decisions
 

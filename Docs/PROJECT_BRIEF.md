@@ -446,6 +446,9 @@ Build plan:
   Windows/MSVC or CI.
 - All plugin files still obey ≤5 functions, ≤60 lines/function, ≤110 columns.
 
+The ordered checklist, simple-UI sketch and per-milestone acceptance criteria live in
+`Docs/VST_TODO.md`.
+
 ---
 
 ## 9. Work state (checkpoint, reconciled)
