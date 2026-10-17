@@ -227,5 +227,18 @@ vouch for how it sounds. That judgement is entirely still ahead.
 - **Next:** extend the domain parameter model for the VST (profile, fine EQ, tape, crest guard),
   then the dashboard presenter.
 
+## Pre-VST step 3 — VST-facing parameter ids
+
+- **What changed:** `ParameterId` now includes `MasterProfile` (0 = soft, 1 = loud),
+  `FineEqEnabled`, `TapeEnabled`, `LimiterEnabled` and `CrestGuardEnabled`, with stable string
+  ids and ranges. Defaults follow the approved CLI sound: tape on, fine EQ off, limiter and crest
+  guard on.
+- **Verified:** 255 cases and all 4 suites pass. No DSP, chain, targeting or render code changed.
+- **What is weak:** the enum is now the plugin's parameter vocabulary, but there is still no
+  mapping from parameters to `ChainSettings` — that belongs to the plugin adapter. The soft/loud
+  value is deliberately a 0/1 parameter; the adapter maps it to `MasterProfile`.
+- **Next:** extend `DashboardModel` with the fields the editor needs (profile, per-module
+  activity, proposal confidence, suggestions).
+
 
 
