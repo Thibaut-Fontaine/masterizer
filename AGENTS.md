@@ -115,6 +115,16 @@ Work only the earliest unmet gate; never build a later gate while an earlier one
 Do NOT start JUCE before Gate 1 passes: the CLI already makes the engine audible, so a plugin
 adds nothing to validation and is the one part that cannot be compiled in the agent sandbox.
 
+## Current backlog
+
+`Docs/BACKLOG.md` is the live todo list. Immediate: **1)** dynamics guard in loudness targeting,
+**2)** edge-band shelves (VHigh air, Sub), **3)** reduce the tape's HF roll-off. Then EQ
+resolution, the real per-band stereo metric, a near-mono guard, a look-ahead limiter, and
+performance (target ≤ 30 s per track; currently ~18 min). The VST shell comes last.
+
+Metric roles are fixed there: **True Peak = hard constraint, LUFS = soft target, crest/LRA =
+guards, width = optional/diagnostic**. Do not drift back to "match every metric".
+
 ## Working conventions
 - **Show the proposed file/folder structure and plan before starting a new area, and wait
   for approval** — do not begin a restructure unprompted.
