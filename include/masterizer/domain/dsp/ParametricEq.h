@@ -6,11 +6,19 @@
 
 namespace masterizer::domain::dsp {
 
-/// One peaking-EQ band.
+/// Shape of an EQ band.
+enum class EqShape {
+    Peaking,
+    LowShelf,
+    HighShelf,
+};
+
+/// One EQ band.
 struct EqBand {
     double frequencyHz;
     double q;
     double gainDb;
+    EqShape shape = EqShape::Peaking;
 };
 
 /// RBJ cookbook peaking-EQ coefficients, normalised so a0 = 1.

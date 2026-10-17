@@ -34,3 +34,18 @@ TEST_CASE(a_six_db_boost_doubles_the_band_rms) {
     const double after = rms(data.data(), 48000);
     CHECK_NEAR(after / before, 1.995, 0.05);
 }
+
+TEST_CASE(shelves_lift_lows_and_tame_highs) {
+    namespace dsp = masterizer::domain::dsp;
+    auto low = sine(48000, 40.0, 48000.0, 0.3f);
+    const double lowBefore = rms(low.data(), 48000);
+    applyEqBands(low.data(), 48000, 48000.0,
+                 {dsp::EqBand{80.0, 0.707, 6.0, dsp::EqShape::LowShelf}});
+    CHECK(rms(low.data(), 48000) > 1.5 * lowBefore);
+
+    auto high = sine(48000, 16000.0, 48000.0, 0.3f);
+    const double highBefore = rms(high.data(), 48000);
+    applyEqBands(high.data(), 48000, 48000.0,
+                 {dsp::EqBand{12000.0, 0.707, -6.0, dsp::EqShape::HighShelf}});
+    CHECK(rms(high.data(), 48000) < 0.6 * highBefore);
+}

@@ -47,6 +47,7 @@ add_library(masterizer_core STATIC
     domain/dsp/Peak.cpp
     domain/dsp/Rms.cpp
     domain/dsp/Saturator.cpp
+    domain/dsp/ShelfDesign.cpp
     domain/dsp/TapeStage.cpp
     domain/dsp/StereoWidth.cpp
     domain/dsp/TransientShaper.cpp

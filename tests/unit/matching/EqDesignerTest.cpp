@@ -36,3 +36,12 @@ TEST_CASE(design_eq_ignores_non_eq_and_invalid_proposals) {
     const auto bands = designEq({nonEq, eqProposal(-1, 4.0)});
     CHECK(bands.empty());
 }
+
+TEST_CASE(design_eq_uses_shelves_for_the_edge_bands) {
+    const auto bands = designEq({eqProposal(0, 2.0), eqProposal(9, 1.5)});
+    CHECK(bands.size() == 2u);
+    CHECK(bands[0].shape == masterizer::domain::dsp::EqShape::LowShelf);
+    CHECK(bands[0].frequencyHz < 100.0);
+    CHECK(bands[1].shape == masterizer::domain::dsp::EqShape::HighShelf);
+    CHECK(bands[1].frequencyHz > 10000.0);
+}

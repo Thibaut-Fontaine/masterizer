@@ -1,5 +1,7 @@
 #include "masterizer/domain/dsp/ParametricEq.h"
 
+#include "masterizer/domain/dsp/ShelfDesign.h"
+
 #include <cmath>
 #include <vector>
 
@@ -7,6 +9,18 @@ namespace masterizer::domain::dsp {
 namespace {
 
 constexpr double kPi = 3.14159265358979323846;
+
+BiquadCoefficients coefficientsFor(const EqBand& band, double sampleRate) {
+    switch (band.shape) {
+        case EqShape::LowShelf:
+            return lowShelfCoefficients(sampleRate, band.frequencyHz, band.q, band.gainDb);
+        case EqShape::HighShelf:
+            return highShelfCoefficients(sampleRate, band.frequencyHz, band.q, band.gainDb);
+        case EqShape::Peaking:
+            break;
+    }
+    return peakingEqCoefficients(sampleRate, band.frequencyHz, band.q, band.gainDb);
+}
 
 }  // namespace
 
@@ -27,8 +41,7 @@ BiquadCoefficients peakingEqCoefficients(double sampleRate, double frequencyHz, 
 void applyEqBands(float* samples, int count, double sampleRate,
                   const std::vector<EqBand>& bands) {
     for (const EqBand& band : bands) {
-        const BiquadCoefficients coefficients =
-            peakingEqCoefficients(sampleRate, band.frequencyHz, band.q, band.gainDb);
+        const BiquadCoefficients coefficients = coefficientsFor(band, sampleRate);
         BiquadState state;
         for (int i = 0; i < count; ++i) {
             samples[i] = static_cast<float>(
