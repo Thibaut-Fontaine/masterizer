@@ -134,7 +134,7 @@ int main(int argc, char** argv) {
     chain.glue = dynamics.glue;
     chain.multibandEnabled = dynamics.multibandEnabled;
     chain.tapeEnabled = true;  // very subtle tape at the end, toggle with --no-tape
-    chain.tape = {1.0, 0.4, -0.4, 0.6};
+    chain.tape = {1.0, 0.4, -0.1, 0.5};
     applyOverrides(chain, options);
 
     const bool limiterEnabled = chain.limiterEnabled;
