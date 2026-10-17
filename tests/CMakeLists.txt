@@ -48,6 +48,11 @@ add_executable(masterizer_tests
     unit/dsp/BpmReleaseTest.cpp
     unit/dsp/CorrelationTest.cpp
     unit/dsp/CompressorTest.cpp
+    unit/dsp/StatefulDynamicsTest.cpp
+    unit/dsp/StatefulFiltersTest.cpp
+    unit/dsp/StatefulLimiterTest.cpp
+    unit/dsp/StatefulModulationTest.cpp
+    unit/dsp/StatefulMultibandTest.cpp
     unit/dsp/CrestFactorTest.cpp
     unit/dsp/DynamicEqTest.cpp
     unit/dsp/FftTest.cpp

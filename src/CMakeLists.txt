@@ -34,9 +34,12 @@ add_library(masterizer_core STATIC
     domain/dsp/Biquad.cpp
     domain/dsp/BpmRelease.cpp
     domain/dsp/Compressor.cpp
+    domain/dsp/CompressorProcessor.cpp
     domain/dsp/Correlation.cpp
     domain/dsp/CrestFactor.cpp
     domain/dsp/DynamicEq.cpp
+    domain/dsp/DynamicEqProcessor.cpp
+    domain/dsp/EqProcessor.cpp
     domain/dsp/Fft.cpp
     domain/dsp/FilterDesign.cpp
     domain/dsp/Finite.cpp
@@ -45,17 +48,22 @@ add_library(masterizer_core STATIC
     domain/dsp/KWeighting.cpp
     domain/dsp/Limiter.cpp
     domain/dsp/LookaheadLimiter.cpp
+    domain/dsp/LookaheadProcessor.cpp
     domain/dsp/MidSide.cpp
     domain/dsp/MonoBass.cpp
+    domain/dsp/MonoBassProcessor.cpp
     domain/dsp/MultibandCompressor.cpp
+    domain/dsp/MultibandProcessor.cpp
     domain/dsp/ParametricEq.cpp
     domain/dsp/Peak.cpp
     domain/dsp/Rms.cpp
     domain/dsp/Saturator.cpp
     domain/dsp/ShelfDesign.cpp
     domain/dsp/TapeStage.cpp
+    domain/dsp/TapeProcessor.cpp
     domain/dsp/StereoWidth.cpp
     domain/dsp/TransientShaper.cpp
+    domain/dsp/TransientProcessor.cpp
     domain/dsp/TruePeak.cpp
     domain/matching/EqDesigner.cpp
     domain/matching/ChainCoordinator.cpp
