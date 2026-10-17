@@ -9,7 +9,8 @@ that a target cannot be reached safely.
 See `AGENTS.md` for working rules and `Docs/PRODUCT_SPEC.md` / `Docs/ROADMAP.md`
 for the binding requirements and implementation order. `Docs/PROJECT_BRIEF.md` is the
 consolidated handoff: current state, the full mastering pipeline, CLI reference, Mix
-Advisor status and the VST plan.
+Advisor status and the VST plan. `Docs/REALTIME_PLAN.md` covers the real-time
+threading, capture and handoff design.
 
 ## Architecture (layered MVC + Ports & Adapters)
 

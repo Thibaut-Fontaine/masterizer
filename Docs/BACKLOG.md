@@ -11,32 +11,36 @@ Done: **0** diagnostic (`Docs/DIAGNOSTIC_DAXJ.md`), **1** crest guard + `--no-cr
 **2** edge-band shelves, **3** tape HF reduced, **4** third-octave fine EQ (opt-in `--fine-eq`),
 **5** conditional upper-mid dynamic EQ, **6** true per-band correlation, **7** near-mono guard,
 **8** look-ahead limiter. Performance S0–S6 done (~27–32 s per track). Also done: dual delivery
-profiles (`--profile soft|loud|both`), **244 green tests**.
-Remaining: wire the Mix Advisor and the chain coordinator, fix the CLI numeric parsing, extend
-Match Intensity coverage, then the **VST shell (Gate 2)** and the validation matrix (Gate 3).
-See `Docs/PROJECT_BRIEF.md` for the consolidated handoff.
+profiles (`--profile soft|loud|both`), **278 green tests**, and the pre-VST foundation
+(Mix Advisor Source Notes, CLI parsing fix, VST parameter ids, dashboard fields, stateful block
+processors, `RealtimeChain`, real-time handoff plan).
+Next: the **VST shell (Gate 2)**, then Match Intensity coverage and the validation matrix
+(Gate 3). See `Docs/PROJECT_BRIEF.md` and `Docs/REALTIME_PLAN.md`.
 
 ## Next (after steps 0-8)
 
-1. **Wire the Mix Advisor into the product.** Call `advise()` from the CLI and the dashboard
-   presenter; show a read-only "Source notes" list (band/feature, action, confidence,
-   "verify by ear"). It must never enter the render chain or gate the master.
-   *Done when:* a real track prints/renders suggestions, identical Source/Reference stays silent,
-   and one fixture per rule (R1-R11) fires only its own rule.
-2. **Wire `ChainCoordinator::coordinate` into `process()`.** It is currently dead code; apply the
-   max-6-proposals / max-12-dB budget before EQ design.
-   *Done when:* the rendered EQ never exceeds the budget and the unit/integration tests hold.
-3. **Fix CLI numeric parsing.** `--intensity` and `--ceiling` currently leave their parsed value
-   in `outputGainDb`; add a regression test. Make `--gain` a true final output trim, separate
-   from loudness targeting (spec section 2.8).
-   *Done when:* `--intensity 0.5` alone leaves the output trim at 0 dB.
-4. **Extend Match Intensity** beyond EQ to the other automatic modules, with module-specific
-   curves (0% neutral, 100% proposal, >100% stronger within bounds).
-5. **Gate 2 — JUCE VST3 shell**, in small buildable steps: minimal pass-through plugin ->
-   decoder/reference workflow -> background analysis -> stateful real-time chain -> dashboard ->
+The pre-VST foundation is delivered:
+
+- Mix Advisor wired as read-only Source Notes (CLI + dashboard presenter).
+- CLI numeric-flag leak fixed (`--intensity`/`--ceiling` no longer change `outputGainDb`).
+- VST-facing parameter ids (`MasterProfile`, fine EQ, tape, limiter, crest guard).
+- Dashboard fields for profile, confidence and module activity.
+- Stateful block processors + `RealtimeChain` (block-size independent, latency reported).
+- Real-time threading/capture/handoff design in `Docs/REALTIME_PLAN.md`.
+
+Remaining, in order:
+
+1. **Gate 2 — JUCE VST3 shell**, in small buildable steps: minimal pass-through plugin ->
+   decoder/reference workflow -> background analysis -> plan handoff -> dashboard ->
    Source Notes. Expose `MasterProfile` (soft/loud), fine EQ, tape and crest guard as controls.
-6. **Gate 3 — validation and release:** breadth matrix, pluginval, a real DAW, packaging,
+2. **Extend Match Intensity** beyond EQ to the other automatic modules, with module-specific
+   curves. This changes the sound, so it needs a listening decision.
+3. **Gate 3 — validation and release:** breadth matrix, pluginval, a real DAW, packaging,
    licences, release notes.
+4. **Section analysis** (roadmap Step 9) remains deferred with a concrete test plan.
+
+`ChainCoordinator` and a true final output trim are deliberately **not** wired: both would change
+the approved master. Treat them as sound decisions, not refactors.
 
 ## Metric roles (do not drift from this)
 

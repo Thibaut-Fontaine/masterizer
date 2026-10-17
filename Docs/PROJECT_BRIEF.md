@@ -10,13 +10,15 @@ Last updated: 2026-10-17.
 
 - Core engine, offline CLI and UI logic are complete and tuned on one real pair
   (`PREMASTER.wav` → `MASTER.wav`).
-- **244 test cases**, 4 CTest suites (`unit`, `style_rules`, `includes`, `portability`).
+- **278 test cases**, 4 CTest suites (`unit`, `style_rules`, `includes`, `portability`).
 - Backlog steps 0–8 are done, plus soft/loud delivery profiles
   (`--profile soft|loud|both`).
 - Performance: ~27–35 s per 4.5-minute track for one profile; ~45 s for both.
-- **The Mix Advisor (R1–R11) is implemented and unit-tested but not wired into the
-  CLI or any UI.** This is the original "fix the mix before mastering" feature and
-  is the first wiring job for the VST.
+- **The Mix Advisor (R1–R11) is now surfaced as read-only Source Notes** in the CLI and
+  carried by the dashboard presenter. This is the original "fix the mix before mastering"
+  feature. The editor rendering is still to come.
+- **The pre-VST foundation is complete:** stateful block processors, `RealtimeChain`, the
+  VST-facing parameter ids, dashboard fields and `Docs/REALTIME_PLAN.md`.
 - **No plugin code exists yet.** `src/plugin/` does not exist and JUCE is not in the
   build. JUCE 8.0.15 is pinned; the VST3 shell is the next major work (Gate 2).
 - Gate 1 was signed off by the user's listening verdict on the real pair
@@ -309,12 +311,12 @@ cannot identify instruments, so every suggestion is hedged:
 
 ### Current status and gaps
 
-- **`advise()` is only called from its unit tests.** It is not called by the CLI,
-  not in the render chain, and not shown anywhere.
+- **`advise()` is now called by the CLI and carried by the dashboard presenter.** The
+  editor still has to render the list; there is no JUCE code yet.
 - Tests cover identical profiles, R3, R5, R7 and R11; there is no fixture per rule.
-- `MixSuggestion` is missing `actionTemplateId` and `rulesetVersion`; action text is
-  hard-coded in the rules instead of rendered from `reasonCode`.
-- There is no `MixFeedback { rulesetVersion, suggestions[] }` wrapper.
+- `MixSuggestion` now carries `rulesetVersion`, and `adviseFeedback()` provides the
+  `MixFeedback { rulesetVersion, suggestions[] }` wrapper. `actionTemplateId` is still
+  absent; action text is hard-coded in the rules.
 - There is no cap/de-duplication pass across rules.
 - The spec requires a read-only "Source notes" list with plain-text export, showing
   the band/feature, plain-language action, confidence and "verify by ear".
@@ -359,18 +361,25 @@ block-based path and background analysis.
 
 ### 8.4 Real-time chain
 
-- The current DSP functions create filter/envelope state **inside each call**
-  (`applyEqBands`, `applyCompressor`, `applyDynamicEqBand`, `applyTapeStage`,
-  `applyMonoBass`, look-ahead limiter). Calling them per block would reset state
-  every block → clicks/discontinuities.
-- Therefore the VST needs **stateful block processors** (or a `RealtimeChain`
-  owning persistent biquad/compressor/limiter state), with the same DSP formulas,
-  tested block-size-independently.
+- The **offline** DSP functions create filter/envelope state **inside each call**. They
+  are correct for the CLI but would reset state if called per host block.
+- The **stateful processors now exist** (`EqProcessor`, `MonoBassProcessor`,
+  `CompressorProcessor`, `TransientProcessor`, `DynamicEqProcessor`, `TapeProcessor`,
+  `MultibandProcessor`, `LookaheadProcessor`), and `RealtimeChain` assembles them in the
+  offline module order with per-channel state.
+- `RealtimeChain` is block-size independent, allocates in construction (not in
+  `process`), applies gain before the look-ahead limiter, and reports latency.
+- The plugin still has to build the plan (bands + gain) from the analysis, hand it to
+  the audio thread, and crossfade/rebuild safely when it changes.
 - Loudness targeting cannot be a closed loop over the future in real time. Natural
   VST design: during analysis, compute the required gain + chain settings; then
   apply a fixed gain and a real-time look-ahead limiter at the chosen ceiling.
   Show achieved LUFS/shortfall as a meter. True two-pass limiting is not
   universally available in VST3.
+- **True Peak gap:** `LookaheadProcessor` limits sample peak. The offline path has a
+  4× oversampled True Peak guard. Before release, either oversample the limiter
+  detector or add a final True Peak safety stage; do not label the sample-peak ceiling
+  as True Peak until then.
 
 ### 8.5 Monitoring
 
@@ -393,14 +402,18 @@ block-based path and background analysis.
 
 ### 8.7 Wiring gaps to fix while building the VST
 
-1. Wire `advise()` into the CLI/dashboard (it is dead code today).
-2. Wire `ChainCoordinator::coordinate` into `process()` (currently dead code).
-3. Fix the CLI numeric-flag parsing bug (`--intensity`/`--ceiling` leak into
-   `outputGainDb`).
-4. Make output gain a true final trim, separate from loudness targeting.
-5. Make Match Intensity scale the other modules, not just EQ.
-6. Add stateful block processors for the real-time chain.
-7. Consider section analysis (roadmap Step 9) — still absent.
+1. ~~Wire `advise()` into the CLI/dashboard~~ — **done** (Source Notes).
+2. Wire `ChainCoordinator::coordinate` into `process()` — **deliberately deferred**; it
+   would change the approved master.
+3. ~~Fix the CLI numeric-flag leak~~ — **done** (`--intensity`/`--ceiling` no longer leak
+   into `outputGainDb`).
+4. Make output gain a true final trim, separate from loudness targeting — **pending**;
+   it changes the approved master, so it needs an explicit decision.
+5. Make Match Intensity scale the other modules, not just EQ — **pending**; it changes
+   the sound and needs listening validation.
+6. ~~Add stateful block processors for the real-time chain~~ — **done**
+   (`RealtimeChain`).
+7. Consider section analysis (roadmap Step 9) — still absent; deferred with a plan.
 8. Add 24-bit/32-float WAV export at some point (currently 16-bit only).
 9. Stereo-link the dynamics modules (currently per-channel, image-shift risk).
 10. Use `ChainReporter` and `OutputValidator` in the production path (currently only
@@ -456,7 +469,10 @@ Build plan:
   - 8 look-ahead limiter
 - HF gap fixed: 7.9 kHz +1.47 → +0.41 dB, 10 kHz +1.93 → −0.28 dB,
   High octave +0.65 → +0.16 dB.
-- Dual delivery profiles (`--profile soft|loud|both`), 244 tests green.
+- Dual delivery profiles (`--profile soft|loud|both`), 278 tests green.
+- Pre-VST foundation: Mix Advisor Source Notes, CLI numeric-flag fix, VST-facing parameter
+  ids, dashboard profile/confidence/module fields, stateful block processors,
+  `RealtimeChain`, and `Docs/REALTIME_PLAN.md`.
 - All commits pushed to `origin/main`.
 
 ### Active
@@ -478,14 +494,15 @@ Build plan:
 
 ### Next move (ordered)
 
-1. Wire the Mix Advisor into the CLI and dashboard as read-only Source Notes.
-2. Wire `ChainCoordinator::coordinate` into the render chain.
-3. Fix the CLI numeric-flag parsing bug and the output-gain semantics under TDD.
-4. Extend Match Intensity to the other modules.
-5. Gate 2: JUCE VST3 shell in small buildable steps (shell → decoder/reference →
-   background analysis → stateful real-time chain → dashboard → Source Notes).
-6. Gate 3: breadth validation, pluginval, real DAW, packaging, licences.
-7. Do not tune further on the Dax J track (overfitting risk).
+1. Gate 2: JUCE VST3 shell in small buildable steps (pass-through shell → decoder/reference
+   workflow → background analysis → plan handoff → dashboard → Source Notes).
+2. Extend Match Intensity to the other modules (changes sound; needs a listening decision).
+3. Gate 3: breadth validation, pluginval, real DAW, packaging, licences.
+4. Section analysis (roadmap Step 9) remains deferred with a test plan.
+5. Do not tune further on the Dax J track (overfitting risk).
+
+`ChainCoordinator` and a true final output trim are deliberately not wired: both would change
+the approved master. Treat them as sound decisions, not refactors.
 
 ### Relevant files
 
@@ -498,8 +515,11 @@ Build plan:
 - `Docs/DSP_DEFINITIONS.md` — measurement/processing definitions.
 - `Docs/TESTING.md` — test harness and coverage.
 - `Docs/WINDOWS_TESTING.md` — Windows build/test instructions.
+- `Docs/REALTIME_PLAN.md` — real-time threading, capture, handoff, latency and TP plan.
 - `app/main.cpp` — CLI pipeline.
 - `src/application/ProcessingChain.cpp` — ordered chain.
+- `src/application/RealtimeChain.cpp` — block-based chain assembly.
+- `src/domain/dsp/*Processor.cpp` — stateful real-time processors.
 - `src/application/LoudnessTargeter.cpp` — LUFS targeting, crest guard, limiter.
 - `src/domain/matching/EqDesigner.cpp` — shelf placement (8 kHz air).
 - `src/domain/matching/MatchingEngine.cpp` — tonal proposals.
@@ -545,4 +565,8 @@ Build plan:
 per-band correlation · `a07b49e` dynamic EQ · `9f2ed15` stereo guard · `e131405`
 tape HF · `4195c68` edge shelves · `4806c65` crest guard.
 
-Test count before this brief: **244 cases**, 4 CTest suites green.
+Pre-VST work: `3db66be` Source Notes · `48f6138` CLI numeric fix · `b4c4dda` parameter
+ids · `0961333` dashboard fields · `75c2705` stateful processors · `b0b2c76`
+`RealtimeChain`, plus per-step reflections.
+
+Test count before the pre-VST work: **244 cases**. Current: **278 cases**, 4 CTest suites green.
