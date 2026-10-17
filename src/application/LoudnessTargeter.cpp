@@ -6,6 +6,7 @@
 #include "masterizer/domain/dsp/Gain.h"
 #include "masterizer/domain/dsp/GainStage.h"
 #include "masterizer/domain/dsp/Limiter.h"
+#include "masterizer/domain/dsp/LookaheadLimiter.h"
 #include "masterizer/domain/dsp/TruePeak.h"
 
 #include <algorithm>
@@ -61,15 +62,19 @@ double globalCrestDb(const domain::audio::AudioBuffer& buffer) {
     return 20.0 * std::log10(peak / rms);
 }
 
-void applyGainAndLimit(domain::audio::AudioBuffer& buffer, double gainDb,
-                       const domain::dsp::LimiterSettings& limiter, bool limit) {
+void applyGainAndLimit(domain::audio::AudioBuffer& buffer, double gainDb, double ceilingDb,
+                       double releaseSeconds, bool limit) {
     for (std::vector<float>& channel : buffer.channels) {
         const int frames = static_cast<int>(channel.size());
         if (gainDb != 0.0) {
             domain::dsp::applyGain(channel.data(), frames, gainDb);
         }
         if (limit) {
-            domain::dsp::applyLimiter(channel.data(), frames, buffer.sampleRate, limiter);
+            domain::dsp::LookaheadLimiterSettings settings;
+            settings.ceilingDb = ceilingDb;
+            settings.releaseSeconds = releaseSeconds;
+            domain::dsp::applyLookaheadLimiter(channel.data(), frames, buffer.sampleRate,
+                                               settings);
         }
     }
 }
@@ -98,14 +103,13 @@ LoudnessTargetResult targetLoudness(domain::audio::AudioBuffer& buffer, double t
     domain::dsp::LimiterSettings limiter;
     limiter.ceilingDb = ceilingDb;
 
-    double bestGain = gainDb;
-    double bestLufs = achievedBefore;
+    double bestGain = gainDb;    double bestLufs = achievedBefore;
     double bestError = std::numeric_limits<double>::infinity();
     bool foundValid = false;
     const double minimumCrest = referenceCrestDb - maxCrestDropDb;
     for (int iteration = 0; iteration < kIterations; ++iteration) {
         domain::audio::AudioBuffer candidate = original;
-        applyGainAndLimit(candidate, gainDb, limiter, limit);
+        applyGainAndLimit(candidate, gainDb, ceilingDb, limiter.releaseSeconds, limit);
         enforceTruePeak(candidate, ceilingDb);
         const double lufs = measureLufs(candidate);
         const double crest = globalCrestDb(candidate);
@@ -132,7 +136,7 @@ LoudnessTargetResult targetLoudness(domain::audio::AudioBuffer& buffer, double t
     }
 
     buffer = original;
-    applyGainAndLimit(buffer, bestGain, limiter, limit);
+    applyGainAndLimit(buffer, bestGain, ceilingDb, limiter.releaseSeconds, limit);
     enforceTruePeak(buffer, ceilingDb);
 
     result.appliedGainDb = bestGain;

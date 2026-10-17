@@ -40,6 +40,7 @@ add_library(masterizer_core STATIC
     domain/dsp/GainStage.cpp
     domain/dsp/KWeighting.cpp
     domain/dsp/Limiter.cpp
+    domain/dsp/LookaheadLimiter.cpp
     domain/dsp/MidSide.cpp
     domain/dsp/MonoBass.cpp
     domain/dsp/MultibandCompressor.cpp

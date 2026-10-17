@@ -51,6 +51,7 @@ add_executable(masterizer_tests
     unit/dsp/FilterDesignTest.cpp
     unit/dsp/KWeightingTest.cpp
     unit/dsp/LimiterTest.cpp
+    unit/dsp/LookaheadLimiterTest.cpp
     unit/dsp/MidSideTest.cpp
     unit/dsp/MonoBassTest.cpp
     unit/dsp/MultibandCompressorTest.cpp
