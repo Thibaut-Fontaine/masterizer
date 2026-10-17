@@ -93,15 +93,17 @@ ParseStatus parseCliOptions(const std::vector<std::string>& args, CliOptions& ou
                 return ParseStatus::Error;
             }
         } else if (arg == "--intensity" || arg == "--ceiling" || arg == "--gain") {
-            if (i + 1 >= args.size() || !parseNumber(args[i + 1], out.outputGainDb)) {
+            double value = 0.0;
+            if (i + 1 >= args.size() || !parseNumber(args[i + 1], value)) {
                 return ParseStatus::Error;
             }
-            const double value = out.outputGainDb;
             if (arg == "--intensity") {
                 out.matchIntensity = value;
             } else if (arg == "--ceiling") {
                 out.ceilingDb = value;
                 out.ceilingExplicit = true;
+            } else {
+                out.outputGainDb = value;
             }
             ++i;
         } else if (!applyModuleFlag(arg, out)) {

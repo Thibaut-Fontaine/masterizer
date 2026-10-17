@@ -33,6 +33,7 @@ add_executable(masterizer_tests
     unit/application/ChainReporterTest.cpp
     unit/application/DashboardModelTest.cpp
     unit/application/CliOptionsTest.cpp
+    unit/application/CliNumericFlagsTest.cpp
     unit/application/TruePeakGuardTest.cpp
     unit/application/LoudnessTargeterTest.cpp
     unit/application/MasterProfileTest.cpp
