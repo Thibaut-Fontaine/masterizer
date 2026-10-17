@@ -274,5 +274,31 @@ vouch for how it sounds. That judgement is entirely still ahead.
 - **Next:** assemble the stateful processors into a `RealtimeChain` in the same order as the
   offline chain and test it end-to-end on a buffer split into blocks.
 
+## Pre-VST step 6 — real-time chain assembly
+
+- **What changed:** `RealtimeChain` owns two instances of each mono processor (one per channel),
+  applies the offline module order, adds gain before the look-ahead limiter (matching the
+  loudness targeter), and reports the limiter latency. `RealtimeChainBands` carries the already
+  resolved resonance/EQ/fine-EQ bands so the chain never analyses audio.
+- **Verified:** 278 cases and all 4 suites pass. The integration test runs every module at once
+  on a stereo buffer, compares one 4096-frame block against 257-frame blocks, and checks finite
+  output plus the −1 dBTP ceiling. Reported latency is 240 samples at 48 kHz / 5 ms.
+- **What is weak:** the plugin still has to build the bands and the gain from the analysis;
+  dynamics remain per-channel (no stereo link); only 48 kHz is exercised; the limiter tail needs
+  flushing; there is no parameter smoothing or bypass crossfade yet; the gain-before-limiter
+  order is deliberately different from the legacy `applyOutputStage`.
+- **Next:** write the real-time handoff/threading design note (reference cache, source capture,
+  immutable chain handoff, metering and latency), then the JUCE shell.
+
+## Pre-VST step 7 — real-time handoff design
+
+- **What changed:** see `Docs/REALTIME_PLAN.md`. It defines the thread boundaries, the
+  reference/profile cache, the source-capture strategy, the immutable chain handoff, the
+  gain/limiter strategy (no closed loop over the future), latency/AB/Delta handling and the
+  host validation plan.
+- **What is weak:** it is a design, not an implementation; the capture-window length and the
+  memory cap are proposals that need measurement on real sessions.
+- **Next:** Gate 2 — minimal JUCE VST3 pass-through shell, then the decoder/reference workflow.
+
 
 
