@@ -253,5 +253,26 @@ vouch for how it sounds. That judgement is entirely still ahead.
 - **Next:** the stateful real-time processors, starting with the EQ and mono/M-S stages. This is
   the largest remaining pre-VST item.
 
+## Pre-VST step 5 — stateful block processors
+
+- **What changed:** added `EqProcessor`, `MonoBassProcessor`, `CompressorProcessor`,
+  `TransientProcessor`, `DynamicEqProcessor`, `TapeProcessor`, `MultibandProcessor` and
+  `LookaheadProcessor`. Each owns its filter/envelope state, so a host can split a buffer into
+  blocks without resetting the DSP.
+- **Equivalence evidence:** the EQ (within 1e-6), mono/M-S, compressor, transient shaper,
+  dynamic EQ, tape and multiband processors are tested against the existing offline functions;
+  the stateful and block-split outputs match. The multiband processor uses a preallocated
+  scratch buffer and splits oversized blocks instead of allocating.
+- **New limiter:** the real-time limiter is necessarily causal: it delays by its look-ahead and
+  uses a sliding maximum, then clamps the release to the current target so the ceiling holds.
+  It reports `latencySamples()`; the offline CLI keeps its existing zero-latency gain
+  anticipation.
+- **Verified:** 275 cases and all 4 suites pass. The offline render path is untouched.
+- **What is weak:** tests are at 48 kHz only; dynamics are still per-channel (no stereo link);
+  the limiter's tail needs flushing at the end of a stream; `MultibandProcessor::prepare` must
+  be called before `process`; there is no `RealtimeChain` assembly yet.
+- **Next:** assemble the stateful processors into a `RealtimeChain` in the same order as the
+  offline chain and test it end-to-end on a buffer split into blocks.
+
 
 
