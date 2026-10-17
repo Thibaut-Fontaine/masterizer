@@ -15,3 +15,5 @@ compile_commands.json
 # User-supplied listening material (large, not tracked)
 /PREMASTER.wav
 /MASTER.wav
+
+/OURS*.wav

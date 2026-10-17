@@ -34,3 +34,11 @@ TEST_CASE(the_ceiling_limits_how_loud_it_can_get) {
     CHECK(result.truePeakDb <= -6.0 + 0.1);
     CHECK(result.shortfallLu > 0.0);
 }
+
+TEST_CASE(the_closed_loop_reaches_a_reachable_target) {
+    const auto data = sine(48000 * 5, 997.0, 48000.0, 0.1f);
+    auto buffer = monoBuffer(data, 48000.0);
+    const auto result = targetLoudness(buffer, -12.0, -1.0, 12.0, 0.0, true);
+    CHECK_NEAR(result.achievedLufs, -12.0, 0.3);
+    CHECK_NEAR(result.shortfallLu, 0.0, 1e-9);
+}

@@ -26,9 +26,6 @@ ChainResult process(const domain::audio::AudioBuffer& input,
     if (settings.saturationEnabled) {
         applySaturationStage(result.buffer, settings.saturation);
     }
-    if (settings.tapeEnabled) {
-        applyTapeToBuffer(result.buffer, settings.tape);
-    }
     if (settings.resonanceEnabled) {
         applyResonanceStage(result.buffer, source, settings.resonance);
     }
@@ -49,6 +46,9 @@ ChainResult process(const domain::audio::AudioBuffer& input,
     }
     if (settings.dynamicEqEnabled) {
         applyDynamicEqStage(result.buffer, settings.dynamicEq);
+    }
+    if (settings.tapeEnabled) {
+        applyTapeToBuffer(result.buffer, settings.tape);
     }
     if (settings.limiterEnabled) {
         applyOutputStage(result.buffer, settings.limiter, settings.outputGainDb);
