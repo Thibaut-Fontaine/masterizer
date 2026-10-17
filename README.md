@@ -61,8 +61,9 @@ Run a single test by name substring (harness):
 ```
 
 Reads a reference and a source file (WAV, FLAC or MP3), analyses both, proposes and applies
-corrections, enforces the True Peak ceiling, and writes the result (WAV). Prints proposals,
-LUFS vs target, shortfall and true peak. (The VST3 plugin is still to come.)
+corrections, **raises loudness toward the reference** (up to +12 dB), limits to the True Peak
+ceiling, and writes the result (WAV). Prints proposals, applied gain, LUFS vs target, shortfall
+and true peak. (The VST3 plugin is still to come.)
 
 ## Non-negotiable size rules
 

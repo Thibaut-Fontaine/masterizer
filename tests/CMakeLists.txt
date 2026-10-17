@@ -34,6 +34,7 @@ add_executable(masterizer_tests
     unit/application/DashboardModelTest.cpp
     unit/application/CliOptionsTest.cpp
     unit/application/TruePeakGuardTest.cpp
+    unit/application/LoudnessTargeterTest.cpp
     unit/application/MonitoringControllerTest.cpp
     unit/audio/AudioBufferOpsTest.cpp
     unit/common/OctaveBandsTest.cpp

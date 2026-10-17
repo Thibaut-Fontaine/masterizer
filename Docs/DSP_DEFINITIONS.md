@@ -53,5 +53,8 @@ settings. All thresholds in the code are initial values, not calibrated constant
 - **Stereo width**: Side scaled by a factor; `widthScaleFor` solves the factor for a target.
 - **Limiter**: instant attack, exponential release, sample-peak ceiling (default -1.0 dB).
 - **True Peak guard**: single static scale-down so the render's True Peak is at or below ceiling.
+- **Loudness targeting**: after processing, gain is raised toward the reference integrated LUFS
+  (capped at +12 dB by default), then the limiter and True Peak guard apply; any remaining
+  difference is reported as a shortfall rather than over-limiting.
 - **Dynamics planner**: compares per-band variation; enables gentle glue (ratio 1.5-2) and,
   at larger gaps, multiband compression. Release can follow BPM (default 0.25 beat), clamped.

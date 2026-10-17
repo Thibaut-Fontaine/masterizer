@@ -1,4 +1,5 @@
 #include "masterizer/application/CliOptions.h"
+#include "masterizer/application/LoudnessTargeter.h"
 #include "masterizer/application/MonitoringController.h"
 #include "masterizer/application/OutputValidator.h"
 #include "masterizer/application/ProcessingChain.h"
@@ -27,6 +28,7 @@ void printUsage() {
                  "  --gain dB         output gain (default 0)\n"
                  "  --ab              also write a level-matched <output>.ab.wav\n"
                  "  --delta           also write <output>.delta.wav (processed - source)\n"
+                 "  Loudness is targeted toward the reference (up to +12 dB), then limited.\n"
                  "  --<module> / --no-<module>\n"
                  "      module: eq mono limiter saturation resonance stereo transient\n"
                  "              glue multiband dynamic-eq\n");
@@ -100,15 +102,19 @@ int main(int argc, char** argv) {
     chain.matchIntensity = options.matchIntensity;
     chain.outputGainDb = options.outputGainDb;
     chain.limiter.ceilingDb = options.ceilingDb;
-    chain.resonanceEnabled = true;
     const mat::DynamicsPlan dynamics = mat::planDynamics(sourceProfile, referenceProfile, 0.0);
     chain.glueEnabled = dynamics.glueEnabled;
     chain.glue = dynamics.glue;
     chain.multibandEnabled = dynamics.multibandEnabled;
     applyOverrides(chain, options);
 
+    const bool limiterEnabled = chain.limiterEnabled;
+    chain.limiterEnabled = false;  // the loudness targeter applies the limiter at the end
+
     app::ChainResult result = app::process(source, sourceProfile, referenceProfile, chain);
-    app::enforceTruePeak(result.buffer, chain.limiter.ceilingDb);
+    const app::LoudnessTargetResult targeted = app::targetLoudness(
+        result.buffer, referenceProfile.loudness.integratedLufs, chain.limiter.ceilingDb,
+        12.0, options.outputGainDb, limiterEnabled);
     const app::OutputReport report = app::validateOutput(
         result.buffer, referenceProfile.loudness.integratedLufs, chain.limiter.ceilingDb);
 
@@ -131,9 +137,10 @@ int main(int argc, char** argv) {
                                  app::differenceSignal(result.buffer, source));
     }
 
-    std::printf("wrote %s | proposals=%zu | LUFS=%.2f target=%.2f shortfall=%.2f LU | "
-                "truePeak=%.2f dBTP\n",
-                options.outputPath.c_str(), result.proposals.size(), report.integratedLufs,
-                report.targetLufs, report.shortfallLu, report.truePeakDb);
+    std::printf("wrote %s | proposals=%zu | gain=%+.2f dB | LUFS=%.2f target=%.2f "
+                "shortfall=%.2f LU | truePeak=%.2f dBTP\n",
+                options.outputPath.c_str(), result.proposals.size(), targeted.appliedGainDb,
+                report.integratedLufs, report.targetLufs, report.shortfallLu,
+                report.truePeakDb);
     return 0;
 }

@@ -1,4 +1,5 @@
 add_library(masterizer_core STATIC
+    application/LoudnessTargeter.cpp
     application/MonitoringController.cpp
     application/ChainStages.cpp
     application/ChainReporter.cpp
