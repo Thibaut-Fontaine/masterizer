@@ -72,6 +72,22 @@ Built: `TruePeakGuard` (static scale-down to a dBTP ceiling), `WavFile` (16-bit/
 - **Next:** parallelize / single-pass the analysis. That is the only thing standing between us
   and the ≤30 s target.
 
+## Speed S4+S3b+S6 — parallel analysis, fewer measurements, hop 1024
+
+- **What changed:** source and reference analysis run concurrently; the six independent feature
+  passes (octave, spectrum, variation, transient, resonance, stereo) run concurrently inside
+  each analysis; the targeting loop reuses its best measurement instead of re-measuring, and the
+  CLI builds the output report from the targeting result instead of calling `validateOutput`
+  again; analysis hop 512 → 1024.
+- **Measured:** 1 min 57 s → **27.7 s** (total 39× from the 18 min baseline). Breakdown:
+  read 1.7 s, analyze 13.1 s, process 1.4 s, target 10.7 s, write 0.8 s.
+- **Regression contract:** held exactly — OURS−MASTER metrics identical to the pre-optimization
+  render (LUFS −0.10, TP −1.12, crest −1.17, per-band values unchanged).
+- **Surprise:** the True Peak table was worth ~9× on its own; the remaining cost is now split
+  between analysis (13 s) and the loudness search (10.7 s). Further gains would need single-pass
+  analysis or a cheaper LUFS search, but the 30 s stop rule is met, so we stop here.
+
+
 
 ## Phase 1 (UI) — parameter model + dashboard presenter
 

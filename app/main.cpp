@@ -15,6 +15,7 @@
 #include <chrono>
 #include <cstddef>
 #include <cstdio>
+#include <future>
 #include <string>
 #include <vector>
 
@@ -113,9 +114,15 @@ int main(int argc, char** argv) {
     }
     const Clock::time_point tRead = Clock::now();
 
-    const ana::AnalysisSettings settings;
-    const ana::AnalysisProfile referenceProfile = ana::analyzeSource(reference, settings);
-    const ana::AnalysisProfile sourceProfile = ana::analyzeSource(source, settings);
+    const ana::AnalysisSettings settings{2048, 1024};
+    auto referenceFuture = std::async(std::launch::async, [&] {
+        return ana::analyzeSource(reference, settings);
+    });
+    auto sourceFuture = std::async(std::launch::async, [&] {
+        return ana::analyzeSource(source, settings);
+    });
+    const ana::AnalysisProfile referenceProfile = referenceFuture.get();
+    const ana::AnalysisProfile sourceProfile = sourceFuture.get();
     const Clock::time_point tAnalyze = Clock::now();
 
     app::ChainSettings chain;
@@ -141,8 +148,13 @@ int main(int argc, char** argv) {
         12.0, options.outputGainDb, limiterEnabled);
     const Clock::time_point tTarget = Clock::now();
 
-    const app::OutputReport report = app::validateOutput(
-        result.buffer, referenceProfile.loudness.integratedLufs, chain.limiter.ceilingDb);
+    // Reuse the targeting result instead of re-measuring loudness and peak.
+    app::OutputReport report;
+    report.integratedLufs = targeted.achievedLufs;
+    report.truePeakDb = targeted.truePeakDb;
+    report.targetLufs = referenceProfile.loudness.integratedLufs;
+    report.shortfallLu = targeted.shortfallLu;
+    report.ceilingExceeded = targeted.truePeakDb > chain.limiter.ceilingDb;
     const Clock::time_point tValidate = Clock::now();
 
     if (!masterizer::io::writeWav(options.outputPath, result.buffer)) {

@@ -143,11 +143,7 @@ Ensure Release is the default for rendering; document the Debug-vs-Release facto
 
 | Step | Date | Median total | Top phase | Regression | Notes |
 |---|---|---:|---|---|---|
-| baseline | — | ~18 min | — | — | Debug vs Release matters; `OURS2.wav` |
-| S1 | | | | | |
-| S2 | | | | | |
-| S3 | | | | | |
-| S4 | | | | | |
-| S5 | | | | | |
-| S6 | | | | | |
-| S7 | | | | | | |
+| baseline | 2026-10-17 | 18m11s | truePeak | — | Release, 4.5-min track |
+| S0+S1+S3 | 2026-10-17 | 1m57s | analyze 99.5s | held | True Peak kernel table; loudness-only loop |
+| S4 | 2026-10-17 | 56s | analyze 35.6s | held | parallel feature passes (8 cores) |
+| S4b+S3b+S6 | 2026-10-17 | **27.7s** | analyze 13.1s | held | parallel files; reuse measurements; hop 1024 |

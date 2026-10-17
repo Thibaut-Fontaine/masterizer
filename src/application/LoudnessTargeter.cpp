@@ -78,6 +78,7 @@ LoudnessTargetResult targetLoudness(domain::audio::AudioBuffer& buffer, double t
     limiter.ceilingDb = ceilingDb;
 
     double bestGain = gainDb;
+    double bestLufs = achievedBefore;
     double bestError = std::numeric_limits<double>::infinity();
     for (int iteration = 0; iteration < kIterations; ++iteration) {
         domain::audio::AudioBuffer candidate = original;
@@ -89,6 +90,7 @@ LoudnessTargetResult targetLoudness(domain::audio::AudioBuffer& buffer, double t
         if (error < bestError) {
             bestError = error;
             bestGain = gainDb;
+            bestLufs = lufs;
         }
         if (!hasTarget || error <= kToleranceLu || !std::isfinite(lufs)) {
             break;
@@ -100,12 +102,11 @@ LoudnessTargetResult targetLoudness(domain::audio::AudioBuffer& buffer, double t
     applyGainAndLimit(buffer, bestGain, limiter, limit);
     enforceTruePeak(buffer, ceilingDb);
 
-    const double achieved = measureLufs(buffer);
     result.appliedGainDb = bestGain;
-    result.achievedLufs = achieved;
+    result.achievedLufs = bestLufs;
     result.truePeakDb = maxTruePeakDb(buffer);
-    result.shortfallLu = std::isfinite(targetLufs) && std::isfinite(achieved)
-                             ? std::max(0.0, targetLufs - achieved)
+    result.shortfallLu = std::isfinite(targetLufs) && std::isfinite(bestLufs)
+                             ? std::max(0.0, targetLufs - bestLufs)
                              : 0.0;
     return result;
 }
