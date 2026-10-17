@@ -58,6 +58,21 @@ Built: `TruePeakGuard` (static scale-down to a dBTP ceiling), `WavFile` (16-bit/
 - **Recommended next:** the JUCE VST3 shell — make it audible, validate the real-time path,
   and only then calibrate thresholds against actual tracks. Do not add more DSP before that.
 
+## Speed S0+S1+S3 — profiling, True Peak table, loudness-only loop
+
+- **What changed:** added `--timing` (per-phase ms); `truePeak()` now uses a precomputed
+  polyphase kernel table instead of `sin`/`cos` per tap per sample; the loudness targeting loop
+  measures LUFS only and computes True Peak once at the end (it previously recomputed the
+  expensive True Peak on every iteration via `analyzeLoudness`).
+- **Measured:** 18 min 11 s → **1 min 57 s (9.3×)** on the 4.5-min track. Same result:
+  −10.61 LUFS, −1.00 dBTP, +9.45 dB.
+- **Regression contract:** held (LUFS/TP/gain identical to OURS2).
+- **Surprise:** the hotspot moved. `analyzeSource` is now **99.5 s of 117 s (85%)**; read 1.7 s,
+  process 1.3 s, target 12.5 s, validate 1.3 s, write 1.2 s.
+- **Next:** parallelize / single-pass the analysis. That is the only thing standing between us
+  and the ≤30 s target.
+
+
 ## Phase 1 (UI) — parameter model + dashboard presenter
 
 Built: `domain/state/Parameters` (stable ids, ranges, defaults, clamping) and

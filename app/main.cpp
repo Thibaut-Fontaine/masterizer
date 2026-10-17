@@ -3,19 +3,20 @@
 #include "masterizer/application/MonitoringController.h"
 #include "masterizer/application/OutputValidator.h"
 #include "masterizer/application/ProcessingChain.h"
-#include "masterizer/application/TruePeakGuard.h"
-#include "masterizer/domain/analysis/LoudnessProfile.h"
+#include "masterizer/domain/analysis/Loudness.h"
 #include "masterizer/domain/analysis/SourceAnalyzer.h"
 #include "masterizer/domain/audio/AudioBuffer.h"
+#include "masterizer/domain/audio/AudioBufferOps.h"
 #include "masterizer/domain/dsp/GainStage.h"
 #include "masterizer/domain/matching/DynamicsPlanner.h"
 #include "masterizer/io/AudioFile.h"
 #include "masterizer/io/WavFile.h"
 
+#include <chrono>
+#include <cstddef>
 #include <cstdio>
 #include <string>
 #include <vector>
-#include <cstddef>
 
 namespace {
 
@@ -28,6 +29,7 @@ void printUsage() {
                  "  --gain dB         output gain (default 0)\n"
                  "  --ab              also write a level-matched <output>.ab.wav\n"
                  "  --delta           also write <output>.delta.wav (processed - source)\n"
+                 "  --timing          print per-phase timings\n"
                  "  Loudness is targeted toward the reference (up to +12 dB), then limited.\n"
                  "  --<module> / --no-<module>\n"
                  "      module: eq mono limiter saturation tape resonance stereo transient\n"
@@ -69,12 +71,26 @@ bool readOrReport(const std::string& path, const char* label,
     return false;
 }
 
+double lufsOf(const masterizer::domain::audio::AudioBuffer& buffer) {
+    namespace ana = masterizer::domain::analysis;
+    const int frames = masterizer::domain::audio::frameCount(buffer);
+    if (frames <= 0) {
+        return -70.0;
+    }
+    if (buffer.channels.size() >= 2) {
+        return ana::integratedLufs(buffer.channels[0].data(), buffer.channels[1].data(),
+                                   frames, buffer.sampleRate);
+    }
+    return ana::integratedLufs(buffer.channels[0].data(), frames, buffer.sampleRate);
+}
+
 }  // namespace
 
 int main(int argc, char** argv) {
     namespace app = masterizer::application;
     namespace ana = masterizer::domain::analysis;
     namespace mat = masterizer::domain::matching;
+    using Clock = std::chrono::steady_clock;
 
     std::vector<std::string> args(argv, argv + argc);
     app::CliOptions options;
@@ -88,16 +104,19 @@ int main(int argc, char** argv) {
         return 2;
     }
 
+    const Clock::time_point t0 = Clock::now();
     masterizer::domain::audio::AudioBuffer reference;
     masterizer::domain::audio::AudioBuffer source;
     if (!readOrReport(options.referencePath, "reference", reference) ||
         !readOrReport(options.sourcePath, "source", source)) {
         return 1;
     }
+    const Clock::time_point tRead = Clock::now();
 
     const ana::AnalysisSettings settings;
     const ana::AnalysisProfile referenceProfile = ana::analyzeSource(reference, settings);
     const ana::AnalysisProfile sourceProfile = ana::analyzeSource(source, settings);
+    const Clock::time_point tAnalyze = Clock::now();
 
     app::ChainSettings chain;
     chain.matchIntensity = options.matchIntensity;
@@ -115,11 +134,16 @@ int main(int argc, char** argv) {
     chain.limiterEnabled = false;  // the loudness targeter applies the limiter at the end
 
     app::ChainResult result = app::process(source, sourceProfile, referenceProfile, chain);
+    const Clock::time_point tProcess = Clock::now();
+
     const app::LoudnessTargetResult targeted = app::targetLoudness(
         result.buffer, referenceProfile.loudness.integratedLufs, chain.limiter.ceilingDb,
         12.0, options.outputGainDb, limiterEnabled);
+    const Clock::time_point tTarget = Clock::now();
+
     const app::OutputReport report = app::validateOutput(
         result.buffer, referenceProfile.loudness.integratedLufs, chain.limiter.ceilingDb);
+    const Clock::time_point tValidate = Clock::now();
 
     if (!masterizer::io::writeWav(options.outputPath, result.buffer)) {
         std::fprintf(stderr, "error: could not write '%s'\n", options.outputPath.c_str());
@@ -127,7 +151,7 @@ int main(int argc, char** argv) {
     }
     if (options.writeAb) {
         masterizer::domain::audio::AudioBuffer ab = source;
-        const double sourceLufs = ana::analyzeLoudness(source).integratedLufs;
+        const double sourceLufs = lufsOf(source);
         const double gainDb = app::loudnessMatchGainDb(sourceLufs, report.integratedLufs);
         for (std::vector<float>& channel : ab.channels) {
             masterizer::domain::dsp::applyGain(channel.data(),
@@ -139,11 +163,23 @@ int main(int argc, char** argv) {
         masterizer::io::writeWav(auxPath(options.outputPath, ".delta"),
                                  app::differenceSignal(result.buffer, source));
     }
+    const Clock::time_point tWrite = Clock::now();
 
     std::printf("wrote %s | proposals=%zu | gain=%+.2f dB | LUFS=%.2f target=%.2f "
                 "shortfall=%.2f LU | truePeak=%.2f dBTP\n",
                 options.outputPath.c_str(), result.proposals.size(), targeted.appliedGainDb,
                 report.integratedLufs, report.targetLufs, report.shortfallLu,
                 report.truePeakDb);
+
+    if (options.timing) {
+        const auto ms = [](Clock::time_point a, Clock::time_point b) {
+            return std::chrono::duration<double, std::milli>(b - a).count();
+        };
+        std::printf("timing(ms): read=%.0f analyze=%.0f process=%.0f target=%.0f "
+                    "validate=%.0f write=%.0f total=%.0f\n",
+                    ms(t0, tRead), ms(tRead, tAnalyze), ms(tAnalyze, tProcess),
+                    ms(tProcess, tTarget), ms(tTarget, tValidate), ms(tValidate, tWrite),
+                    ms(t0, tWrite));
+    }
     return 0;
 }

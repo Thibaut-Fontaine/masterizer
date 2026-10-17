@@ -16,6 +16,7 @@ struct CliOptions {
     double outputGainDb = 0.0;
     bool writeAb = false;
     bool writeDelta = false;
+    bool timing = false;
     // Module overrides keyed by name ("eq", "mono", "glue", ...); anything absent
     // keeps the default/planner decision.
     std::map<std::string, bool> moduleOverrides;
