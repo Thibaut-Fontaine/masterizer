@@ -195,5 +195,21 @@ State at this point: **53 commits**, **211 passing cases**, 225 files / 372 func
 **Uncertainty statement:** the code is coherent, portable and honestly bounded, but I cannot
 vouch for how it sounds. That judgement is entirely still ahead.
 
+## Pre-VST step 1 — surface the Mix Advisor
+
+- **What changed:** `adviseFeedback()` now returns a `MixFeedback` stamped with the ruleset
+  version; `SourceNotes` renders hedged one-line notes; the CLI prints them after analysis; the
+  dashboard presenter carries the suggestion list. No DSP, chain, targeting or render code was
+  touched.
+- **Verified:** 249 cases and all 4 CTest suites pass. The real-pair render is unchanged in its
+  metrics: −11.53 LUFS, −1.00 dBTP, crest 10.67.
+- **What is weak:** the advisor stays silent on the Dax J pair — expected for a close match and
+  consistent with "stay silent when evidence is weak", but it means the feature has not yet been
+  heard against a real problem mix. Only 5 of 11 rules have dedicated fixtures; action text is
+  still hard-coded in the rules; there is no cap/de-duplication pass.
+- **Next:** fix the CLI numeric-flag leak (without changing `--gain` semantics), then extend the
+  parameter model and dashboard for the editor. `ChainCoordinator` remains deliberately unwired:
+  applying its budget would change the approved master.
+
 
 
