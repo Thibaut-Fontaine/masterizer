@@ -240,5 +240,18 @@ vouch for how it sounds. That judgement is entirely still ahead.
 - **Next:** extend `DashboardModel` with the fields the editor needs (profile, per-module
   activity, proposal confidence, suggestions).
 
+## Pre-VST step 4 — dashboard presenter for the editor
+
+- **What changed:** `BandView` now exposes the proposal confidence; `ModuleView`
+  (`id`, `enabled`, `amount`) and the active `MasterProfile` flow through the presenter. The
+  editor can render corrections, confidence and module state without touching DSP internals.
+- **Verified:** 257 cases and all 4 suites pass. The presenter remains pure and deterministic;
+  the CLI render is untouched.
+- **What is weak:** module activity is caller-supplied, not derived from `ChainSettings` yet.
+  That mapping belongs to the plugin adapter, where the chain is assembled. There is still no
+  drawing code, so "does it feel right" remains untested until the JUCE editor exists.
+- **Next:** the stateful real-time processors, starting with the EQ and mono/M-S stages. This is
+  the largest remaining pre-VST item.
+
 
 
