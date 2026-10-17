@@ -41,6 +41,7 @@ add_executable(masterizer_tests
     unit/application/MonitoringControllerTest.cpp
     unit/application/SourceNotesTest.cpp
     unit/application/DashboardSuggestionsTest.cpp
+    unit/application/DashboardVstTest.cpp
     unit/audio/AudioBufferOpsTest.cpp
     unit/common/OctaveBandsTest.cpp
     unit/dsp/BiquadTest.cpp

@@ -42,6 +42,7 @@ std::vector<BandView> buildBands(const DashboardInput& input) {
             if (proposal.target == domain::matching::CorrectionTarget::Eq &&
                 proposal.band == band) {
                 view.correctionDb = proposal.amountDb;
+                view.confidence = proposal.confidence;
             }
         }
         bands.push_back(view);
@@ -94,6 +95,8 @@ DashboardModel buildDashboard(const DashboardInput& input) {
     model.matchIntensity = input.matchIntensity;
     model.abMonitoring = input.abMonitoring;
     model.deltaMonitoring = input.deltaMonitoring;
+    model.profile = input.profile;
+    model.modules = input.modules;
     model.suggestions = input.suggestions;
     model.warnings = buildWarnings(input);
     return model;

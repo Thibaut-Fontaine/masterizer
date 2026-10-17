@@ -1,5 +1,6 @@
 #pragma once
 
+#include "masterizer/application/MasterProfile.h"
 #include "masterizer/application/OutputValidator.h"
 #include "masterizer/domain/analysis/AnalysisProfile.h"
 #include "masterizer/domain/matching/CorrectionProposal.h"
@@ -18,6 +19,14 @@ struct BandView {
     double referenceDb = -120.0;
     double differenceDb = 0.0;   // source - reference (relative, level-normalised)
     double correctionDb = 0.0;   // applied EQ amount, if any
+    double confidence = 0.0;     // proposal confidence, 0 when there is no correction
+};
+
+/// One processing module as the editor should display it.
+struct ModuleView {
+    std::string id;
+    bool enabled = false;
+    double amount = 0.0;  // correction amount / activity, module-defined
 };
 
 /// Everything the editor needs to render one frame. Pure data; no drawing.
@@ -31,6 +40,8 @@ struct DashboardModel {
     double matchIntensity = 1.0;
     bool abMonitoring = false;
     bool deltaMonitoring = false;
+    MasterProfile profile = MasterProfile::Soft;
+    std::vector<ModuleView> modules;
     std::vector<domain::matching::MixSuggestion> suggestions;
     std::vector<std::string> warnings;
 };
@@ -46,6 +57,8 @@ struct DashboardInput {
     double matchIntensity = 1.0;
     bool abMonitoring = false;
     bool deltaMonitoring = false;
+    MasterProfile profile = MasterProfile::Soft;
+    std::vector<ModuleView> modules;
     std::vector<domain::matching::MixSuggestion> suggestions;
 };
 
