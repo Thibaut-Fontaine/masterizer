@@ -2,6 +2,7 @@
 
 #include "masterizer/domain/dsp/BpmRelease.h"
 
+#include <cstddef>
 #include <vector>
 #include <algorithm>
 
@@ -23,6 +24,21 @@ double meanVariation(const std::vector<double>& variation) {
     return sum / static_cast<double>(variation.size());
 }
 
+double bandAverage(const std::vector<double>& variation, int firstBand, int lastBand) {
+    if (variation.empty()) {
+        return 0.0;
+    }
+    double sum = 0.0;
+    int count = 0;
+    for (int band = firstBand; band <= lastBand; ++band) {
+        if (band >= 0 && static_cast<std::size_t>(band) < variation.size()) {
+            sum += variation[static_cast<std::size_t>(band)];
+            ++count;
+        }
+    }
+    return count > 0 ? sum / count : 0.0;
+}
+
 }  // namespace
 
 DynamicsPlan planDynamics(const analysis::AnalysisProfile& source,
@@ -42,6 +58,21 @@ DynamicsPlan planDynamics(const analysis::AnalysisProfile& source,
     plan.glue.releaseSeconds = plan.suggestedReleaseSeconds;
     plan.glue.kneeDb = 6.0;
     plan.multibandEnabled = gap > kMultibandVariationGap;
+
+    // The diagnostic showed the human master controls 1.4-5.8 kHz dynamics more
+    // than we do. Propose a gentle dynamic EQ there when our upper-mid variation
+    // exceeds the reference.
+    const double highMidGap =
+        bandAverage(source.bandVariation, 5, 7) - bandAverage(reference.bandVariation, 5, 7);
+    if (highMidGap > kGlueVariationGap) {
+        plan.dynamicEqEnabled = true;
+        plan.dynamicEq.frequencyHz = 3000.0;
+        plan.dynamicEq.q = 1.0;
+        plan.dynamicEq.thresholdDb = -18.0;
+        plan.dynamicEq.maxCutDb = 2.0;
+        plan.dynamicEq.attackSeconds = 0.01;
+        plan.dynamicEq.releaseSeconds = 0.1;
+    }
     return plan;
 }
 

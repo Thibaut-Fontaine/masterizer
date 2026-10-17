@@ -2,6 +2,7 @@
 
 #include "masterizer/domain/analysis/AnalysisProfile.h"
 #include "masterizer/domain/dsp/Compressor.h"
+#include "masterizer/domain/dsp/DynamicEq.h"
 
 namespace masterizer::domain::matching {
 
@@ -10,6 +11,8 @@ struct DynamicsPlan {
     bool glueEnabled = false;
     domain::dsp::CompressorSettings glue;
     bool multibandEnabled = false;
+    bool dynamicEqEnabled = false;
+    domain::dsp::DynamicEqBandSettings dynamicEq;
     double suggestedReleaseSeconds = 0.15;
 };
 

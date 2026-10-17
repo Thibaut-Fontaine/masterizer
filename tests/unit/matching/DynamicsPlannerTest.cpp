@@ -42,7 +42,10 @@ TEST_CASE(a_much_more_dynamic_source_enables_multiband) {
     CHECK(plan.multibandEnabled);
 }
 
-TEST_CASE(tempo_sets_the_suggested_release) {
+TEST_CASE(a_more_dynamic_upper_mid_enables_dynamic_eq) {
     const auto plan = planDynamics(withVariation(0.2), withVariation(0.1), 120.0);
+    CHECK(plan.dynamicEqEnabled);
+    CHECK_NEAR(plan.dynamicEq.frequencyHz, 3000.0, 1e-9);
+    CHECK(plan.dynamicEq.maxCutDb > 0.0);
     CHECK_NEAR(plan.suggestedReleaseSeconds, 0.125, 1e-9);
 }

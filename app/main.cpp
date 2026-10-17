@@ -134,6 +134,8 @@ int main(int argc, char** argv) {
     chain.glueEnabled = dynamics.glueEnabled;
     chain.glue = dynamics.glue;
     chain.multibandEnabled = dynamics.multibandEnabled;
+    chain.dynamicEqEnabled = dynamics.dynamicEqEnabled;
+    chain.dynamicEq = dynamics.dynamicEq;
     chain.tapeEnabled = true;  // very subtle tape at the end, toggle with --no-tape
     chain.tape = {1.0, 0.4, -0.1, 0.5};
     applyOverrides(chain, options);
