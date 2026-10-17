@@ -211,5 +211,21 @@ vouch for how it sounds. That judgement is entirely still ahead.
   parameter model and dashboard for the editor. `ChainCoordinator` remains deliberately unwired:
   applying its budget would change the approved master.
 
+## Pre-VST step 2 — CLI numeric-flag leak
+
+- **What changed:** `--intensity` and `--ceiling` now parse into a local value instead of writing
+  through `outputGainDb`. `--gain` still writes `outputGainDb` exactly as before, so the
+  targeting path is untouched.
+- **TDD evidence:** the new regression test failed on `options.outputGainDb` before the fix, then
+  passed. 252 cases and all 4 suites are green.
+- **Verified on the real pair:** `--intensity 1 --ceiling -1` renders the same result as the
+  default path (−11.53 LUFS, −1.00 dBTP, crest 10.67), confirming the change only removes the
+  accidental extra gain.
+- **What is weak:** `--gain` is still a starting gain for the targeter, not a final output trim.
+  Changing that would alter the approved master, so it stays documented as a future decision,
+  not a silent behaviour change.
+- **Next:** extend the domain parameter model for the VST (profile, fine EQ, tape, crest guard),
+  then the dashboard presenter.
+
 
 
