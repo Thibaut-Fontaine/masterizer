@@ -43,5 +43,5 @@ TEST_CASE(design_eq_uses_shelves_for_the_edge_bands) {
     CHECK(bands[0].shape == masterizer::domain::dsp::EqShape::LowShelf);
     CHECK(bands[0].frequencyHz < 100.0);
     CHECK(bands[1].shape == masterizer::domain::dsp::EqShape::HighShelf);
-    CHECK(bands[1].frequencyHz > 10000.0);
+    CHECK(bands[1].frequencyHz > 6000.0);
 }

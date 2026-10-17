@@ -78,3 +78,20 @@ The master's "lead slightly more forward in the mids/highs" is most consistent w
 8. **Look-ahead limiter** — quality/attacks; global over-compression is confirmed.
 
 Listening remains the final arbiter; these are metric proxies.
+
+## Follow-up: the 8-12 kHz gap (fixed)
+
+The user reported the highs as clearly stronger on MASTER. Third-octave measurement of OURS7
+showed the gap was concentrated at **7.9-10 kHz (+1.5 to +1.9 dB)**, not above 12 kHz.
+
+Cause: the air shelf sat at **12 kHz**, so it fixed >12 kHz but under-corrected 8-12 kHz; the
+High octave band (5.8-11.5 k, +0.65 dB) was rejected by the confidence gate (0.108 < 0.2), so
+nothing corrected it.
+
+Fix: move the VHigh high shelf from 12 kHz to **8 kHz**. Result (OURS8):
+7.9 k +1.47 → **+0.41**; 10 k +1.93 → **−0.28**; High +0.65 → **+0.16**; VHigh +0.26 → **−0.17**.
+
+With `--ceiling -0.1 dBTP` (OURS9) the level also matches: **−10.54 LUFS** vs −10.50, crest
+10.58 vs 10.74 (−0.16 dB), TP −0.10 dBTP. The default ceiling stays −1.0 (spec), where the
+crest guard leaves a ~1 LU shortfall.
+

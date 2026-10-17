@@ -61,7 +61,8 @@ settings. All thresholds in the code are initial values, not calibrated constant
   deliberately tiny. It is not a physical tape model: no wow/flutter, crosstalk, hiss, bias or
   tape formulation.
 - **EQ shapes**: peaking, plus RBJ low/high shelves. The open-ended Sub and VHigh bands use a
-  low shelf at 40 Hz and a high shelf at 12 kHz. Optional third-octave fine EQ (`designFineEq`)
+  low shelf at 40 Hz and a high shelf at **8 kHz** (the human reference's HF lift is centred on
+  8-12 kHz; a 12 kHz shelf under-corrected it). Optional third-octave fine EQ (`designFineEq`)
   from the level-normalised magnitude spectra, capped and bounded (`--fine-eq`).
 - **Crest guard**: loudness targeting stops before global crest falls more than 0.5 dB below the
   reference, reporting a shortfall instead of flattening the track (`--no-crest-guard` opts out).

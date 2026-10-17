@@ -109,6 +109,15 @@ Built: `TruePeakGuard` (static scale-down to a dBTP ceiling), `WavFile` (16-bit/
   explicit: dynamics match, loudness is 0.84 LU short; `--no-crest-guard` recovers the LUFS but
   flattens the track.
 
+## HF follow-up — the 8-12 kHz gap
+
+The user heard the highs as stronger on the master. Third-octave analysis put the gap at
+**7.9-10 kHz (+1.5…+1.9 dB)**, not >12 kHz. The air shelf was at 12 kHz (under-correcting 8-12 k)
+and the High band was rejected by the confidence gate. Moving the shelf to **8 kHz** closed it
+(7.9 k +0.41, 10 k −0.28, High +0.16). With `--ceiling -0.1 dBTP`, LUFS −10.54 vs −10.50 and
+crest 10.58 vs 10.74. Lesson: measure *where* in the spectrum a complaint lives before changing
+the design; octave averages hid a narrow 8-12 kHz gap.
+
 
 
 

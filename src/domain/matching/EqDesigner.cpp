@@ -9,7 +9,7 @@ namespace {
 
 constexpr double kBandQ = 1.4;
 constexpr double kSubShelfHz = 40.0;
-constexpr double kAirShelfHz = 12000.0;
+constexpr double kAirShelfHz = 8000.0;
 
 }  // namespace
 
