@@ -40,3 +40,16 @@ TEST_CASE(uncorrelated_channels_are_wide) {
     CHECK(profile.correlation > -0.1 && profile.correlation < 0.1);
     CHECK(profile.width > 0.3);
 }
+
+TEST_CASE(per_band_correlation_tracks_the_channels) {
+    const auto mono = sine(8192, 1000.0, 48000.0, 0.5f);
+    const auto identical = analyzeStereo(stereoBuffer(mono, mono, 48000.0), 1024, 256);
+    CHECK_NEAR(identical.bandCorrelation[5], 1.0, 0.01);
+
+    const auto pair = antiPhase(8192, 1000.0, 48000.0, 0.5f);
+    AudioBuffer buffer;
+    buffer.channels = {pair.left, pair.right};
+    buffer.sampleRate = 48000.0;
+    const auto inverted = analyzeStereo(buffer, 1024, 256);
+    CHECK_NEAR(inverted.bandCorrelation[5], -1.0, 0.01);
+}

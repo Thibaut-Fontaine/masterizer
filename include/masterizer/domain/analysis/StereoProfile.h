@@ -11,6 +11,7 @@ namespace masterizer::domain::analysis {
 struct StereoProfile {
     std::vector<double> midEnergy;
     std::vector<double> sideEnergy;
+    std::vector<double> bandCorrelation;  // true per-band L/R correlation
     double correlation = 0.0;
     double width = 0.0;
 };
