@@ -29,6 +29,7 @@ add_executable(masterizer_tests
     unit/analysis/StftTest.cpp
     unit/application/OutputValidatorTest.cpp
     unit/application/ProcessingChainTest.cpp
+    unit/application/RealtimeChainTest.cpp
     unit/application/ProcessingChainStagesTest.cpp
     unit/application/ChainReporterTest.cpp
     unit/application/DashboardModelTest.cpp

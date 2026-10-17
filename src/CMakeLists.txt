@@ -10,6 +10,7 @@ add_library(masterizer_core STATIC
     application/MasterProfile.cpp
     application/OutputValidator.cpp
     application/ProcessingChain.cpp
+    application/RealtimeChain.cpp
     application/Render.cpp
     application/SourceNotes.cpp
     application/TapeStages.cpp
