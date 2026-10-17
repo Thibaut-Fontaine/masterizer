@@ -21,6 +21,10 @@ Remaining: **10** VST shell, plus listening validation of the new defaults.
 - Width: **optional/diagnostic**. Off for near-mono references; never chase per-band ratios.
 - Lower spectral distance ≠ better sound.
 
+- **Delivery profiles:** `--profile soft|loud|both`; soft = −1.0 dBTP, loud = −0.1 dBTP. Both
+  use the same chain and crest guard; only the ceiling differs. Exposed to the VST as one
+  `MasterProfile` parameter.
+
 ## Immediate (next code session)
 
 0. **Characterise the residual difference first (diagnostic; no DSP changes).**

@@ -7,8 +7,10 @@ add_library(masterizer_core STATIC
     application/CliOptions.cpp
     application/DashboardModel.cpp
     application/DynamicsStages.cpp
+    application/MasterProfile.cpp
     application/OutputValidator.cpp
     application/ProcessingChain.cpp
+    application/Render.cpp
     application/TapeStages.cpp
     application/TruePeakGuard.cpp
     domain/analysis/BandDynamics.cpp

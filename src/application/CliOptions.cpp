@@ -49,6 +49,26 @@ bool parseNumber(const std::string& text, double& out) {
     return true;
 }
 
+ParseStatus applyProfileFlag(const std::vector<std::string>& args, std::size_t& index,
+                             CliOptions& out) {
+    if (index + 1 >= args.size()) {
+        return ParseStatus::Error;
+    }
+    const std::string& value = args[++index];
+    if (value == "soft") {
+        out.profile = MasterProfile::Soft;
+        out.both = false;
+    } else if (value == "loud") {
+        out.profile = MasterProfile::Loud;
+        out.both = false;
+    } else if (value == "both") {
+        out.both = true;
+    } else {
+        return ParseStatus::Error;
+    }
+    return ParseStatus::Ok;
+}
+
 }  // namespace
 
 ParseStatus parseCliOptions(const std::vector<std::string>& args, CliOptions& out) {
@@ -68,6 +88,10 @@ ParseStatus parseCliOptions(const std::vector<std::string>& args, CliOptions& ou
             out.crestGuard = true;
         } else if (arg == "--no-crest-guard") {
             out.crestGuard = false;
+        } else if (arg == "--profile") {
+            if (applyProfileFlag(args, i, out) != ParseStatus::Ok) {
+                return ParseStatus::Error;
+            }
         } else if (arg == "--intensity" || arg == "--ceiling" || arg == "--gain") {
             if (i + 1 >= args.size() || !parseNumber(args[i + 1], out.outputGainDb)) {
                 return ParseStatus::Error;
@@ -77,6 +101,7 @@ ParseStatus parseCliOptions(const std::vector<std::string>& args, CliOptions& ou
                 out.matchIntensity = value;
             } else if (arg == "--ceiling") {
                 out.ceilingDb = value;
+                out.ceilingExplicit = true;
             }
             ++i;
         } else if (!applyModuleFlag(arg, out)) {
@@ -88,6 +113,9 @@ ParseStatus parseCliOptions(const std::vector<std::string>& args, CliOptions& ou
     }
     if (positional.size() < 3u) {
         return ParseStatus::Error;
+    }
+    if (out.both && out.ceilingExplicit) {
+        return ParseStatus::Error;  // --ceiling would make both profiles identical
     }
     out.referencePath = positional[0];
     out.sourcePath = positional[1];

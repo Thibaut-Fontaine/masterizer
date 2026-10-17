@@ -57,7 +57,11 @@ Run a single test by name substring (harness):
 ## Offline render tool
 
 ```sh
-./build/linux-debug/app/masterizer_cli <reference.wav> <source.wav> <output.wav> [intensity 0..2]
+./build/linux-debug/app/masterizer_cli <reference> <source> <output.wav> [options]
+
+# both delivery profiles in one run:
+./build/linux-debug/app/masterizer_cli ref.mp3 src.flac out.wav --profile both
+# -> out.soft.wav (-1.0 dBTP, safe) and out.loud.wav (-0.1 dBTP, hot)
 ```
 
 Reads a reference and a source file (WAV, FLAC or MP3), analyses both, proposes and applies

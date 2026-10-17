@@ -70,5 +70,9 @@ settings. All thresholds in the code are initial values, not calibrated constant
   variation exceeds the reference.
 - **Look-ahead limiter**: anticipatory gain from a 5 ms sliding-max window (no overshoot), smooth
   release; used by the loudness targeter. The older zero-look-ahead `Limiter` remains for tests.
+- **Delivery profiles**: `soft` = -1.0 dBTP (safe for lossy encoding), `loud` = -0.1 dBTP (matches
+  hot references, little codec headroom). Both use the same chain and crest guard; only the
+  ceiling differs. `--profile both` renders both files from one analysis. In the VST this is one
+  `MasterProfile` parameter.
 - **Dynamics planner**: compares per-band variation; enables gentle glue (ratio 1.5-2) and,
   at larger gaps, multiband compression. Release can follow BPM (default 0.25 beat), clamped.

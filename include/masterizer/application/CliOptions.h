@@ -1,5 +1,7 @@
 #pragma once
 
+#include "masterizer/application/MasterProfile.h"
+
 #include <map>
 #include <string>
 #include <vector>
@@ -18,6 +20,9 @@ struct CliOptions {
     bool writeDelta = false;
     bool timing = false;
     bool crestGuard = true;
+    MasterProfile profile = MasterProfile::Soft;
+    bool both = false;
+    bool ceilingExplicit = false;
     // Module overrides keyed by name ("eq", "mono", "glue", ...); anything absent
     // keeps the default/planner decision.
     std::map<std::string, bool> moduleOverrides;

@@ -64,8 +64,11 @@ reference + FLAC source).
 Options:
 
 ```text
+--profile soft|loud|both  delivery profile (default soft)
+                          soft = -1.0 dBTP; loud = -0.1 dBTP;
+                          both writes <output>.soft.wav and <output>.loud.wav
 --intensity N     Match Intensity 0..2 (default 1)
---ceiling dB      True Peak ceiling (default -1)
+--ceiling dB      override the ceiling (single profile only)
 --gain dB         output gain (default 0)
 --ab              also write a level-matched <output>.ab.wav  (fair A/B comparison)
 --delta           also write <output>.delta.wav  (processed minus source)
