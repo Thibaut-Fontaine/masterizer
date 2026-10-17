@@ -107,6 +107,8 @@ Please send:
 ## 7. Known limitations (expected, not bugs)
 
 - No plugin/UI yet — this is the offline engine only.
+- **Keep paths ASCII** (no accented/emoji characters): the MP3/FLAC decoders use narrow
+  `fopen`, so non-ASCII Windows paths may not open. ASCII paths work on both platforms.
 - Loudness targets may be missed (a shortfall is reported rather than over-limiting).
 - Dynamics modules are per-channel (no stereo link yet); the limiter controls sample peak and
   a separate True Peak guard catches inter-sample peaks.

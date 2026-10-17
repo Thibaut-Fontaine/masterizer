@@ -32,6 +32,12 @@ A function definition is detected at column 0 with its opening brace on the sign
 it uses. MSVC does not pull in `<vector>`/`<string>`/etc. transitively the way GCC/Clang often
 do, so this catches Windows-only build failures before they happen.
 
+`portability` (also a CTest test) rejects platform-specific constructs (`<unistd.h>`, `<sys/...>`,
+`<windows.h>`, `__declspec`, `__attribute__`, `#pragma comment`, `M_PI`, `system()`).
+
+CI (`.github/workflows/ci.yml`) builds and tests on **ubuntu-latest and windows-latest** on every
+push/PR, so a change that only works on one platform fails visibly.
+
 ## Fixtures
 
 `tests/support`: silence, impulse, sine, sweep, log pink noise, transient-rich, bass-heavy,

@@ -94,4 +94,7 @@ if(Python3_Interpreter_FOUND)
     add_test(NAME includes
         COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/check_includes.py
                 ${CMAKE_SOURCE_DIR})
+    add_test(NAME portability
+        COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/check_portability.py
+                ${CMAKE_SOURCE_DIR})
 endif()
