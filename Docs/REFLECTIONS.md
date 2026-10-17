@@ -300,5 +300,22 @@ vouch for how it sounds. That judgement is entirely still ahead.
   memory cap are proposals that need measurement on real sessions.
 - **Next:** Gate 2 — minimal JUCE VST3 pass-through shell, then the decoder/reference workflow.
 
+## Gate 2 plan — reflection
+
+- **What changed:** every VST milestone in `Docs/VST_TODO.md` now has numbered sub-tasks,
+  acceptance criteria, tests and a commit. The UI is split into cut 1 (load/capture/apply,
+  band view, meters, A/B/delta, Source Notes) and cut 2 (module toggles, advanced controls).
+- **What is strong:** the order is dependency-driven and each milestone can be stopped; the
+  approved mastering sound is not reopened; the risky parts (JUCE build, capture threading,
+  plan handoff, True Peak) are named before coding.
+- **What is weak:** M0 is still unproven in this sandbox, and M3/M4 (reference worker + capture
+  FIFO) are the real concurrency risk, not M5. The 60 s source section is compared to a
+  whole-track reference, so the tonal comparison is approximate and must be labelled.
+- **Adjustments made after reflection:** UI cut 1 excludes module toggles; the plan-swap
+  mechanism must be proven in M0, not improvised in M5; M5 adds a bounded preview calibration
+  instead of pretending a live closed loop is possible; the capture warning is mandatory.
+- **Next:** M0 + M1 only — a pinned JUCE pass-through VST3 that builds, loads in a DAW and
+  passes pluginval. Do not start M2 until that is real.
+
 
 
